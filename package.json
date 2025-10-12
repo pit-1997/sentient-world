@@ -6,14 +6,15 @@
     "./packages/*"
   ],
   "scripts": {
+    "check:types": "tsc --noEmit",
     "check:code": "eslint",
-    "check:code:all": "npm run check:code \".\"",
-    "fix:code": "npm run check:code --fix",
-    "fix:code:all": "npm run check:code:all --fix",
+    "check:code:all": "eslint \".\"",
+    "fix:code": "eslint --fix",
+    "fix:code:all": "eslint \".\" --fix",
     "check:formatting": "prettier --check",
-    "check:formatting:all": "npm run check:formatting \"**/*.{ts,js,md,yml,json}\"",
-    "fix:formatting": "npm run check:formatting --write",
-    "fix:formatting:all": "npm run check:formatting:all --write",
+    "check:formatting:all": "prettier --check \"**/*.{ts,js,md,yml,json}\"",
+    "fix:formatting": "prettier --write",
+    "fix:formatting:all": "prettier --write \"**/*.{ts,js,md,yml,json}\"",
     "pre-commit": "lint-staged",
     "postinstall": "husky",
     "test": "jest"

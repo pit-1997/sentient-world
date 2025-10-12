@@ -28,10 +28,6 @@
     "allowUnusedLabels": false,
     "allowUnreachableCode": false
   },
-  "include": [
-    "eslint.config.js",
-    "jest.config.ts",
-    "./packages/**/*"
-  ],
+  "include": ["eslint.config.js", "jest.config.ts", "./packages/**/*"],
   "exclude": ["node_modules", "dist"]
 }
