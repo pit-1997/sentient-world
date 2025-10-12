@@ -1,0 +1,4 @@
+{
+  "*.{ts,js}": "npm run fix:code",
+  "*.{ts,js,yml,json,md}": "npm run fix:formatting"
+}
