@@ -63,10 +63,7 @@ export default defineConfig([
         'error',
         {
           'newlines-between': 'always-and-inside-groups',
-          groups: [
-            ['builtin', 'external'],
-            ['parent', 'sibling', 'index'],
-          ],
+          groups: [['builtin', 'external'], ['parent'], ['sibling', 'index']],
           alphabetize: {
             order: 'asc',
             caseInsensitive: true,
@@ -106,6 +103,7 @@ export default defineConfig([
     rules: {
       ...pluginJest.configs['flat/all'].rules,
       'jest/valid-title': ['error', { ignoreTypeOfDescribeName: true }],
+      'jest/prefer-expect-assertions': ['warn', { onlyFunctionsWithAsyncKeyword: true }],
     },
   },
 ]);
