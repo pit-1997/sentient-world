@@ -1,7 +1,7 @@
 /**
  * Результат выполнения примитивной задачи
  */
-export type TaskResult = 'success' | 'running' | 'failure';
+export type TaskResult = 'success' | 'running' | 'failure'; // TODO: Переименовать на ExecutionStatus
 
 export interface State {
   clone: () => this;
@@ -13,6 +13,7 @@ export interface State {
 // @ts-expect-error -- намеренно не использую TState - это нужно для упрощения дальнейшей типизации
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- нужно для упрощения дальнейшей типизации
 export interface Task<TState extends State> {
+  // TODO: Переименовать интерфейсы на те же с приставкой I
   /** Название задачи */
   name: string;
 }
@@ -88,6 +89,16 @@ export interface Method<TState extends State> {
 }
 
 /**
+ * Фабрика для создания планировщика
+ */
+export interface PlannerFactory<TState extends State> {
+  /**
+   * Создаёт новый экземпляр планировщика
+   */
+  create(): Planner<TState>;
+}
+
+/**
  * Ищет подходящий метод выполнения основной задачи
  */
 export interface Planner<TState extends State> {
@@ -101,6 +112,16 @@ export interface Planner<TState extends State> {
 }
 
 /**
+ * Фабрика для создания исполнителя
+ */
+export interface ExecutorFactory<TState extends State> {
+  /**
+   * Создаёт новый экземпляр исполнителя
+   */
+  create(plan: PrimitiveTask<TState>[]): Executor<TState>;
+}
+
+/**
  * Исполнитель плана - последовательно выполняет примитивные задачи из плана
  */
 export interface Executor<TState extends State> {
@@ -110,4 +131,16 @@ export interface Executor<TState extends State> {
    * @returns Результат выполнения текущей задачи
    */
   tick: (state: TState) => TaskResult;
+}
+
+/**
+ * HTN агент, управляющий планированием и выполнением задач
+ */
+export interface Agent<TState extends State> {
+  /**
+   * Обновляет состояние агента на один такт
+   * Автоматически планирует и перепланирует при необходимости
+   * @param state текущее состояние мира
+   */
+  tick(state: TState): void;
 }
