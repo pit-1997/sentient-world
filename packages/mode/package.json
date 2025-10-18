@@ -1,0 +1,10 @@
+{
+  "name": "@sentient-world/mode",
+  "private": true,
+  "scripts": {
+    "build": "tstl -p ./tsconfig.build.json"
+  },
+  "dependencies": {
+    "@sentient-world/htn": "1.0.0"
+  }
+}

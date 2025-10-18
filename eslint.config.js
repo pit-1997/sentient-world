@@ -1,4 +1,5 @@
 import { defineConfig } from 'eslint/config';
+import { globSync } from 'glob';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintComments from '@eslint-community/eslint-plugin-eslint-comments';
@@ -76,8 +77,8 @@ export default defineConfig([
         'error',
         {
           devDependencies: devFiles,
-          packageDir: ['./', './packages/*'],
           peerDependencies: true,
+          packageDir: ['./', ...globSync('./packages/*')],
         },
       ],
     },
