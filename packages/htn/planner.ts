@@ -1,5 +1,12 @@
 import { isCompoundTask, isPrimitiveTask } from './guards';
-import type { ICompoundTask, IPlanner, IPrimitiveTask, IState, ITask } from './types';
+import type {
+  ICompoundTask,
+  IPlanner,
+  IPlannerFactory,
+  IPrimitiveTask,
+  IState,
+  ITask,
+} from './types';
 
 /**
  * Результат декомпозиции задачи
@@ -119,5 +126,11 @@ export class Planner<TState extends IState> implements IPlanner<TState> {
       plan,
       state: currentState,
     };
+  }
+}
+
+export class PlannerFactory<TState extends IState> implements IPlannerFactory<TState> {
+  create(): IPlanner<TState> {
+    return new Planner();
   }
 }

@@ -1,3 +1,5 @@
+import { ExecutorFactory } from './executor';
+import { PlannerFactory } from './planner';
 import type {
   IExecutor,
   IExecutorFactory,
@@ -20,8 +22,8 @@ export class Agent<TState extends IState> {
 
   constructor(
     private readonly rootTask: ITask<TState>,
-    private readonly plannerFactory: IPlannerFactory<TState>,
-    private readonly executorFactory: IExecutorFactory<TState>
+    private readonly plannerFactory: IPlannerFactory<TState> = new PlannerFactory(),
+    private readonly executorFactory: IExecutorFactory<TState> = new ExecutorFactory()
   ) {}
 
   tick(state: TState): void {
