@@ -7,7 +7,7 @@ import { BoilWaterTask, CookPastaTask, KitchenState } from './mocks';
 
 describe(Executor.name, () => {
   describe('#tick', () => {
-    it('если план пустой, возвращает succeess', () => {
+    it('если план пустой, возвращает success', () => {
       const state = KitchenState.create([], []);
       const executor = new Executor<KitchenState>([]);
 

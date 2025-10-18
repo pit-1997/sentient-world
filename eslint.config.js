@@ -59,6 +59,7 @@ export default defineConfig([
       'no-use-before-define': 'off',
 
       // Import rules
+      'no-useless-rename': 'error',
       'import-x/order': [
         'error',
         {

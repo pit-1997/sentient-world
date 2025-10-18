@@ -5,7 +5,7 @@ import { Executor } from '../executor';
 import { Planner } from '../planner';
 import type {
   IExecutorFactory,
-  IExecutor as IExecutor,
+  IExecutor,
   IPlannerFactory,
   IPrimitiveTask,
   ExecutionStatus,
