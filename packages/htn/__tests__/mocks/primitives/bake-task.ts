@@ -1,0 +1,24 @@
+import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
+
+import type { KitchenState } from '../state';
+
+/** Запечь в духовке */
+export class BakeTask implements IPrimitiveTask<KitchenState> {
+  name = 'Bake';
+
+  canExecute(state: KitchenState): boolean {
+    return state.equipment.oven && state.ingredients.chicken && state.ingredients.cheese;
+  }
+
+  execute(): ExecutionStatus {
+    return 'success';
+  }
+
+  applyEffects(state: KitchenState): KitchenState {
+    const newState = state.clone();
+    newState.ingredients.chicken = false;
+    newState.ingredients.cheese = false;
+    newState.time += 40;
+    return newState;
+  }
+}
