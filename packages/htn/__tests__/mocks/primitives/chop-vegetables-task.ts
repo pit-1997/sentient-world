@@ -1,9 +1,9 @@
-import type { PrimitiveTask, TaskResult } from '../../../types';
+import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
 import type { KitchenState } from '../state';
 
 /** Нарезать овощи */
-export class ChopVegetablesTask implements PrimitiveTask<KitchenState> {
+export class ChopVegetablesTask implements IPrimitiveTask<KitchenState> {
   name = 'ChopVegetables';
 
   constructor(private vegetable: 'tomatoes' | 'onion') {}
@@ -12,7 +12,7 @@ export class ChopVegetablesTask implements PrimitiveTask<KitchenState> {
     return state.equipment.knife && state.ingredients[this.vegetable];
   }
 
-  execute(): TaskResult {
+  execute(): ExecutionStatus {
     return 'success';
   }
 

@@ -1,8 +1,8 @@
-import type { PrimitiveTask, TaskResult } from '../../../types';
+import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
 import type { KitchenState } from '../state';
 
-export class ServeDishTask implements PrimitiveTask<KitchenState> {
+export class ServeDishTask implements IPrimitiveTask<KitchenState> {
   constructor(
     public name: string,
     private dishName: string
@@ -12,7 +12,7 @@ export class ServeDishTask implements PrimitiveTask<KitchenState> {
     return true; // всегда можем подать
   }
 
-  execute(): TaskResult {
+  execute(): ExecutionStatus {
     return 'success';
   }
 

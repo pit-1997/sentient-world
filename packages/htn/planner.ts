@@ -1,12 +1,12 @@
 import { isCompoundTask, isPrimitiveTask } from './guards';
-import type { CompoundTask, Planner as IPlanner, PrimitiveTask, State, Task } from './types';
+import type { ICompoundTask, IPlanner, IPrimitiveTask, IState, ITask } from './types';
 
 /**
  * Результат декомпозиции задачи
  */
-interface Decomposition<TState extends State> {
+interface Decomposition<TState extends IState> {
   /** Список примитивных задач (пустой если декомпозиция не удалась) */
-  plan: PrimitiveTask<TState>[];
+  plan: IPrimitiveTask<TState>[];
   /** Состояние после применения эффектов (исходное если декомпозиция не удалась) */
   state: TState;
 }
@@ -15,14 +15,14 @@ interface Decomposition<TState extends State> {
  * Реализация планировщика HTN
  * Рекурсивно декомпозирует составные задачи до примитивных
  */
-export class Planner<TState extends State> implements IPlanner<TState> {
+export class Planner<TState extends IState> implements IPlanner<TState> {
   /**
    * Построить план выполнения задачи
    * @param rootTask корневая задача
    * @param state начальное состояние мира
    * @returns массив примитивных задач для выполнения или пустой массив если план построить не удалось
    */
-  plan(rootTask: Task<TState>, state: TState): PrimitiveTask<TState>[] {
+  plan(rootTask: ITask<TState>, state: TState): IPrimitiveTask<TState>[] {
     const result = this.decomposeTask(rootTask, state);
     return result.plan;
   }
@@ -33,7 +33,7 @@ export class Planner<TState extends State> implements IPlanner<TState> {
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если декомпозиция невозможна)
    */
-  private decomposeTask(task: Task<TState>, state: TState): Decomposition<TState> {
+  private decomposeTask(task: ITask<TState>, state: TState): Decomposition<TState> {
     if (isPrimitiveTask(task)) {
       return this.decomposePrimitive(task, state);
     }
@@ -52,7 +52,7 @@ export class Planner<TState extends State> implements IPlanner<TState> {
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если задачу нельзя выполнить)
    */
-  private decomposePrimitive(task: PrimitiveTask<TState>, state: TState): Decomposition<TState> {
+  private decomposePrimitive(task: IPrimitiveTask<TState>, state: TState): Decomposition<TState> {
     if (!task.canExecute(state)) {
       return { plan: [], state };
     }
@@ -70,7 +70,7 @@ export class Planner<TState extends State> implements IPlanner<TState> {
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если ни один метод не подошёл)
    */
-  private decomposeCompound(task: CompoundTask<TState>, state: TState): Decomposition<TState> {
+  private decomposeCompound(task: ICompoundTask<TState>, state: TState): Decomposition<TState> {
     const methods = task.getMethods();
 
     for (const method of methods) {
@@ -96,8 +96,8 @@ export class Planner<TState extends State> implements IPlanner<TState> {
    * @param state начальное состояние
    * @returns результат декомпозиции (пустой план если хотя бы одна подзадача не декомпозируется)
    */
-  private decomposeSubtasks(subtasks: Task<TState>[], state: TState): Decomposition<TState> {
-    const plan: PrimitiveTask<TState>[] = [];
+  private decomposeSubtasks(subtasks: ITask<TState>[], state: TState): Decomposition<TState> {
+    const plan: IPrimitiveTask<TState>[] = [];
     let currentState = state.clone();
 
     for (const subtask of subtasks) {

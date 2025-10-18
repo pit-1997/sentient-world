@@ -1,4 +1,4 @@
-import type { Method, CompoundTask } from '../../../types';
+import type { IMethod, ICompoundTask } from '../../../types';
 
 import { BakedChickenMethod } from '../methods/baked-chicken-method';
 import { CannotCookMethod } from '../methods/cannot-cook-method';
@@ -9,10 +9,10 @@ import { RiceWithVegetablesMethod } from '../methods/rice-with-vegetables-method
 import type { KitchenState } from '../state';
 
 /** Составная задача: Приготовить ужин */
-export class PrepareSupperTask implements CompoundTask<KitchenState> {
+export class PrepareSupperTask implements ICompoundTask<KitchenState> {
   name = 'PrepareSupper';
 
-  getMethods(): Method<KitchenState>[] {
+  getMethods(): IMethod<KitchenState>[] {
     return [
       new PastaWithTomatoSauceMethod(),
       new BakedChickenMethod(),

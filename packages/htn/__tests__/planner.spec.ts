@@ -3,7 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import { isPrimitiveTask } from '../guards';
 import { Planner } from '../planner';
 
-import type { CompoundTask } from '../types';
+import type { ICompoundTask } from '../types';
 
 import {
   BakedChickenMethod,
@@ -96,7 +96,7 @@ describe(Planner.name, () => {
         const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
 
         const method = new PastaWithTomatoSauceMethod();
-        const taskWithFailingPrimitive: CompoundTask<KitchenState> = {
+        const taskWithFailingPrimitive: ICompoundTask<KitchenState> = {
           name: 'TestTask',
           getMethods: () => [method],
         };
@@ -113,7 +113,7 @@ describe(Planner.name, () => {
         const state = KitchenState.create(['pasta', 'tomatoes'], ['pot', 'pan']);
         const planner = new Planner<KitchenState>();
         const method = new PastaWithTomatoSauceMethod();
-        const task: CompoundTask<KitchenState> = {
+        const task: ICompoundTask<KitchenState> = {
           name: 'PastaTask',
           getMethods: () => [method],
         };
@@ -201,7 +201,7 @@ describe(Planner.name, () => {
         const planner = new Planner<KitchenState>();
 
         // Составная задача без fallback метода
-        const strictTask: CompoundTask<KitchenState> = {
+        const strictTask: ICompoundTask<KitchenState> = {
           name: 'StrictTask',
           getMethods: () => [
             new PastaWithTomatoSauceMethod(),

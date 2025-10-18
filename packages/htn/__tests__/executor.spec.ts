@@ -1,7 +1,7 @@
 import { describe, expect, jest, it } from '@jest/globals';
 
 import { Executor } from '../executor';
-import type { PrimitiveTask } from '../types';
+import type { IPrimitiveTask } from '../types';
 
 import { BoilWaterTask, CookPastaTask, KitchenState } from './mocks';
 
@@ -69,7 +69,7 @@ describe(Executor.name, () => {
     it('если предыдущая задача была выполнена, начинает выполнять следующую задачу', () => {
       const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
       const boilWaterTask = new BoilWaterTask();
-      const cookPastaTask: PrimitiveTask<KitchenState> = new CookPastaTask();
+      const cookPastaTask: IPrimitiveTask<KitchenState> = new CookPastaTask();
       const cookPastaTaskSpy = jest.spyOn(cookPastaTask, 'execute');
       const executor = new Executor<KitchenState>([boilWaterTask, cookPastaTask]);
 

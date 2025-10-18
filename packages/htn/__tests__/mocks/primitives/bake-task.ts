@@ -1,16 +1,16 @@
-import type { PrimitiveTask, TaskResult } from '../../../types';
+import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
 import type { KitchenState } from '../state';
 
 /** Запечь в духовке */
-export class BakeTask implements PrimitiveTask<KitchenState> {
+export class BakeTask implements IPrimitiveTask<KitchenState> {
   name = 'Bake';
 
   canExecute(state: KitchenState): boolean {
     return state.equipment.oven && state.ingredients.chicken && state.ingredients.cheese;
   }
 
-  execute(): TaskResult {
+  execute(): ExecutionStatus {
     return 'success';
   }
 

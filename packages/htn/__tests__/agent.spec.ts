@@ -4,11 +4,11 @@ import { Agent } from '../agent';
 import { Executor } from '../executor';
 import { Planner } from '../planner';
 import type {
-  ExecutorFactory,
-  Executor as IExecutor,
-  PlannerFactory,
-  PrimitiveTask,
-  TaskResult,
+  IExecutorFactory,
+  IExecutor as IExecutor,
+  IPlannerFactory,
+  IPrimitiveTask,
+  ExecutionStatus,
 } from '../types';
 
 import { BoilWaterTask, KitchenState, CookPastaTask } from './mocks';
@@ -19,8 +19,8 @@ describe(Agent.name, () => {
       it('создаёт план на основе корневой задачи и состояния', () => {
         const rootTask = new CookPastaTask();
         const planner = new Planner<KitchenState>();
-        const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
-        const executorFactory: ExecutorFactory<KitchenState> = {
+        const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
+        const executorFactory: IExecutorFactory<KitchenState> = {
           create: () => new Executor<KitchenState>([]),
         };
         const agent = new Agent(rootTask, plannerFactory, executorFactory);
@@ -36,9 +36,9 @@ describe(Agent.name, () => {
       it('начинает выполнение плана созданного планировщиком', () => {
         const boilWaterTask = new BoilWaterTask();
         const planner = new Planner<KitchenState>();
-        const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
-        const executorFactory: ExecutorFactory<KitchenState> = {
-          create: (plan: PrimitiveTask<KitchenState>[]) => new Executor(plan),
+        const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
+        const executorFactory: IExecutorFactory<KitchenState> = {
+          create: (plan: IPrimitiveTask<KitchenState>[]) => new Executor(plan),
         };
         const agent = new Agent(new CookPastaTask(), plannerFactory, executorFactory);
         const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
@@ -60,11 +60,11 @@ describe(Agent.name, () => {
         const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
 
         const planner = new Planner<KitchenState>();
-        const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
+        const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
         const planSpy = jest.spyOn(planner, 'plan');
 
         const executor: IExecutor<KitchenState> = { tick: () => 'running' };
-        const executorFactory: ExecutorFactory<KitchenState> = { create: () => executor };
+        const executorFactory: IExecutorFactory<KitchenState> = { create: () => executor };
         const executorTickSpy = jest.spyOn(executor, 'tick');
 
         const agent = new Agent(new CookPastaTask(), plannerFactory, executorFactory);
@@ -78,15 +78,15 @@ describe(Agent.name, () => {
 
       it.each(['success', 'failure'] as const)(
         'если исполнитель на прошлом такте вернул "%s", корневая задача перепланируется',
-        (result: TaskResult) => {
+        (result: ExecutionStatus) => {
           const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
 
           const planner = new Planner<KitchenState>();
-          const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
+          const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
           const planSpy = jest.spyOn(planner, 'plan');
 
           const executor: IExecutor<KitchenState> = { tick: () => result };
-          const executorFactory: ExecutorFactory<KitchenState> = { create: () => executor };
+          const executorFactory: IExecutorFactory<KitchenState> = { create: () => executor };
 
           const agent = new Agent(new CookPastaTask(), plannerFactory, executorFactory);
 
@@ -99,20 +99,20 @@ describe(Agent.name, () => {
 
       it.each(['success', 'failure'] as const)(
         'если исполнитель на прошлом такте вернул "%s", начинает исполнение нового плана',
-        (result: TaskResult) => {
+        (result: ExecutionStatus) => {
           const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
 
           const planner = new Planner<KitchenState>();
-          const firstPlan: PrimitiveTask<KitchenState>[] = [];
-          const secondPlan: PrimitiveTask<KitchenState>[] = [new BoilWaterTask()];
-          const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
+          const firstPlan: IPrimitiveTask<KitchenState>[] = [];
+          const secondPlan: IPrimitiveTask<KitchenState>[] = [new BoilWaterTask()];
+          const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
           jest
             .spyOn(planner, 'plan')
             .mockReturnValueOnce(firstPlan)
             .mockReturnValueOnce(secondPlan);
 
           const executor: IExecutor<KitchenState> = { tick: () => result };
-          const executorFactory: ExecutorFactory<KitchenState> = { create: () => executor };
+          const executorFactory: IExecutorFactory<KitchenState> = { create: () => executor };
           const createExecutorSpy = jest.spyOn(executorFactory, 'create');
           const executorTickSpy = jest.spyOn(executor, 'tick');
 
@@ -133,11 +133,11 @@ describe(Agent.name, () => {
         const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
 
         const planner = new Planner<KitchenState>();
-        const plannerFactory: PlannerFactory<KitchenState> = { create: () => planner };
+        const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
         const planSpy = jest.spyOn(planner, 'plan').mockReturnValue([]);
 
         const executor: IExecutor<KitchenState> = { tick: () => 'success' };
-        const executorFactory: ExecutorFactory<KitchenState> = { create: () => executor };
+        const executorFactory: IExecutorFactory<KitchenState> = { create: () => executor };
         const executorTickSpy = jest.spyOn(executor, 'tick');
 
         const agent = new Agent(new CookPastaTask(), plannerFactory, executorFactory);

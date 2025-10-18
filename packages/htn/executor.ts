@@ -1,13 +1,13 @@
-import type { Executor as IExecutor, PrimitiveTask, State, TaskResult } from './types';
+import type { IExecutor, IPrimitiveTask, IState, ExecutionStatus } from './types';
 
-export class Executor<TState extends State> implements IExecutor<TState> {
+export class Executor<TState extends IState> implements IExecutor<TState> {
   private currentTaskIndex: number = 0;
   private isCompleted: boolean = false;
   private isFailed: boolean = false;
 
-  constructor(private readonly plan: PrimitiveTask<TState>[]) {}
+  constructor(private readonly plan: IPrimitiveTask<TState>[]) {}
 
-  tick(state: TState): TaskResult {
+  tick(state: TState): ExecutionStatus {
     // План уже завершён
     if (this.isCompleted) return 'success';
     if (this.isFailed) return 'failure';

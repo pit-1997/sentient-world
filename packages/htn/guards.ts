@@ -1,15 +1,19 @@
-import type { CompoundTask, Task, PrimitiveTask } from './types';
+import type { ICompoundTask, IPrimitiveTask, IState, ITask } from './types';
 
 /**
  * Проверить является ли задача примитивной
  */
-export function isPrimitiveTask<TState>(task: Task<TState>): task is PrimitiveTask<TState> {
+export function isPrimitiveTask<TState extends IState>(
+  task: ITask<TState>
+): task is IPrimitiveTask<TState> {
   return 'execute' in task && 'canExecute' in task && 'applyEffects' in task;
 }
 
 /**
  * Проверить является ли задача составной
  */
-export function isCompoundTask<TState>(task: Task<TState>): task is CompoundTask<TState> {
+export function isCompoundTask<TState extends IState>(
+  task: ITask<TState>
+): task is ICompoundTask<TState> {
   return 'getMethods' in task;
 }

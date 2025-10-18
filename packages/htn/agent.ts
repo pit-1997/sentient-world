@@ -1,11 +1,11 @@
 import type {
-  Executor,
-  ExecutorFactory,
-  PlannerFactory,
-  PrimitiveTask,
-  State,
-  Task,
-  TaskResult,
+  IExecutor,
+  IExecutorFactory,
+  IPlannerFactory,
+  IPrimitiveTask,
+  IState,
+  ITask,
+  ExecutionStatus,
 } from './types';
 
 const MAX_REPLAN_ATTEMPTS = 3;
@@ -13,15 +13,15 @@ const MAX_REPLAN_ATTEMPTS = 3;
 /**
  * HTN агент, управляющий планированием и выполнением задач
  */
-export class Agent<TState extends State> {
-  private executor: Executor<TState> | null = null;
-  private lastResult: TaskResult | null = null;
+export class Agent<TState extends IState> {
+  private executor: IExecutor<TState> | null = null;
+  private lastResult: ExecutionStatus | null = null;
   private replanAttempts: number = 0;
 
   constructor(
-    private readonly rootTask: Task<TState>,
-    private readonly plannerFactory: PlannerFactory<TState>,
-    private readonly executorFactory: ExecutorFactory<TState>
+    private readonly rootTask: ITask<TState>,
+    private readonly plannerFactory: IPlannerFactory<TState>,
+    private readonly executorFactory: IExecutorFactory<TState>
   ) {}
 
   tick(state: TState): void {
@@ -57,7 +57,7 @@ export class Agent<TState extends State> {
   /**
    * Возвращает новый план
    */
-  private replan(state: TState): PrimitiveTask<TState>[] {
+  private replan(state: TState): IPrimitiveTask<TState>[] {
     const planner = this.plannerFactory.create();
     const plan = planner.plan(this.rootTask, state);
 

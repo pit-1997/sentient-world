@@ -1,4 +1,4 @@
-import type { Method, PrimitiveTask } from '../../../types';
+import type { IMethod, IPrimitiveTask } from '../../../types';
 
 import { BoilWaterTask } from '../primitives/boil-water-task';
 import { CookPastaTask } from '../primitives/cook-pasta-task';
@@ -8,7 +8,7 @@ import { ServeDishTask } from '../primitives/serve-dish-task';
 import type { KitchenState } from '../state';
 
 /** Метод: Приготовить пасту с томатным соусом */
-export class PastaWithTomatoSauceMethod implements Method<KitchenState> {
+export class PastaWithTomatoSauceMethod implements IMethod<KitchenState> {
   name = 'PastaWithTomatoSauce';
 
   preconditions(state: KitchenState): boolean {
@@ -20,7 +20,7 @@ export class PastaWithTomatoSauceMethod implements Method<KitchenState> {
     );
   }
 
-  decompose(): PrimitiveTask<KitchenState>[] {
+  decompose(): IPrimitiveTask<KitchenState>[] {
     return [
       new BoilWaterTask(),
       new CookPastaTask(),

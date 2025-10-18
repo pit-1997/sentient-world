@@ -1,9 +1,9 @@
-import type { State } from '../../types';
+import type { IState } from '../../types';
 
 type Ingredient = 'pasta' | 'rice' | 'tomatoes' | 'onion' | 'cheese' | 'chicken';
 type Equipment = 'pot' | 'pan' | 'knife' | 'oven';
 
-export class KitchenState implements State {
+export class KitchenState implements IState {
   constructor(
     public ingredients: Record<Ingredient, boolean>,
     public equipment: Record<Equipment, boolean>,

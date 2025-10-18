@@ -1,4 +1,4 @@
-import type { Method, CompoundTask } from '../../../types';
+import type { IMethod, ICompoundTask } from '../../../types';
 
 import { PrepareSideTask } from '../compounds/prepare-side-task';
 import { BoilWaterTask } from '../primitives/boil-water-task';
@@ -8,10 +8,10 @@ import { ServeDishTask } from '../primitives/serve-dish-task';
 import type { KitchenState } from '../state';
 
 /** Составная задача: Многоступенчатый ужин (паста + гарнир) */
-export class ElaborateSupperTask implements CompoundTask<KitchenState> {
+export class ElaborateSupperTask implements ICompoundTask<KitchenState> {
   name = 'ElaborateSupper';
 
-  getMethods(): Method<KitchenState>[] {
+  getMethods(): IMethod<KitchenState>[] {
     return [
       {
         name: 'PastaAndSide',
