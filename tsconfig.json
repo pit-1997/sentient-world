@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
+    "types": ["@typescript-to-lua/language-extensions"],
 
     "strict": true,
     /* Дополнительные строгие проверки (не входят в strict) */

@@ -1,8 +1,10 @@
 export type {
+  ExecutionStatus,
   IAgent,
   ICompoundTask,
   IExecutor,
   IExecutorFactory,
+  IMethod,
   IPlanner,
   IPlannerFactory,
   IPrimitiveTask,

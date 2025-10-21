@@ -63,7 +63,7 @@ export class Agent<TState extends IState> {
     const planner = this.plannerFactory.create();
     const plan = planner.plan(this.rootTask, state);
 
-    this.replanAttempts = plan.length ? 0 : this.replanAttempts + 1;
+    this.replanAttempts = plan.length > 0 ? 0 : this.replanAttempts + 1;
 
     return plan;
   }
