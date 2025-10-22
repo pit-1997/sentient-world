@@ -1,4 +1,10 @@
-import type { BlipHandle, CheckpointHandle, ObjectHandle, VehicleHandle } from './handles';
+import type {
+  BlipHandle,
+  CheckpointHandle,
+  ObjectHandle,
+  PedHandle,
+  VehicleHandle,
+} from './handles';
 
 /** Создает маркер */
 export declare function createCheckpoint(
@@ -19,7 +25,7 @@ export declare function deleteCheckpoint(checkpoint: CheckpointHandle): void;
 export declare function addBlipForCoord(x: number, y: number, z: number): BlipHandle;
 
 /** Создает иконку на персонаже */
-export declare function addBlipForChar(ped: Ped): BlipHandle;
+export declare function addBlipForChar(ped: PedHandle): BlipHandle;
 
 /** Создает иконку на машине */
 export declare function addBlipForCar(car: VehicleHandle): BlipHandle;

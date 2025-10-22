@@ -1,3 +1,7 @@
+import type { PedHandle } from './handles';
+
+export declare const PLAYER_PED: PedHandle;
+
 /** Типы пешеходов */
 export enum PedType {
   PLAYER1 = 0,

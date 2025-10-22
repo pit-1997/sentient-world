@@ -59,6 +59,21 @@ export declare function isCharPlayingAnim(ped: PedHandle, animName: string): boo
 /** Устанавливает здоровье персонажу */
 export declare function setCharHealth(ped: PedHandle, health: number): void;
 
+/**
+ * Устанавливает персонажу колизию
+ * @param ped - персонаж, для которого нужно установить колизию
+ * @param collision - true для включения колизии, false для отключения
+ */
+export declare function setCharCollision(ped: PedHandle, collision: boolean): void;
+
+/**
+ * Делает персонажа неуязвимым для атак других NPC.
+ * Персонаж не будет автоматически выбираться в качестве цели
+ * @param ped - персонаж, которого нельзя атаковать
+ * @param untargetable - true чтобы сделать персонажа неуязвимым для таргетинга
+ */
+export declare function setCharNeverTargetted(ped: PedHandle, untargetable: boolean): void;
+
 /** Получает здоровье персонажа */
 export declare function getCharHealth(ped: PedHandle): number;
 

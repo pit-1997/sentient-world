@@ -18,5 +18,3 @@ export * from './text';
 export * from './vehicle';
 export * from './world';
 export * from './zones';
-
-export type VKey = (typeof import('vkeys'))[keyof typeof import('vkeys')];

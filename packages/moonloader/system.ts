@@ -1,3 +1,5 @@
+export type VKey = (typeof import('vkeys'))[keyof typeof import('vkeys')];
+
 /** Выводит текст в файл moonloader.log и вызывает событие onScriptMessage */
 export declare function print(text: string): void;
 
