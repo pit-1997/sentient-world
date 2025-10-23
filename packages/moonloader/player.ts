@@ -1,71 +1,94 @@
 import type { PedHandle } from './handles';
 
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Получает персонажа игрока */
-export declare function getPlayerChar(playerId: number): PedHandle;
+declare function GetPlayerChar(playerId: number): PedHandle;
+export const getPlayerChar: typeof GetPlayerChar = _G.getPlayerChar;
 
 /** Получает ID игрока */
-export declare function getPlayerId(): number;
+declare function GetPlayerId(): number;
+export const getPlayerId: typeof GetPlayerId = _G.getPlayerId;
 
 /** Получает координаты игрока */
-export declare function getActivePlayerCoords(): LuaMultiReturn<[number, number, number]>;
+declare function GetActivePlayerCoords(): LuaMultiReturn<[number, number, number]>;
+export const getActivePlayerCoords: typeof GetActivePlayerCoords = _G.getActivePlayerCoords;
 
 /** Устанавливает координаты игрока */
-export declare function setPlayerCoordinates(
+declare function SetPlayerCoordinates(
   playerId: number,
   x: number,
   y: number,
   z: number
 ): void;
+export const setPlayerCoordinates: typeof SetPlayerCoordinates = _G.setPlayerCoordinates;
 
 /** Получает угол камеры игрока */
-export declare function getCameraFrontVector(): LuaMultiReturn<[number, number, number]>;
+declare function GetCameraFrontVector(): LuaMultiReturn<[number, number, number]>;
+export const getCameraFrontVector: typeof GetCameraFrontVector = _G.getCameraFrontVector;
 
 /** Получает позицию камеры */
-export declare function getCameraCoordinates(): LuaMultiReturn<[number, number, number]>;
+declare function GetCameraCoordinates(): LuaMultiReturn<[number, number, number]>;
+export const getCameraCoordinates: typeof GetCameraCoordinates = _G.getCameraCoordinates;
 
 /** Устанавливает позицию камеры */
-export declare function setCameraPosition(x: number, y: number, z: number): void;
+declare function SetCameraPosition(x: number, y: number, z: number): void;
+export const setCameraPosition: typeof SetCameraPosition = _G.setCameraPosition;
 
 /** Направляет камеру на точку */
-export declare function pointCameraAtPoint(
+declare function PointCameraAtPoint(
   x: number,
   y: number,
   z: number,
   switchStyle: number
 ): void;
+export const pointCameraAtPoint: typeof PointCameraAtPoint = _G.pointCameraAtPoint;
 
 /** Направляет камеру на персонажа */
-export declare function pointCameraAtChar(ped: PedHandle, mode: number, switchStyle: number): void;
+declare function PointCameraAtChar(ped: PedHandle, mode: number, switchStyle: number): void;
+export const pointCameraAtChar: typeof PointCameraAtChar = _G.pointCameraAtChar;
 
 /** Восстанавливает камеру за игроком */
-export declare function restoreCameraJumpcut(): void;
+declare function RestoreCameraJumpcut(): void;
+export const restoreCameraJumpcut: typeof RestoreCameraJumpcut = _G.restoreCameraJumpcut;
 
 /** Устанавливает управление игроком */
-export declare function setPlayerControl(playerId: number, state: boolean): void;
+declare function SetPlayerControl(playerId: number, state: boolean): void;
+export const setPlayerControl: typeof SetPlayerControl = _G.setPlayerControl;
 
 /** Получает деньги игрока */
-export declare function getPlayerMoney(playerId: number): number;
+declare function GetPlayerMoney(playerId: number): number;
+export const getPlayerMoney: typeof GetPlayerMoney = _G.getPlayerMoney;
 
 /** Устанавливает деньги игроку */
-export declare function setPlayerMoney(playerId: number, money: number): void;
+declare function SetPlayerMoney(playerId: number, money: number): void;
+export const setPlayerMoney: typeof SetPlayerMoney = _G.setPlayerMoney;
 
 /** Добавляет деньги игроку */
-export declare function addToPlayerMoney(playerId: number, money: number): void;
+declare function AddToPlayerMoney(playerId: number, money: number): void;
+export const addToPlayerMoney: typeof AddToPlayerMoney = _G.addToPlayerMoney;
 
 /** Получает уровень розыска */
-export declare function getPlayerWantedLevel(playerId: number): number;
+declare function GetPlayerWantedLevel(playerId: number): number;
+export const getPlayerWantedLevel: typeof GetPlayerWantedLevel = _G.getPlayerWantedLevel;
 
 /** Устанавливает уровень розыска */
-export declare function alterWantedLevel(playerId: number, level: number): void;
+declare function AlterWantedLevel(playerId: number, level: number): void;
+export const alterWantedLevel: typeof AlterWantedLevel = _G.alterWantedLevel;
 
 /** Очищает уровень розыска */
-export declare function clearWantedLevel(playerId: number): void;
+declare function ClearWantedLevel(playerId: number): void;
+export const clearWantedLevel: typeof ClearWantedLevel = _G.clearWantedLevel;
 
 /** Устанавливает максимальный уровень розыска */
-export declare function setMaxWantedLevel(level: number): void;
+declare function SetMaxWantedLevel(level: number): void;
+export const setMaxWantedLevel: typeof SetMaxWantedLevel = _G.setMaxWantedLevel;
 
 /** Проверяет, свободен ли игрок для миссии */
-export declare function isPlayerPlayingAsChar(playerId: number): boolean;
+declare function IsPlayerPlayingAsChar(playerId: number): boolean;
+export const isPlayerPlayingAsChar: typeof IsPlayerPlayingAsChar = _G.isPlayerPlayingAsChar;
 
 /** Проверяет, жив ли игрок */
-export declare function isPlayerDead(playerId: number): boolean;
+declare function IsPlayerDead(playerId: number): boolean;
+export const isPlayerDead: typeof IsPlayerDead = _G.isPlayerDead;

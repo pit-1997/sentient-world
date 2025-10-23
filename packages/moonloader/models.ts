@@ -1,26 +1,38 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Загружает указанную модель */
-export declare function requestModel(modelId: number): boolean;
+declare function RequestModel(modelId: number): boolean;
+export const requestModel: typeof RequestModel = _G.requestModel;
 
 /** Загрузка ранее запрошенных моделей */
-export declare function loadAllModelsNow(): void;
+declare function LoadAllModelsNow(): void;
+export const loadAllModelsNow: typeof LoadAllModelsNow = _G.loadAllModelsNow;
 
 /** Проверяет загрузку модели */
-export declare function hasModelLoaded(modelId: number): boolean;
+declare function HasModelLoaded(modelId: number): boolean;
+export const hasModelLoaded: typeof HasModelLoaded = _G.hasModelLoaded;
 
 /** Помечает загруженную ранее модель как более ненужную для скриптового движка */
-export declare function markModelAsNoLongerNeeded(modelId: number): void;
+declare function MarkModelAsNoLongerNeeded(modelId: number): void;
+export const markModelAsNoLongerNeeded: typeof MarkModelAsNoLongerNeeded = _G.markModelAsNoLongerNeeded;
 
 /** Загружает спецэффект */
-export declare function requestSpecialModel(slot: number, modelId: number): void;
+declare function RequestSpecialModel(slot: number, modelId: number): void;
+export const requestSpecialModel: typeof RequestSpecialModel = _G.requestSpecialModel;
 
 /** Проверяет загрузку спецэффекта */
-export declare function hasSpecialCharacterLoaded(slot: number): boolean;
+declare function HasSpecialCharacterLoaded(slot: number): boolean;
+export const hasSpecialCharacterLoaded: typeof HasSpecialCharacterLoaded = _G.hasSpecialCharacterLoaded;
 
 /** Загружает анимацию */
-export declare function requestAnimation(animName: string): void;
+declare function RequestAnimation(animName: string): void;
+export const requestAnimation: typeof RequestAnimation = _G.requestAnimation;
 
 /** Проверяет загрузку анимации */
-export declare function hasAnimationLoaded(animName: string): boolean;
+declare function HasAnimationLoaded(animName: string): boolean;
+export const hasAnimationLoaded: typeof HasAnimationLoaded = _G.hasAnimationLoaded;
 
 /** Удаляет анимацию из памяти */
-export declare function removeAnimation(animName: string): void;
+declare function RemoveAnimation(animName: string): void;
+export const removeAnimation: typeof RemoveAnimation = _G.removeAnimation;

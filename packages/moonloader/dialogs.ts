@@ -1,8 +1,12 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Проверяет, активен ли диалог */
-export declare function isDialogActive(): boolean;
+declare function IsDialogActive(): boolean;
+export const isDialogActive: typeof IsDialogActive = _G.isDialogActive;
 
 /** Показывает диалоговое окно */
-export declare function showDialog(
+declare function ShowDialog(
   dialogId: number,
   style: number,
   title: string,
@@ -10,14 +14,18 @@ export declare function showDialog(
   button2: string,
   text: string
 ): void;
+export const showDialog: typeof ShowDialog = _G.showDialog;
 
 /** Обрабатывает ответ диалога */
-export declare function processDialogResponse(): LuaMultiReturn<
+declare function ProcessDialogResponse(): LuaMultiReturn<
   [boolean, number, number, number, string]
 >;
+export const processDialogResponse: typeof ProcessDialogResponse = _G.processDialogResponse;
 
 /** Показывает меню */
-export declare function showTextdraw(textdrawId: number): void;
+declare function ShowTextdraw(textdrawId: number): void;
+export const showTextdraw: typeof ShowTextdraw = _G.showTextdraw;
 
 /** Скрывает меню */
-export declare function hideTextdraw(textdrawId: number): void;
+declare function HideTextdraw(textdrawId: number): void;
+export const hideTextdraw: typeof HideTextdraw = _G.hideTextdraw;

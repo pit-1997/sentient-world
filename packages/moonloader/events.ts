@@ -1,3 +1,6 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 export type Events = {
   /** Вызывается при завершении скрипта */
   onScriptTerminate: () => void;
@@ -41,7 +44,8 @@ export type EventCallback<Event extends keyof Events> = (
   ...args: Parameters<Events[Event]>
 ) => ReturnType<Events[Event]>;
 
-export declare function addEventHandler<Event extends keyof Events>(
+declare function AddEventHandler<Event extends keyof Events>(
   event: Event,
   callback: EventCallback<Event>
 ): void;
+export const addEventHandler: typeof AddEventHandler = _G.addEventHandler;

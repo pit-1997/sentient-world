@@ -1,62 +1,81 @@
 import type { VehicleHandle, PedHandle } from './handles';
 
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Создает машину */
-export declare function createCar(modelId: number, x: number, y: number, z: number): VehicleHandle;
+declare function CreateCar(modelId: number, x: number, y: number, z: number): VehicleHandle;
+export const createCar: typeof CreateCar = _G.createCar;
 
 /** Удаляет машину */
-export declare function deleteCar(car: VehicleHandle): void;
+declare function DeleteCar(car: VehicleHandle): void;
+export const deleteCar: typeof DeleteCar = _G.deleteCar;
 
 /** Проверяет существование машины */
-export declare function doesVehicleExist(car: VehicleHandle): boolean;
+declare function DoesVehicleExist(car: VehicleHandle): boolean;
+export const doesVehicleExist: typeof DoesVehicleExist = _G.doesVehicleExist;
 
 /** Устанавливает координаты машины */
-export declare function setCarCoordinates(
+declare function SetCarCoordinates(
   car: VehicleHandle,
   x: number,
   y: number,
   z: number
 ): void;
+export const setCarCoordinates: typeof SetCarCoordinates = _G.setCarCoordinates;
 
 /** Получает координаты машины */
-export declare function getCarCoordinates(
+declare function GetCarCoordinates(
   car: VehicleHandle
 ): LuaMultiReturn<[number, number, number]>;
+export const getCarCoordinates: typeof GetCarCoordinates = _G.getCarCoordinates;
 
 /** Устанавливает угол поворота машины */
-export declare function setCarHeading(car: VehicleHandle, angle: number): void;
+declare function SetCarHeading(car: VehicleHandle, angle: number): void;
+export const setCarHeading: typeof SetCarHeading = _G.setCarHeading;
 
 /** Получает угол поворота машины */
-export declare function getCarHeading(car: VehicleHandle): number;
+declare function GetCarHeading(car: VehicleHandle): number;
+export const getCarHeading: typeof GetCarHeading = _G.getCarHeading;
 
 /** Устанавливает здоровье машины */
-export declare function setCarHealth(car: VehicleHandle, health: number): void;
+declare function SetCarHealth(car: VehicleHandle, health: number): void;
+export const setCarHealth: typeof SetCarHealth = _G.setCarHealth;
 
 /** Получает здоровье машины */
-export declare function getCarHealth(car: VehicleHandle): number;
+declare function GetCarHealth(car: VehicleHandle): number;
+export const getCarHealth: typeof GetCarHealth = _G.getCarHealth;
 
 /** Устанавливает цвета машины */
-export declare function changeCarColour(car: VehicleHandle, color1: number, color2: number): void;
+declare function ChangeCarColour(car: VehicleHandle, color1: number, color2: number): void;
+export const changeCarColour: typeof ChangeCarColour = _G.changeCarColour;
 
 /** Получает цвета машины */
-export declare function getCarColours(car: VehicleHandle): LuaMultiReturn<[number, number]>;
+declare function GetCarColours(car: VehicleHandle): LuaMultiReturn<[number, number]>;
+export const getCarColours: typeof GetCarColours = _G.getCarColours;
 
 /** Взрывает машину */
-export declare function explodeCar(car: VehicleHandle): void;
+declare function ExplodeCar(car: VehicleHandle): void;
+export const explodeCar: typeof ExplodeCar = _G.explodeCar;
 
 /** Чинит машину */
-export declare function fixCar(car: VehicleHandle): void;
+declare function FixCar(car: VehicleHandle): void;
+export const fixCar: typeof FixCar = _G.fixCar;
 
 /** Блокирует двери машины */
-export declare function lockCarDoors(car: VehicleHandle, lockStatus: number): void;
+declare function LockCarDoors(car: VehicleHandle, lockStatus: number): void;
+export const lockCarDoors: typeof LockCarDoors = _G.lockCarDoors;
 
 /** Включает сирену */
-export declare function switchCarSiren(car: VehicleHandle, state: boolean): void;
+declare function SwitchCarSiren(car: VehicleHandle, state: boolean): void;
+export const switchCarSiren: typeof SwitchCarSiren = _G.switchCarSiren;
 
 /** Включает фары */
-export declare function forceCarLights(car: VehicleHandle, state: number): void;
+declare function ForceCarLights(car: VehicleHandle, state: number): void;
+export const forceCarLights: typeof ForceCarLights = _G.forceCarLights;
 
 /** Устанавливает можно ли взорвать машину */
-export declare function setCarProofs(
+declare function SetCarProofs(
   car: VehicleHandle,
   bullet: boolean,
   fire: boolean,
@@ -64,51 +83,67 @@ export declare function setCarProofs(
   collision: boolean,
   melee: boolean
 ): void;
+export const setCarProofs: typeof SetCarProofs = _G.setCarProofs;
 
 /** Получает модель машины */
-export declare function getCarModel(car: VehicleHandle): number;
+declare function GetCarModel(car: VehicleHandle): number;
+export const getCarModel: typeof GetCarModel = _G.getCarModel;
 
 /** Получает скорость машины */
-export declare function getCarSpeed(car: VehicleHandle): number;
+declare function GetCarSpeed(car: VehicleHandle): number;
+export const getCarSpeed: typeof GetCarSpeed = _G.getCarSpeed;
 
 /** Устанавливает скорость машины */
-export declare function setCarForwardSpeed(car: VehicleHandle, speed: number): void;
+declare function SetCarForwardSpeed(car: VehicleHandle, speed: number): void;
+export const setCarForwardSpeed: typeof SetCarForwardSpeed = _G.setCarForwardSpeed;
 
 /** Получает водителя машины */
-export declare function getDriverOfCar(car: VehicleHandle): PedHandle;
+declare function GetDriverOfCar(car: VehicleHandle): PedHandle;
+export const getDriverOfCar: typeof GetDriverOfCar = _G.getDriverOfCar;
 
 /** Получает количество пассажиров */
-export declare function getNumberOfPassengers(car: VehicleHandle): number;
+declare function GetNumberOfPassengers(car: VehicleHandle): number;
+export const getNumberOfPassengers: typeof GetNumberOfPassengers = _G.getNumberOfPassengers;
 
 /** Получает максимальное количество пассажиров */
-export declare function getMaximumNumberOfPassengers(car: VehicleHandle): number;
+declare function GetMaximumNumberOfPassengers(car: VehicleHandle): number;
+export const getMaximumNumberOfPassengers: typeof GetMaximumNumberOfPassengers = _G.getMaximumNumberOfPassengers;
 
 /** Проверяет наличие персонажа в машине */
-export declare function isCarPassengerSeatFree(car: VehicleHandle, seatId: number): boolean;
+declare function IsCarPassengerSeatFree(car: VehicleHandle, seatId: number): boolean;
+export const isCarPassengerSeatFree: typeof IsCarPassengerSeatFree = _G.isCarPassengerSeatFree;
 
 /** Получает пассажира на определенном месте */
-export declare function getCharInCarPassengerSeat(car: VehicleHandle, seatId: number): PedHandle;
+declare function GetCharInCarPassengerSeat(car: VehicleHandle, seatId: number): PedHandle;
+export const getCharInCarPassengerSeat: typeof GetCharInCarPassengerSeat = _G.getCharInCarPassengerSeat;
 
 /** Замораживает машину */
-export declare function freezeCarPosition(car: VehicleHandle, freeze: boolean): void;
+declare function FreezeCarPosition(car: VehicleHandle, freeze: boolean): void;
+export const freezeCarPosition: typeof FreezeCarPosition = _G.freezeCarPosition;
 
 /** Отмечает машину как более ненужную */
-export declare function markCarAsNoLongerNeeded(car: VehicleHandle): void;
+declare function MarkCarAsNoLongerNeeded(car: VehicleHandle): void;
+export const markCarAsNoLongerNeeded: typeof MarkCarAsNoLongerNeeded = _G.markCarAsNoLongerNeeded;
 
 /** Устанавливает видимость машины */
-export declare function setCarVisible(car: VehicleHandle, visible: boolean): void;
+declare function SetCarVisible(car: VehicleHandle, visible: boolean): void;
+export const setCarVisible: typeof SetCarVisible = _G.setCarVisible;
 
 /** Проверяет, утоплена ли машина */
-export declare function isCarInWater(car: VehicleHandle): boolean;
+declare function IsCarInWater(car: VehicleHandle): boolean;
+export const isCarInWater: typeof IsCarInWater = _G.isCarInWater;
 
 /** Проверяет, в воздухе ли машина */
-export declare function isCarInAirProper(car: VehicleHandle): boolean;
+declare function IsCarInAirProper(car: VehicleHandle): boolean;
+export const isCarInAirProper: typeof IsCarInAirProper = _G.isCarInAirProper;
 
 /** Проверяет, перевернута ли машина */
-export declare function isCarUpsidedown(car: VehicleHandle): boolean;
+declare function IsCarUpsidedown(car: VehicleHandle): boolean;
+export const isCarUpsidedown: typeof IsCarUpsidedown = _G.isCarUpsidedown;
 
 /** Устанавливает невидимость для радара */
-export declare function dontProcessVehicleRecordingsNearNetworkPlayers(
+declare function DontProcessVehicleRecordingsNearNetworkPlayers(
   car: VehicleHandle,
   state: boolean
 ): void;
+export const dontProcessVehicleRecordingsNearNetworkPlayers: typeof DontProcessVehicleRecordingsNearNetworkPlayers = _G.dontProcessVehicleRecordingsNearNetworkPlayers;

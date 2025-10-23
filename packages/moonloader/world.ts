@@ -1,51 +1,67 @@
 import type { FireHandle } from './handles';
 
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Устанавливает погоду */
-export declare function setWeather(weatherId: number): void;
+declare function SetWeather(weatherId: number): void;
+export const setWeather: typeof SetWeather = _G.setWeather;
 
 /** Получает текущую погоду */
-export declare function getCurrentWeather(): number;
+declare function GetCurrentWeather(): number;
+export const getCurrentWeather: typeof GetCurrentWeather = _G.getCurrentWeather;
 
 /** Форсирует погоду */
-export declare function forceWeather(weatherId: number): void;
+declare function ForceWeather(weatherId: number): void;
+export const forceWeather: typeof ForceWeather = _G.forceWeather;
 
 /** Форсирует погоду сейчас */
-export declare function forceWeatherNow(weatherId: number): void;
+declare function ForceWeatherNow(weatherId: number): void;
+export const forceWeatherNow: typeof ForceWeatherNow = _G.forceWeatherNow;
 
 /** Выключает погоду */
-export declare function releaseWeather(): void;
+declare function ReleaseWeather(): void;
+export const releaseWeather: typeof ReleaseWeather = _G.releaseWeather;
 
 /** Устанавливает время суток */
-export declare function setTimeOfDay(hours: number, minutes: number): void;
+declare function SetTimeOfDay(hours: number, minutes: number): void;
+export const setTimeOfDay: typeof SetTimeOfDay = _G.setTimeOfDay;
 
 /** Получает время суток */
-export declare function getTimeOfDay(): LuaMultiReturn<[number, number]>;
+declare function GetTimeOfDay(): LuaMultiReturn<[number, number]>;
+export const getTimeOfDay: typeof GetTimeOfDay = _G.getTimeOfDay;
 
 /** Получает минуты до следующего часа */
-export declare function getMinutesToTimeOfDay(hours: number, minutes: number): number;
+declare function GetMinutesToTimeOfDay(hours: number, minutes: number): number;
+export const getMinutesToTimeOfDay: typeof GetMinutesToTimeOfDay = _G.getMinutesToTimeOfDay;
 
 /** Сохраняет время суток */
-export declare function storeClockState(): void;
+declare function StoreClockState(): void;
+export const storeClockState: typeof StoreClockState = _G.storeClockState;
 
 /** Восстанавливает время суток */
-export declare function restoreClockState(): void;
+declare function RestoreClockState(): void;
+export const restoreClockState: typeof RestoreClockState = _G.restoreClockState;
 
 /** Устанавливает гравитацию */
-export declare function setGravity(gravity: number): void;
+declare function SetGravity(gravity: number): void;
+export const setGravity: typeof SetGravity = _G.setGravity;
 
 /** Устанавливает скорость игры */
-export declare function setTimeScale(scale: number): void;
+declare function SetTimeScale(scale: number): void;
+export const setTimeScale: typeof SetTimeScale = _G.setTimeScale;
 
 /** Получает расстояние между координатами 2D */
-export declare function getDistanceBetweenCoords2d(
+declare function GetDistanceBetweenCoords2d(
   x1: number,
   y1: number,
   x2: number,
   y2: number
 ): number;
+export const getDistanceBetweenCoords2d: typeof GetDistanceBetweenCoords2d = _G.getDistanceBetweenCoords2d;
 
 /** Получает расстояние между координатами 3D */
-export declare function getDistanceBetweenCoords3d(
+declare function GetDistanceBetweenCoords3d(
   x1: number,
   y1: number,
   z1: number,
@@ -53,21 +69,28 @@ export declare function getDistanceBetweenCoords3d(
   y2: number,
   z2: number
 ): number;
+export const getDistanceBetweenCoords3d: typeof GetDistanceBetweenCoords3d = _G.getDistanceBetweenCoords3d;
 
 /** Получает угол между координатами */
-export declare function getHeadingFromVector2d(x: number, y: number): number;
+declare function GetHeadingFromVector2d(x: number, y: number): number;
+export const getHeadingFromVector2d: typeof GetHeadingFromVector2d = _G.getHeadingFromVector2d;
 
 /** Находит наземную Z-координату для точки */
-export declare function getGroundZFor3dCoord(x: number, y: number, z: number): number;
+declare function GetGroundZFor3dCoord(x: number, y: number, z: number): number;
+export const getGroundZFor3dCoord: typeof GetGroundZFor3dCoord = _G.getGroundZFor3dCoord;
 
 /** Создает взрыв */
-export declare function addExplosion(x: number, y: number, z: number, type: number): void;
+declare function AddExplosion(x: number, y: number, z: number, type: number): void;
+export const addExplosion: typeof AddExplosion = _G.addExplosion;
 
 /** Создает огонь */
-export declare function startScriptFire(x: number, y: number, z: number): FireHandle;
+declare function StartScriptFire(x: number, y: number, z: number): FireHandle;
+export const startScriptFire: typeof StartScriptFire = _G.startScriptFire;
 
 /** Удаляет огонь */
-export declare function removeScriptFire(fire: FireHandle): void;
+declare function RemoveScriptFire(fire: FireHandle): void;
+export const removeScriptFire: typeof RemoveScriptFire = _G.removeScriptFire;
 
 /** Проверяет существование огня */
-export declare function isScriptFireExtinguished(fire: FireHandle): boolean;
+declare function IsScriptFireExtinguished(fire: FireHandle): boolean;
+export const isScriptFireExtinguished: typeof IsScriptFireExtinguished = _G.isScriptFireExtinguished;

@@ -6,8 +6,11 @@ import type {
   VehicleHandle,
 } from './handles';
 
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Создает маркер */
-export declare function createCheckpoint(
+declare function CreateCheckpoint(
   type: number,
   x: number,
   y: number,
@@ -17,39 +20,52 @@ export declare function createCheckpoint(
   pointZ: number,
   radius: number
 ): CheckpointHandle;
+export const createCheckpoint: typeof CreateCheckpoint = _G.createCheckpoint;
 
 /** Удаляет маркер */
-export declare function deleteCheckpoint(checkpoint: CheckpointHandle): void;
+declare function DeleteCheckpoint(checkpoint: CheckpointHandle): void;
+export const deleteCheckpoint: typeof DeleteCheckpoint = _G.deleteCheckpoint;
 
 /** Создает иконку на радаре */
-export declare function addBlipForCoord(x: number, y: number, z: number): BlipHandle;
+declare function AddBlipForCoord(x: number, y: number, z: number): BlipHandle;
+export const addBlipForCoord: typeof AddBlipForCoord = _G.addBlipForCoord;
 
 /** Создает иконку на персонаже */
-export declare function addBlipForChar(ped: PedHandle): BlipHandle;
+declare function AddBlipForChar(ped: PedHandle): BlipHandle;
+export const addBlipForChar: typeof AddBlipForChar = _G.addBlipForChar;
 
 /** Создает иконку на машине */
-export declare function addBlipForCar(car: VehicleHandle): BlipHandle;
+declare function AddBlipForCar(car: VehicleHandle): BlipHandle;
+export const addBlipForCar: typeof AddBlipForCar = _G.addBlipForCar;
 
 /** Создает иконку на объекте */
-export declare function addBlipForObject(obj: ObjectHandle): BlipHandle;
+declare function AddBlipForObject(obj: ObjectHandle): BlipHandle;
+export const addBlipForObject: typeof AddBlipForObject = _G.addBlipForObject;
 
 /** Создает иконку контактной точки */
-export declare function addBlipForContactPoint(x: number, y: number, z: number): BlipHandle;
+declare function AddBlipForContactPoint(x: number, y: number, z: number): BlipHandle;
+export const addBlipForContactPoint: typeof AddBlipForContactPoint = _G.addBlipForContactPoint;
 
 /** Удаляет иконку */
-export declare function removeBlip(blip: BlipHandle): void;
+declare function RemoveBlip(blip: BlipHandle): void;
+export const removeBlip: typeof RemoveBlip = _G.removeBlip;
 
 /** Проверяет существование иконки */
-export declare function doesBlipExist(blip: BlipHandle): boolean;
+declare function DoesBlipExist(blip: BlipHandle): boolean;
+export const doesBlipExist: typeof DoesBlipExist = _G.doesBlipExist;
 
 /** Устанавливает цвет иконки */
-export declare function changeBlipColour(blip: BlipHandle, color: number): void;
+declare function ChangeBlipColour(blip: BlipHandle, color: number): void;
+export const changeBlipColour: typeof ChangeBlipColour = _G.changeBlipColour;
 
 /** Уменьшает/увеличивает иконку */
-export declare function changeBlipScale(blip: BlipHandle, scale: number): void;
+declare function ChangeBlipScale(blip: BlipHandle, scale: number): void;
+export const changeBlipScale: typeof ChangeBlipScale = _G.changeBlipScale;
 
 /** Устанавливает отображение иконки */
-export declare function changeBlipDisplay(blip: BlipHandle, display: number): void;
+declare function ChangeBlipDisplay(blip: BlipHandle, display: number): void;
+export const changeBlipDisplay: typeof ChangeBlipDisplay = _G.changeBlipDisplay;
 
 /** Получает координаты иконки */
-export declare function getBlipCoords(blip: BlipHandle): LuaMultiReturn<[number, number, number]>;
+declare function GetBlipCoords(blip: BlipHandle): LuaMultiReturn<[number, number, number]>;
+export const getBlipCoords: typeof GetBlipCoords = _G.getBlipCoords;

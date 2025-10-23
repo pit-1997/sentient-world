@@ -1,48 +1,59 @@
 import type { ObjectHandle, PedHandle, VehicleHandle } from './handles';
 
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Создает объект */
-export declare function createObject(
+declare function CreateObject(
   modelId: number,
   x: number,
   y: number,
   z: number
 ): ObjectHandle;
+export const createObject: typeof CreateObject = _G.createObject;
 
 /** Создает объект без смещения */
-export declare function createObjectNoOffset(
+declare function CreateObjectNoOffset(
   modelId: number,
   x: number,
   y: number,
   z: number
 ): ObjectHandle;
+export const createObjectNoOffset: typeof CreateObjectNoOffset = _G.createObjectNoOffset;
 
 /** Удаляет объект */
-export declare function deleteObject(obj: ObjectHandle): void;
+declare function DeleteObject(obj: ObjectHandle): void;
+export const deleteObject: typeof DeleteObject = _G.deleteObject;
 
 /** Проверяет существование объекта */
-export declare function doesObjectExist(obj: ObjectHandle): boolean;
+declare function DoesObjectExist(obj: ObjectHandle): boolean;
+export const doesObjectExist: typeof DoesObjectExist = _G.doesObjectExist;
 
 /** Устанавливает координаты объекта */
-export declare function setObjectCoordinates(
+declare function SetObjectCoordinates(
   obj: ObjectHandle,
   x: number,
   y: number,
   z: number
 ): void;
+export const setObjectCoordinates: typeof SetObjectCoordinates = _G.setObjectCoordinates;
 
 /** Получает координаты объекта */
-export declare function getObjectCoordinates(
+declare function GetObjectCoordinates(
   obj: ObjectHandle
 ): LuaMultiReturn<[number, number, number]>;
+export const getObjectCoordinates: typeof GetObjectCoordinates = _G.getObjectCoordinates;
 
 /** Устанавливает угол поворота объекта */
-export declare function setObjectHeading(obj: ObjectHandle, angle: number): void;
+declare function SetObjectHeading(obj: ObjectHandle, angle: number): void;
+export const setObjectHeading: typeof SetObjectHeading = _G.setObjectHeading;
 
 /** Получает угол поворота объекта */
-export declare function getObjectHeading(obj: ObjectHandle): number;
+declare function GetObjectHeading(obj: ObjectHandle): number;
+export const getObjectHeading: typeof GetObjectHeading = _G.getObjectHeading;
 
 /** Прикрепляет объект к машине */
-export declare function attachObjectToCar(
+declare function AttachObjectToCar(
   obj: ObjectHandle,
   car: VehicleHandle,
   offsetX: number,
@@ -52,9 +63,10 @@ export declare function attachObjectToCar(
   rotY: number,
   rotZ: number
 ): void;
+export const attachObjectToCar: typeof AttachObjectToCar = _G.attachObjectToCar;
 
 /** Прикрепляет объект к персонажу */
-export declare function attachObjectToChar(
+declare function AttachObjectToChar(
   obj: ObjectHandle,
   ped: PedHandle,
   offsetX: number,
@@ -64,24 +76,28 @@ export declare function attachObjectToChar(
   rotY: number,
   rotZ: number
 ): void;
+export const attachObjectToChar: typeof AttachObjectToChar = _G.attachObjectToChar;
 
 /** Отсоединяет объект */
-export declare function detachObject(
+declare function DetachObject(
   obj: ObjectHandle,
   x: number,
   y: number,
   z: number,
   collision: boolean
 ): void;
+export const detachObject: typeof DetachObject = _G.detachObject;
 
 /** Устанавливает видимость объекта */
-export declare function setObjectVisible(obj: ObjectHandle, visible: boolean): void;
+declare function SetObjectVisible(obj: ObjectHandle, visible: boolean): void;
+export const setObjectVisible: typeof SetObjectVisible = _G.setObjectVisible;
 
 /** Делает объект разрушаемым */
-export declare function setObjectDynamic(obj: ObjectHandle, state: boolean): void;
+declare function SetObjectDynamic(obj: ObjectHandle, state: boolean): void;
+export const setObjectDynamic: typeof SetObjectDynamic = _G.setObjectDynamic;
 
 /** Устанавливает невосприимчивость объекта к повреждениям */
-export declare function setObjectProofs(
+declare function SetObjectProofs(
   obj: ObjectHandle,
   bullet: boolean,
   fire: boolean,
@@ -89,12 +105,8 @@ export declare function setObjectProofs(
   collision: boolean,
   melee: boolean
 ): void;
+export const setObjectProofs: typeof SetObjectProofs = _G.setObjectProofs;
 
 /** Замораживает объект */
-export declare function freezeObjectPosition(obj: ObjectHandle, freeze: boolean): void;
-
-/** Получает модель объекта */
-export declare function getObjectModel(obj: ObjectHandle): number;
-
-/** Отмечает объект как более ненужный */
-export declare function markObjectAsNoLongerNeeded(obj: ObjectHandle): void;
+declare function FreezeObjectPosition(obj: ObjectHandle, freeze: boolean): void;
+export const freezeObjectPosition: typeof FreezeObjectPosition = _G.freezeObjectPosition;

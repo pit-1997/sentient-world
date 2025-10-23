@@ -1,14 +1,22 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Проверяет существование файла */
-export declare function doesFileExist(path: string): boolean;
+declare function DoesFileExist(path: string): boolean;
+export const doesFileExist: typeof DoesFileExist = _G.doesFileExist;
 
 /** Проверяет существование директории */
-export declare function doesDirectoryExist(path: string): boolean;
+declare function DoesDirectoryExist(path: string): boolean;
+export const doesDirectoryExist: typeof DoesDirectoryExist = _G.doesDirectoryExist;
 
 /** Создает директорию */
-export declare function createDirectory(path: string): boolean;
+declare function CreateDirectory(path: string): boolean;
+export const createDirectory: typeof CreateDirectory = _G.createDirectory;
 
 /** Получает путь к рабочей директории скрипта */
-export declare function getWorkingDirectory(): string;
+declare function GetWorkingDirectory(): string;
+export const getWorkingDirectory: typeof GetWorkingDirectory = _G.getWorkingDirectory;
 
 /** Получает путь к папке игры */
-export declare function getGameDirectory(): string;
+declare function GetGameDirectory(): string;
+export const getGameDirectory: typeof GetGameDirectory = _G.getGameDirectory;

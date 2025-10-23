@@ -1,23 +1,34 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Загружает аудиопоток */
-export declare function loadAudioStream(url: string): number;
+declare function LoadAudioStream(url: string): number;
+export const loadAudioStream: typeof LoadAudioStream = _G.loadAudioStream;
 
 /** Проигрывает аудиопоток */
-export declare function playAudioStream(stream: number): void;
+declare function PlayAudioStream(stream: number): void;
+export const playAudioStream: typeof PlayAudioStream = _G.playAudioStream;
 
 /** Останавливает аудиопоток */
-export declare function stopAudioStream(stream: number): void;
+declare function StopAudioStream(stream: number): void;
+export const stopAudioStream: typeof StopAudioStream = _G.stopAudioStream;
 
 /** Получает длину аудиопотока */
-export declare function getAudioStreamLength(stream: number): number;
+declare function GetAudioStreamLength(stream: number): number;
+export const getAudioStreamLength: typeof GetAudioStreamLength = _G.getAudioStreamLength;
 
 /** Устанавливает громкость аудиопотока */
-export declare function setAudioStreamVolume(stream: number, volume: number): void;
+declare function SetAudioStreamVolume(stream: number, volume: number): void;
+export const setAudioStreamVolume: typeof SetAudioStreamVolume = _G.setAudioStreamVolume;
 
 /** Получает состояние аудиопотока */
-export declare function getAudioStreamState(stream: number): number;
+declare function GetAudioStreamState(stream: number): number;
+export const getAudioStreamState: typeof GetAudioStreamState = _G.getAudioStreamState;
 
 /** Воспроизводит звуковой эффект */
-export declare function playSoundFrontend(soundId: number): void;
+declare function PlaySoundFrontend(soundId: number): void;
+export const playSoundFrontend: typeof PlaySoundFrontend = _G.playSoundFrontend;
 
 /** Воспроизводит звук на позиции */
-export declare function addOneOffSound(x: number, y: number, z: number, soundId: number): void;
+declare function AddOneOffSound(x: number, y: number, z: number, soundId: number): void;
+export const addOneOffSound: typeof AddOneOffSound = _G.addOneOffSound;

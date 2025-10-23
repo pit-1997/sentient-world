@@ -1,41 +1,54 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Отрисовывает текст на экране */
-export declare function displayText(x: number, y: number, text: string): void;
+declare function DisplayText(x: number, y: number, text: string): void;
+export const displayText: typeof DisplayText = _G.displayText;
 
 /** Устанавливает размер шрифта */
-export declare function setTextScale(width: number, height: number): void;
+declare function SetTextScale(width: number, height: number): void;
+export const setTextScale: typeof SetTextScale = _G.setTextScale;
 
 /** Устанавливает цвет текста */
-export declare function setTextColour(r: number, g: number, b: number, a: number): void;
+declare function SetTextColour(r: number, g: number, b: number, a: number): void;
+export const setTextColour: typeof SetTextColour = _G.setTextColour;
 
 /** Устанавливает шрифт */
-export declare function setTextFont(font: number): void;
+declare function SetTextFont(font: number): void;
+export const setTextFont: typeof SetTextFont = _G.setTextFont;
 
 /** Устанавливает выравнивание текста */
-export declare function setTextJustify(justify: number): void;
+declare function SetTextJustify(justify: number): void;
+export const setTextJustify: typeof SetTextJustify = _G.setTextJustify;
 
 /** Устанавливает границу текста */
-export declare function setTextEdge(size: number, r: number, g: number, b: number, a: number): void;
+declare function SetTextEdge(size: number, r: number, g: number, b: number, a: number): void;
+export const setTextEdge: typeof SetTextEdge = _G.setTextEdge;
 
 /** Устанавливает пропорциональность текста */
-export declare function setTextProportional(state: boolean): void;
+declare function SetTextProportional(state: boolean): void;
+export const setTextProportional: typeof SetTextProportional = _G.setTextProportional;
 
 /** Устанавливает центрирование текста */
-export declare function setTextCentre(state: boolean): void;
+declare function SetTextCentre(state: boolean): void;
+export const setTextCentre: typeof SetTextCentre = _G.setTextCentre;
 
 /** Устанавливает перенос текста */
-export declare function setTextWrapx(x: number): void;
+declare function SetTextWrapx(x: number): void;
+export const setTextWrapx: typeof SetTextWrapx = _G.setTextWrapx;
 
 /** Устанавливает тень текста */
-export declare function setTextDropshadow(
+declare function SetTextDropshadow(
   size: number,
   r: number,
   g: number,
   b: number,
   a: number
 ): void;
+export const setTextDropshadow: typeof SetTextDropshadow = _G.setTextDropshadow;
 
 /** Рисует прямоугольник на экране */
-export declare function drawRect(
+declare function DrawRect(
   x: number,
   y: number,
   width: number,
@@ -45,9 +58,10 @@ export declare function drawRect(
   b: number,
   a: number
 ): void;
+export const drawRect: typeof DrawRect = _G.drawRect;
 
 /** Рисует текстуру */
-export declare function drawTexture(
+declare function DrawTexture(
   texture: number,
   x: number,
   y: number,
@@ -59,19 +73,23 @@ export declare function drawTexture(
   b: number,
   a: number
 ): void;
+export const drawTexture: typeof DrawTexture = _G.drawTexture;
 
 /** Получает разрешение экрана */
-export declare function getScreenResolution(): LuaMultiReturn<[number, number]>;
+declare function GetScreenResolution(): LuaMultiReturn<[number, number]>;
+export const getScreenResolution: typeof GetScreenResolution = _G.getScreenResolution;
 
 /** Конвертирует 3D координаты в экранные */
-export declare function convert3dCoordsToScreen(
+declare function Convert3dCoordsToScreen(
   x: number,
   y: number,
   z: number
 ): LuaMultiReturn<[boolean, number, number]>;
+export const convert3dCoordsToScreen: typeof Convert3dCoordsToScreen = _G.convert3dCoordsToScreen;
 
 /** Конвертирует экранные координаты в 3D */
-export declare function convertScreenCoordsTo3d(
+declare function ConvertScreenCoordsTo3d(
   screenX: number,
   screenY: number
 ): LuaMultiReturn<[number, number, number]>;
+export const convertScreenCoordsTo3d: typeof ConvertScreenCoordsTo3d = _G.convertScreenCoordsTo3d;

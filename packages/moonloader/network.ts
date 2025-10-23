@@ -1,23 +1,34 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Получает никнейм игрока по ID */
-export declare function getPlayerName(playerId: number): string;
+declare function GetPlayerName(playerId: number): string;
+export const getPlayerName: typeof GetPlayerName = _G.getPlayerName;
 
 /** Получает пинг игрока */
-export declare function getPlayerPing(playerId: number): number;
+declare function GetPlayerPing(playerId: number): number;
+export const getPlayerPing: typeof GetPlayerPing = _G.getPlayerPing;
 
 /** Получает IP и порт сервера */
-export declare function getServerAddress(): LuaMultiReturn<[string, number]>;
+declare function GetServerAddress(): LuaMultiReturn<[string, number]>;
+export const getServerAddress: typeof GetServerAddress = _G.getServerAddress;
 
 /** Отправляет команду на сервер */
-export declare function sendServerCommand(command: string): void;
+declare function SendServerCommand(command: string): void;
+export const sendServerCommand: typeof SendServerCommand = _G.sendServerCommand;
 
 /** Отправляет сообщение в чат */
-export declare function sendChat(message: string): void;
+declare function SendChat(message: string): void;
+export const sendChat: typeof SendChat = _G.sendChat;
 
 /** Проверяет подключение к серверу */
-export declare function isPlayerConnected(playerId: number): boolean;
+declare function IsPlayerConnected(playerId: number): boolean;
+export const isPlayerConnected: typeof IsPlayerConnected = _G.isPlayerConnected;
 
 /** Получает счет игрока */
-export declare function getPlayerScore(playerId: number): number;
+declare function GetPlayerScore(playerId: number): number;
+export const getPlayerScore: typeof GetPlayerScore = _G.getPlayerScore;
 
 /** Проверяет, пауза ли у игрока */
-export declare function isPlayerPaused(playerId: number): boolean;
+declare function IsPlayerPaused(playerId: number): boolean;
+export const isPlayerPaused: typeof IsPlayerPaused = _G.isPlayerPaused;

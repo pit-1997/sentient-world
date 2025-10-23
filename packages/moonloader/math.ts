@@ -1,8 +1,14 @@
+// Декларируем глобальный объект Lua
+declare const _G: any;
+
 /** Получает случайное число */
-export declare function generateRandomFloatInRange(min: number, max: number): number;
+declare function GenerateRandomFloatInRange(min: number, max: number): number;
+export const generateRandomFloatInRange: typeof GenerateRandomFloatInRange = _G.generateRandomFloatInRange;
 
 /** Получает случайное целое число */
-export declare function generateRandomIntInRange(min: number, max: number): number;
+declare function GenerateRandomIntInRange(min: number, max: number): number;
+export const generateRandomIntInRange: typeof GenerateRandomIntInRange = _G.generateRandomIntInRange;
 
 /** Ограничивает угол от 0 до 360 */
-export declare function limitAngle(angle: number): number;
+declare function LimitAngle(angle: number): number;
+export const limitAngle: typeof LimitAngle = _G.limitAngle;
