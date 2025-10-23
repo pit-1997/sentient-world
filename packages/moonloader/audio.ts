@@ -1,34 +1,41 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс аудио-функций MoonLoader
+ */
+interface AudioGlobal {
+  /** Загружает аудиопоток */
+  loadAudioStream(this: void, url: string): number;
 
-/** Загружает аудиопоток */
-declare function LoadAudioStream(url: string): number;
-export const loadAudioStream: typeof LoadAudioStream = _G.loadAudioStream;
+  /** Проигрывает аудиопоток */
+  playAudioStream(this: void, stream: number): void;
 
-/** Проигрывает аудиопоток */
-declare function PlayAudioStream(stream: number): void;
-export const playAudioStream: typeof PlayAudioStream = _G.playAudioStream;
+  /** Останавливает аудиопоток */
+  stopAudioStream(this: void, stream: number): void;
 
-/** Останавливает аудиопоток */
-declare function StopAudioStream(stream: number): void;
-export const stopAudioStream: typeof StopAudioStream = _G.stopAudioStream;
+  /** Получает длину аудиопотока */
+  getAudioStreamLength(this: void, stream: number): number;
 
-/** Получает длину аудиопотока */
-declare function GetAudioStreamLength(stream: number): number;
-export const getAudioStreamLength: typeof GetAudioStreamLength = _G.getAudioStreamLength;
+  /** Устанавливает громкость аудиопотока */
+  setAudioStreamVolume(this: void, stream: number, volume: number): void;
 
-/** Устанавливает громкость аудиопотока */
-declare function SetAudioStreamVolume(stream: number, volume: number): void;
-export const setAudioStreamVolume: typeof SetAudioStreamVolume = _G.setAudioStreamVolume;
+  /** Получает состояние аудиопотока */
+  getAudioStreamState(this: void, stream: number): number;
 
-/** Получает состояние аудиопотока */
-declare function GetAudioStreamState(stream: number): number;
-export const getAudioStreamState: typeof GetAudioStreamState = _G.getAudioStreamState;
+  /** Воспроизводит звуковой эффект */
+  playSoundFrontend(this: void, soundId: number): void;
 
-/** Воспроизводит звуковой эффект */
-declare function PlaySoundFrontend(soundId: number): void;
-export const playSoundFrontend: typeof PlaySoundFrontend = _G.playSoundFrontend;
+  /** Воспроизводит звук на позиции */
+  addOneOffSound(this: void, x: number, y: number, z: number, soundId: number): void;
+}
 
-/** Воспроизводит звук на позиции */
-declare function AddOneOffSound(x: number, y: number, z: number, soundId: number): void;
-export const addOneOffSound: typeof AddOneOffSound = _G.addOneOffSound;
+declare const _G: AudioGlobal;
+
+export const {
+  loadAudioStream,
+  playAudioStream,
+  stopAudioStream,
+  getAudioStreamLength,
+  setAudioStreamVolume,
+  getAudioStreamState,
+  playSoundFrontend,
+  addOneOffSound,
+} = _G;

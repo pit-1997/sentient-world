@@ -1,14 +1,17 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс математических функций MoonLoader
+ */
+interface MathGlobal {
+  /** Получает случайное число */
+  generateRandomFloatInRange(this: void, min: number, max: number): number;
 
-/** Получает случайное число */
-declare function GenerateRandomFloatInRange(min: number, max: number): number;
-export const generateRandomFloatInRange: typeof GenerateRandomFloatInRange = _G.generateRandomFloatInRange;
+  /** Получает случайное целое число */
+  generateRandomIntInRange(this: void, min: number, max: number): number;
 
-/** Получает случайное целое число */
-declare function GenerateRandomIntInRange(min: number, max: number): number;
-export const generateRandomIntInRange: typeof GenerateRandomIntInRange = _G.generateRandomIntInRange;
+  /** Ограничивает угол от 0 до 360 */
+  limitAngle(this: void, angle: number): number;
+}
 
-/** Ограничивает угол от 0 до 360 */
-declare function LimitAngle(angle: number): number;
-export const limitAngle: typeof LimitAngle = _G.limitAngle;
+declare const _G: MathGlobal;
+
+export const { generateRandomFloatInRange, generateRandomIntInRange, limitAngle } = _G;

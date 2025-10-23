@@ -1,34 +1,41 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс сетевых функций MoonLoader
+ */
+interface NetworkGlobal {
+  /** Получает никнейм игрока по ID */
+  getPlayerName(this: void, playerId: number): string;
 
-/** Получает никнейм игрока по ID */
-declare function GetPlayerName(playerId: number): string;
-export const getPlayerName: typeof GetPlayerName = _G.getPlayerName;
+  /** Получает пинг игрока */
+  getPlayerPing(this: void, playerId: number): number;
 
-/** Получает пинг игрока */
-declare function GetPlayerPing(playerId: number): number;
-export const getPlayerPing: typeof GetPlayerPing = _G.getPlayerPing;
+  /** Получает IP и порт сервера */
+  getServerAddress(this: void): LuaMultiReturn<[string, number]>;
 
-/** Получает IP и порт сервера */
-declare function GetServerAddress(): LuaMultiReturn<[string, number]>;
-export const getServerAddress: typeof GetServerAddress = _G.getServerAddress;
+  /** Отправляет команду на сервер */
+  sendServerCommand(this: void, command: string): void;
 
-/** Отправляет команду на сервер */
-declare function SendServerCommand(command: string): void;
-export const sendServerCommand: typeof SendServerCommand = _G.sendServerCommand;
+  /** Отправляет сообщение в чат */
+  sendChat(this: void, message: string): void;
 
-/** Отправляет сообщение в чат */
-declare function SendChat(message: string): void;
-export const sendChat: typeof SendChat = _G.sendChat;
+  /** Проверяет подключение к серверу */
+  isPlayerConnected(this: void, playerId: number): boolean;
 
-/** Проверяет подключение к серверу */
-declare function IsPlayerConnected(playerId: number): boolean;
-export const isPlayerConnected: typeof IsPlayerConnected = _G.isPlayerConnected;
+  /** Получает счет игрока */
+  getPlayerScore(this: void, playerId: number): number;
 
-/** Получает счет игрока */
-declare function GetPlayerScore(playerId: number): number;
-export const getPlayerScore: typeof GetPlayerScore = _G.getPlayerScore;
+  /** Проверяет, пауза ли у игрока */
+  isPlayerPaused(this: void, playerId: number): boolean;
+}
 
-/** Проверяет, пауза ли у игрока */
-declare function IsPlayerPaused(playerId: number): boolean;
-export const isPlayerPaused: typeof IsPlayerPaused = _G.isPlayerPaused;
+declare const _G: NetworkGlobal;
+
+export const {
+  getPlayerName,
+  getPlayerPing,
+  getServerAddress,
+  sendServerCommand,
+  sendChat,
+  isPlayerConnected,
+  getPlayerScore,
+  isPlayerPaused,
+} = _G;

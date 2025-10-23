@@ -1,89 +1,97 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
-
 export type VKey = (typeof import('vkeys'))[keyof typeof import('vkeys')];
 
-/** Выводит текст в файл moonloader.log и вызывает событие onScriptMessage */
-declare function Print(text: string): void;
-export const print: typeof Print = _G.print;
+/**
+ * Интерфейс системных функций MoonLoader
+ */
+interface SystemGlobal {
+  /** Выводит текст в файл moonloader.log и вызывает событие onScriptMessage */
+  print(this: void, text: string): void;
 
-/** Приостанавливает выполнение скрипта */
-declare function Wait(timeInMs: number): void;
-export const wait: typeof Wait = _G.wait;
+  /** Приостанавливает выполнение скрипта */
+  wait(this: void, timeInMs: number): void;
 
-/** Выводит текст в нижней части экрана, минуя очередь */
-declare function PrintStringNow(text: string, timeInMs: number): void;
-export const printStringNow: typeof PrintStringNow = _G.printStringNow;
+  /** Выводит текст в нижней части экрана, минуя очередь */
+  printStringNow(this: void, text: string, timeInMs: number): void;
 
-/** Выводит текст с префиксом в нижней части экрана */
-declare function PrintString(text: string, timeInMs: number): void;
-export const printString: typeof PrintString = _G.printString;
+  /** Выводит текст с префиксом в нижней части экрана */
+  printString(this: void, text: string, timeInMs: number): void;
 
-/** Выводит отформатированную строку с префиксом */
-declare function PrintStringWithLiteralStringNow(
-  prefix: string,
-  text: string,
-  timeInMs: number,
-  flag: number
-): void;
-export const printStringWithLiteralStringNow: typeof PrintStringWithLiteralStringNow = _G.printStringWithLiteralStringNow;
+  /** Выводит отформатированную строку с префиксом */
+  printStringWithLiteralStringNow(
+    this: void,
+    prefix: string,
+    text: string,
+    timeInMs: number,
+    flag: number
+  ): void;
 
-/** Выводит большой текст на экран */
-declare function PrintBig(text: string, timeInMs: number, style: number): void;
-export const printBig: typeof PrintBig = _G.printBig;
+  /** Выводит большой текст на экран */
+  printBig(this: void, text: string, timeInMs: number, style: number): void;
 
-/** Очищает очередь всех текстов */
-declare function ClearPrints(): void;
-export const clearPrints: typeof ClearPrints = _G.clearPrints;
+  /** Очищает очередь всех текстов */
+  clearPrints(this: void): void;
 
-/** Проверяет, отображается ли сейчас текст-подсказка */
-declare function IsHelpMessageBeingDisplayed(): boolean;
-export const isHelpMessageBeingDisplayed: typeof IsHelpMessageBeingDisplayed = _G.isHelpMessageBeingDisplayed;
+  /** Проверяет, отображается ли сейчас текст-подсказка */
+  isHelpMessageBeingDisplayed(this: void): boolean;
 
-/** Проверяет, нажата ли клавиша */
-declare function IsKeyPressed(key: VKey): boolean;
-export const isKeyPressed: typeof IsKeyPressed = _G.isKeyPressed;
+  /** Проверяет, нажата ли клавиша */
+  isKeyPressed(this: void, key: VKey): boolean;
 
-/** Проверяет, была ли клавиша нажата */
-declare function WasKeyPressed(key: VKey): boolean;
-export const wasKeyPressed: typeof WasKeyPressed = _G.wasKeyPressed;
+  /** Проверяет, была ли клавиша нажата */
+  wasKeyPressed(this: void, key: VKey): boolean;
 
-/** Получает имя текущего скрипта */
-declare function ThisScript(): string;
-export const thisScript: typeof ThisScript = _G.thisScript;
+  /** Получает имя текущего скрипта */
+  thisScript(this: void): string;
 
-/** Выгружает скрипт */
-declare function UnloadScript(scriptName: string): void;
-export const unloadScript: typeof UnloadScript = _G.unloadScript;
+  /** Выгружает скрипт */
+  unloadScript(this: void, scriptName: string): void;
 
-/** Перезагружает скрипт */
-declare function ReloadScript(scriptName: string): void;
-export const reloadScript: typeof ReloadScript = _G.reloadScript;
+  /** Перезагружает скрипт */
+  reloadScript(this: void, scriptName: string): void;
 
-/** Получает список всех скриптов */
-declare function GetAllScripts(): string[];
-export const getAllScripts: typeof GetAllScripts = _G.getAllScripts;
+  /** Получает список всех скриптов */
+  getAllScripts(this: void): string[];
 
-/** Проверяет загружен ли скрипт */
-declare function IsScriptLoaded(scriptName: string): boolean;
-export const isScriptLoaded: typeof IsScriptLoaded = _G.isScriptLoaded;
+  /** Проверяет загружен ли скрипт */
+  isScriptLoaded(this: void, scriptName: string): boolean;
 
-/** Получает FPS */
-declare function GetFramerate(): number;
-export const getFramerate: typeof GetFramerate = _G.getFramerate;
+  /** Получает FPS */
+  getFramerate(this: void): number;
 
-/** Проверяет, стоит ли игра на паузе */
-declare function IsGamePaused(): boolean;
-export const isGamePaused: typeof IsGamePaused = _G.isGamePaused;
+  /** Проверяет, стоит ли игра на паузе */
+  isGamePaused(this: void): boolean;
 
-/** Получает версию игры */
-declare function GetGameVersion(): string;
-export const getGameVersion: typeof GetGameVersion = _G.getGameVersion;
+  /** Получает версию игры */
+  getGameVersion(this: void): string;
 
-/** Получает указатель на игрока */
-declare function GetPlayerPointer(): number;
-export const getPlayerPointer: typeof GetPlayerPointer = _G.getPlayerPointer;
+  /** Получает указатель на игрока */
+  getPlayerPointer(this: void): number;
 
-/** Проверяет, в игре ли игрок */
-declare function IsPlayerPlaying(): boolean;
-export const isPlayerPlaying: typeof IsPlayerPlaying = _G.isPlayerPlaying;
+  /** Проверяет, в игре ли игрок */
+  isPlayerPlaying(this: void): boolean;
+}
+
+declare const _G: SystemGlobal;
+
+export const {
+  print,
+  wait,
+  printStringNow,
+  printString,
+  printStringWithLiteralStringNow,
+  printBig,
+  clearPrints,
+  isHelpMessageBeingDisplayed,
+  isKeyPressed,
+  wasKeyPressed,
+  thisScript,
+  unloadScript,
+  reloadScript,
+  getAllScripts,
+  isScriptLoaded,
+  getFramerate,
+  isGamePaused,
+  getGameVersion,
+  getPlayerPointer,
+  isPlayerPlaying,
+} = _G;

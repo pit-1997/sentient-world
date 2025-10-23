@@ -1,6 +1,14 @@
 import type { PedHandle } from './handles';
 
-export declare const PLAYER_PED: PedHandle;
+/**
+ * Интерфейс констант MoonLoader
+ */
+interface ConstantsGlobal {
+  /** Главный персонаж игрока */
+  readonly PLAYER_PED: PedHandle;
+}
+
+declare const _G: ConstantsGlobal;
 
 /** Типы пешеходов */
 export enum PedType {
@@ -104,3 +112,5 @@ export enum VehicleModel {
   SENTINEL = 405,
   // ... добавьте остальные модели по необходимости
 }
+
+export const { PLAYER_PED } = _G;

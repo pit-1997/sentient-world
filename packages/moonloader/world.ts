@@ -1,96 +1,99 @@
 import type { FireHandle } from './handles';
 
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс функций для работы с миром в MoonLoader
+ */
+interface WorldGlobal {
+  /** Устанавливает погоду */
+  setWeather(this: void, weatherId: number): void;
 
-/** Устанавливает погоду */
-declare function SetWeather(weatherId: number): void;
-export const setWeather: typeof SetWeather = _G.setWeather;
+  /** Получает текущую погоду */
+  getCurrentWeather(this: void): number;
 
-/** Получает текущую погоду */
-declare function GetCurrentWeather(): number;
-export const getCurrentWeather: typeof GetCurrentWeather = _G.getCurrentWeather;
+  /** Форсирует погоду */
+  forceWeather(this: void, weatherId: number): void;
 
-/** Форсирует погоду */
-declare function ForceWeather(weatherId: number): void;
-export const forceWeather: typeof ForceWeather = _G.forceWeather;
+  /** Форсирует погоду сейчас */
+  forceWeatherNow(this: void, weatherId: number): void;
 
-/** Форсирует погоду сейчас */
-declare function ForceWeatherNow(weatherId: number): void;
-export const forceWeatherNow: typeof ForceWeatherNow = _G.forceWeatherNow;
+  /** Выключает погоду */
+  releaseWeather(this: void): void;
 
-/** Выключает погоду */
-declare function ReleaseWeather(): void;
-export const releaseWeather: typeof ReleaseWeather = _G.releaseWeather;
+  /** Устанавливает время суток */
+  setTimeOfDay(this: void, hours: number, minutes: number): void;
 
-/** Устанавливает время суток */
-declare function SetTimeOfDay(hours: number, minutes: number): void;
-export const setTimeOfDay: typeof SetTimeOfDay = _G.setTimeOfDay;
+  /** Получает время суток */
+  getTimeOfDay(this: void): LuaMultiReturn<[number, number]>;
 
-/** Получает время суток */
-declare function GetTimeOfDay(): LuaMultiReturn<[number, number]>;
-export const getTimeOfDay: typeof GetTimeOfDay = _G.getTimeOfDay;
+  /** Получает минуты до следующего часа */
+  getMinutesToTimeOfDay(this: void, hours: number, minutes: number): number;
 
-/** Получает минуты до следующего часа */
-declare function GetMinutesToTimeOfDay(hours: number, minutes: number): number;
-export const getMinutesToTimeOfDay: typeof GetMinutesToTimeOfDay = _G.getMinutesToTimeOfDay;
+  /** Сохраняет время суток */
+  storeClockState(this: void): void;
 
-/** Сохраняет время суток */
-declare function StoreClockState(): void;
-export const storeClockState: typeof StoreClockState = _G.storeClockState;
+  /** Восстанавливает время суток */
+  restoreClockState(this: void): void;
 
-/** Восстанавливает время суток */
-declare function RestoreClockState(): void;
-export const restoreClockState: typeof RestoreClockState = _G.restoreClockState;
+  /** Устанавливает гравитацию */
+  setGravity(this: void, gravity: number): void;
 
-/** Устанавливает гравитацию */
-declare function SetGravity(gravity: number): void;
-export const setGravity: typeof SetGravity = _G.setGravity;
+  /** Устанавливает скорость игры */
+  setTimeScale(this: void, scale: number): void;
 
-/** Устанавливает скорость игры */
-declare function SetTimeScale(scale: number): void;
-export const setTimeScale: typeof SetTimeScale = _G.setTimeScale;
+  /** Получает расстояние между координатами 2D */
+  getDistanceBetweenCoords2d(this: void, x1: number, y1: number, x2: number, y2: number): number;
 
-/** Получает расстояние между координатами 2D */
-declare function GetDistanceBetweenCoords2d(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number
-): number;
-export const getDistanceBetweenCoords2d: typeof GetDistanceBetweenCoords2d = _G.getDistanceBetweenCoords2d;
+  /** Получает расстояние между координатами 3D */
+  getDistanceBetweenCoords3d(
+    this: void,
+    x1: number,
+    y1: number,
+    z1: number,
+    x2: number,
+    y2: number,
+    z2: number
+  ): number;
 
-/** Получает расстояние между координатами 3D */
-declare function GetDistanceBetweenCoords3d(
-  x1: number,
-  y1: number,
-  z1: number,
-  x2: number,
-  y2: number,
-  z2: number
-): number;
-export const getDistanceBetweenCoords3d: typeof GetDistanceBetweenCoords3d = _G.getDistanceBetweenCoords3d;
+  /** Получает угол между координатами */
+  getHeadingFromVector2d(this: void, x: number, y: number): number;
 
-/** Получает угол между координатами */
-declare function GetHeadingFromVector2d(x: number, y: number): number;
-export const getHeadingFromVector2d: typeof GetHeadingFromVector2d = _G.getHeadingFromVector2d;
+  /** Находит наземную Z-координату для точки */
+  getGroundZFor3dCoord(this: void, x: number, y: number, z: number): number;
 
-/** Находит наземную Z-координату для точки */
-declare function GetGroundZFor3dCoord(x: number, y: number, z: number): number;
-export const getGroundZFor3dCoord: typeof GetGroundZFor3dCoord = _G.getGroundZFor3dCoord;
+  /** Создает взрыв */
+  addExplosion(this: void, x: number, y: number, z: number, type: number): void;
 
-/** Создает взрыв */
-declare function AddExplosion(x: number, y: number, z: number, type: number): void;
-export const addExplosion: typeof AddExplosion = _G.addExplosion;
+  /** Создает огонь */
+  startScriptFire(this: void, x: number, y: number, z: number): FireHandle;
 
-/** Создает огонь */
-declare function StartScriptFire(x: number, y: number, z: number): FireHandle;
-export const startScriptFire: typeof StartScriptFire = _G.startScriptFire;
+  /** Удаляет огонь */
+  removeScriptFire(this: void, fire: FireHandle): void;
 
-/** Удаляет огонь */
-declare function RemoveScriptFire(fire: FireHandle): void;
-export const removeScriptFire: typeof RemoveScriptFire = _G.removeScriptFire;
+  /** Проверяет существование огня */
+  isScriptFireExtinguished(this: void, fire: FireHandle): boolean;
+}
 
-/** Проверяет существование огня */
-declare function IsScriptFireExtinguished(fire: FireHandle): boolean;
-export const isScriptFireExtinguished: typeof IsScriptFireExtinguished = _G.isScriptFireExtinguished;
+declare const _G: WorldGlobal;
+
+export const {
+  setWeather,
+  getCurrentWeather,
+  forceWeather,
+  forceWeatherNow,
+  releaseWeather,
+  setTimeOfDay,
+  getTimeOfDay,
+  getMinutesToTimeOfDay,
+  storeClockState,
+  restoreClockState,
+  setGravity,
+  setTimeScale,
+  getDistanceBetweenCoords2d,
+  getDistanceBetweenCoords3d,
+  getHeadingFromVector2d,
+  getGroundZFor3dCoord,
+  addExplosion,
+  startScriptFire,
+  removeScriptFire,
+  isScriptFireExtinguished,
+} = _G;

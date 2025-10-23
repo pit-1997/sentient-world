@@ -1,31 +1,31 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс функций для работы с диалогами в MoonLoader
+ */
+interface DialogsGlobal {
+  /** Проверяет, активен ли диалог */
+  isDialogActive(this: void): boolean;
 
-/** Проверяет, активен ли диалог */
-declare function IsDialogActive(): boolean;
-export const isDialogActive: typeof IsDialogActive = _G.isDialogActive;
+  /** Показывает диалоговое окно */
+  showDialog(
+    this: void,
+    dialogId: number,
+    style: number,
+    title: string,
+    button1: string,
+    button2: string,
+    text: string
+  ): void;
 
-/** Показывает диалоговое окно */
-declare function ShowDialog(
-  dialogId: number,
-  style: number,
-  title: string,
-  button1: string,
-  button2: string,
-  text: string
-): void;
-export const showDialog: typeof ShowDialog = _G.showDialog;
+  /** Обрабатывает ответ диалога */
+  processDialogResponse(this: void): LuaMultiReturn<[boolean, number, number, number, string]>;
 
-/** Обрабатывает ответ диалога */
-declare function ProcessDialogResponse(): LuaMultiReturn<
-  [boolean, number, number, number, string]
->;
-export const processDialogResponse: typeof ProcessDialogResponse = _G.processDialogResponse;
+  /** Показывает меню */
+  showTextdraw(this: void, textdrawId: number): void;
 
-/** Показывает меню */
-declare function ShowTextdraw(textdrawId: number): void;
-export const showTextdraw: typeof ShowTextdraw = _G.showTextdraw;
+  /** Скрывает меню */
+  hideTextdraw(this: void, textdrawId: number): void;
+}
 
-/** Скрывает меню */
-declare function HideTextdraw(textdrawId: number): void;
-export const hideTextdraw: typeof HideTextdraw = _G.hideTextdraw;
+declare const _G: DialogsGlobal;
+
+export const { isDialogActive, showDialog, processDialogResponse, showTextdraw, hideTextdraw } = _G;

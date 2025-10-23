@@ -1,6 +1,6 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
-
+/**
+ * Интерфейс событий MoonLoader
+ */
 export type Events = {
   /** Вызывается при завершении скрипта */
   onScriptTerminate: () => void;
@@ -44,8 +44,18 @@ export type EventCallback<Event extends keyof Events> = (
   ...args: Parameters<Events[Event]>
 ) => ReturnType<Events[Event]>;
 
-declare function AddEventHandler<Event extends keyof Events>(
-  event: Event,
-  callback: EventCallback<Event>
-): void;
-export const addEventHandler: typeof AddEventHandler = _G.addEventHandler;
+/**
+ * Интерфейс функций для работы с событиями в MoonLoader
+ */
+interface EventsGlobal {
+  /** Добавляет обработчик события */
+  addEventHandler<Event extends keyof Events>(
+    this: void,
+    event: Event,
+    callback: EventCallback<Event>
+  ): void;
+}
+
+declare const _G: EventsGlobal;
+
+export const { addEventHandler } = _G;

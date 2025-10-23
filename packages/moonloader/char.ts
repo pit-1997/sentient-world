@@ -1,302 +1,310 @@
 import type { PedHandle, VehicleHandle } from './handles';
 
-// Декларируем глобальный объект Lua
-declare const _G: any;
-
-/** Создает персонажа в заданных координатах с указанной моделью и поведением пешехода */
-declare function CreateChar(
-  pedType: number,
-  modelId: number,
-  x: number,
-  y: number,
-  z: number
-): PedHandle;
-export const createChar: typeof CreateChar = _G.createChar;
-
-/** Создает персонажа в транспорте */
-declare function CreateCharInsideCar(
-  car: VehicleHandle,
-  pedType: number,
-  modelId: number
-): PedHandle;
-export const createCharInsideCar: typeof CreateCharInsideCar = _G.createCharInsideCar;
-
-/** Создает персонажа как пассажира */
-declare function CreateCharAsPassenger(
-  car: VehicleHandle,
-  pedType: number,
-  modelId: number,
-  seatId: number
-): PedHandle;
-export const createCharAsPassenger: typeof CreateCharAsPassenger = _G.createCharAsPassenger;
-
-/** Удаляет персонажа из игры */
-declare function DeleteChar(ped: PedHandle): void;
-export const deleteChar: typeof DeleteChar = _G.deleteChar;
-
-/** Проверяет существование персонажа */
-declare function DoesCharExist(ped: PedHandle): boolean;
-export const doesCharExist: typeof DoesCharExist = _G.doesCharExist;
-
-/** Устанавливает угол поворота персонажа */
-declare function SetCharHeading(ped: PedHandle, angle: number): void;
-export const setCharHeading: typeof SetCharHeading = _G.setCharHeading;
-
-/** Получает угол поворота персонажа */
-declare function GetCharHeading(ped: PedHandle): number;
-export const getCharHeading: typeof GetCharHeading = _G.getCharHeading;
-
-/** Получает координаты персонажа */
-declare function GetCharCoordinates(
-  ped: PedHandle
-): LuaMultiReturn<[number, number, number]>;
-export const getCharCoordinates: typeof GetCharCoordinates = _G.getCharCoordinates;
-
-/** Устанавливает координаты персонажа */
-declare function SetCharCoordinates(ped: PedHandle, x: number, y: number, z: number): void;
-export const setCharCoordinates: typeof SetCharCoordinates = _G.setCharCoordinates;
-
-/** Указывает игре, что персонажа нельзя удалять */
-declare function DontRemoveChar(ped: PedHandle): void;
-export const dontRemoveChar: typeof DontRemoveChar = _G.dontRemoveChar;
-
-/** Устанавливает персонажу колизию */
-declare function SetLoadCollisionForCharFlag(ped: PedHandle, enable: boolean): void;
-export const setLoadCollisionForCharFlag: typeof SetLoadCollisionForCharFlag = _G.setLoadCollisionForCharFlag;
-
-/** Проверяет смерть персонажа */
-declare function IsCharDead(ped: PedHandle): boolean;
-export const isCharDead: typeof IsCharDead = _G.isCharDead;
-
-/** Проверяет, жив ли персонаж */
-declare function IsCharPlayingAnim(ped: PedHandle, animName: string): boolean;
-export const isCharPlayingAnim: typeof IsCharPlayingAnim = _G.isCharPlayingAnim;
-
-/** Устанавливает здоровье персонажу */
-declare function SetCharHealth(ped: PedHandle, health: number): void;
-export const setCharHealth: typeof SetCharHealth = _G.setCharHealth;
-
 /**
- * Устанавливает персонажу колизию
- * @param ped - персонаж, для которого нужно установить колизию
- * @param collision - true для включения колизии, false для отключения
+ * Интерфейс функций для работы с персонажами в MoonLoader
  */
-declare function SetCharCollision(ped: PedHandle, collision: boolean): void;
-export const setCharCollision: typeof SetCharCollision = _G.setCharCollision;
+interface CharGlobal {
+  /** Создает персонажа в заданных координатах с указанной моделью и поведением пешехода */
+  createChar(
+    this: void,
+    pedType: number,
+    modelId: number,
+    x: number,
+    y: number,
+    z: number
+  ): PedHandle;
 
-/**
- * Делает персонажа неуязвимым для атак других NPC.
- * Персонаж не будет автоматически выбираться в качестве цели
- * @param ped - персонаж, которого нельзя атаковать
- * @param untargetable - true чтобы сделать персонажа неуязвимым для таргетинга
- */
-declare function SetCharNeverTargetted(ped: PedHandle, untargetable: boolean): void;
-export const setCharNeverTargetted: typeof SetCharNeverTargetted = _G.setCharNeverTargetted;
+  /** Создает персонажа в транспорте */
+  createCharInsideCar(this: void, car: VehicleHandle, pedType: number, modelId: number): PedHandle;
 
-/** Получает здоровье персонажа */
-declare function GetCharHealth(ped: PedHandle): number;
-export const getCharHealth: typeof GetCharHealth = _G.getCharHealth;
+  /** Создает персонажа как пассажира */
+  createCharAsPassenger(
+    this: void,
+    car: VehicleHandle,
+    pedType: number,
+    modelId: number,
+    seatId: number
+  ): PedHandle;
 
-/** Устанавливает броню персонажу */
-declare function SetCharArmour(ped: PedHandle, armour: number): void;
-export const setCharArmour: typeof SetCharArmour = _G.setCharArmour;
+  /** Удаляет персонажа из игры */
+  deleteChar(this: void, ped: PedHandle): void;
 
-/** Получает броню персонажа */
-declare function GetCharArmour(ped: PedHandle): number;
-export const getCharArmour: typeof GetCharArmour = _G.getCharArmour;
+  /** Проверяет существование персонажа */
+  doesCharExist(this: void, ped: PedHandle): boolean;
 
-/** Дает персонажу оружие */
-declare function GiveWeaponToChar(ped: PedHandle, weaponId: number, ammo: number): void;
-export const giveWeaponToChar: typeof GiveWeaponToChar = _G.giveWeaponToChar;
+  /** Устанавливает угол поворота персонажа */
+  setCharHeading(this: void, ped: PedHandle, angle: number): void;
 
-/** Удаляет оружие у персонажа */
-declare function RemoveWeaponFromChar(ped: PedHandle, weaponId: number): void;
-export const removeWeaponFromChar: typeof RemoveWeaponFromChar = _G.removeWeaponFromChar;
+  /** Получает угол поворота персонажа */
+  getCharHeading(this: void, ped: PedHandle): number;
 
-/** Устанавливает текущее оружие персонажа */
-declare function SetCurrentCharWeapon(ped: PedHandle, weaponId: number): void;
-export const setCurrentCharWeapon: typeof SetCurrentCharWeapon = _G.setCurrentCharWeapon;
+  /** Получает координаты персонажа */
+  getCharCoordinates(this: void, ped: PedHandle): LuaMultiReturn<[number, number, number]>;
 
-/** Получает текущее оружие персонажа */
-declare function GetCurrentCharWeapon(ped: PedHandle): number;
-export const getCurrentCharWeapon: typeof GetCurrentCharWeapon = _G.getCurrentCharWeapon;
+  /** Устанавливает координаты персонажа */
+  setCharCoordinates(this: void, ped: PedHandle, x: number, y: number, z: number): void;
 
-/** Устанавливает точность стрельбы персонажа */
-declare function SetCharAccuracy(ped: PedHandle, accuracy: number): void;
-export const setCharAccuracy: typeof SetCharAccuracy = _G.setCharAccuracy;
+  /** Указывает игре, что персонажа нельзя удалять */
+  dontRemoveChar(this: void, ped: PedHandle): void;
 
-/** Заставляет персонажа сесть в машину в качестве водителя */
-declare function TaskEnterCarAsDriver(
-  ped: PedHandle,
-  car: VehicleHandle,
-  timeout: number
-): void;
-export const taskEnterCarAsDriver: typeof TaskEnterCarAsDriver = _G.taskEnterCarAsDriver;
+  /** Устанавливает персонажу колизию */
+  setLoadCollisionForCharFlag(this: void, ped: PedHandle, enable: boolean): void;
 
-/** Заставляет персонажа сесть в машину в качестве пассажира */
-declare function TaskEnterCarAsPassenger(
-  ped: PedHandle,
-  car: VehicleHandle,
-  timeout: number,
-  seatId: number
-): void;
-export const taskEnterCarAsPassenger: typeof TaskEnterCarAsPassenger = _G.taskEnterCarAsPassenger;
+  /** Проверяет смерть персонажа */
+  isCharDead(this: void, ped: PedHandle): boolean;
 
-/** Заставляет персонажа покинуть транспорт */
-declare function TaskLeaveAnyCar(ped: PedHandle): void;
-export const taskLeaveAnyCar: typeof TaskLeaveAnyCar = _G.taskLeaveAnyCar;
+  /** Проверяет, жив ли персонаж */
+  isCharPlayingAnim(this: void, ped: PedHandle, animName: string): boolean;
 
-/** Заставляет персонажа идти к координатам */
-declare function TaskGoToCoordAnyMeans(
-  ped: PedHandle,
-  x: number,
-  y: number,
-  z: number,
-  mode: number,
-  radius: number
-): void;
-export const taskGoToCoordAnyMeans: typeof TaskGoToCoordAnyMeans = _G.taskGoToCoordAnyMeans;
+  /** Устанавливает здоровье персонажу */
+  setCharHealth(this: void, ped: PedHandle, health: number): void;
 
-/** Заставляет персонажа бежать к указанному персонажу */
-declare function TaskGotoChar(
-  ped: PedHandle,
-  targetPed: PedHandle,
-  timelimit: number,
-  stopWithinRadius: number
-): void;
-export const taskGotoChar: typeof TaskGotoChar = _G.taskGotoChar;
+  /**
+   * Устанавливает персонажу колизию
+   * @param ped - персонаж, для которого нужно установить колизию
+   * @param collision - true для включения колизии, false для отключения
+   */
+  setCharCollision(this: void, ped: PedHandle, collision: boolean): void;
 
-/** Заставляет персонажа следовать за целью */
-declare function TaskFollowPathNodesToCoord(
-  ped: PedHandle,
-  x: number,
-  y: number,
-  z: number,
-  mode: number,
-  timeout: number
-): void;
-export const taskFollowPathNodesToCoord: typeof TaskFollowPathNodesToCoord = _G.taskFollowPathNodesToCoord;
+  /**
+   * Делает персонажа неуязвимым для атак других NPC.
+   * Персонаж не будет автоматически выбираться в качестве цели
+   * @param ped - персонаж, которого нельзя атаковать
+   * @param untargetable - true чтобы сделать персонажа неуязвимым для таргетинга
+   */
+  setCharNeverTargetted(this: void, ped: PedHandle, untargetable: boolean): void;
 
-/** Проиграть анимацию */
-declare function TaskPlayAnim(
-  ped: PedHandle,
-  animName: string,
-  ifpName: string,
-  speed: number,
-  loop: boolean,
-  lockX: boolean,
-  lockY: boolean,
-  lockF: boolean,
-  time: number
-): void;
-export const taskPlayAnim: typeof TaskPlayAnim = _G.taskPlayAnim;
+  /** Получает здоровье персонажа */
+  getCharHealth(this: void, ped: PedHandle): number;
 
-/** Остановить анимацию */
-declare function TaskDie(ped: PedHandle): void;
-export const taskDie: typeof TaskDie = _G.taskDie;
+  /** Устанавливает броню персонажу */
+  setCharArmour(this: void, ped: PedHandle, armour: number): void;
 
-/** Заставляет персонажа бродить */
-declare function TaskWanderStandard(ped: PedHandle): void;
-export const taskWanderStandard: typeof TaskWanderStandard = _G.taskWanderStandard;
+  /** Получает броню персонажа */
+  getCharArmour(this: void, ped: PedHandle): number;
 
-/** Заставляет персонажа атаковать */
-declare function TaskCombat(ped: PedHandle, targetPed: PedHandle): void;
-export const taskCombat: typeof TaskCombat = _G.taskCombat;
+  /** Дает персонажу оружие */
+  giveWeaponToChar(this: void, ped: PedHandle, weaponId: number, ammo: number): void;
 
-/** Очищает задачи персонажа */
-declare function ClearCharTasks(ped: PedHandle): void;
-export const clearCharTasks: typeof ClearCharTasks = _G.clearCharTasks;
+  /** Удаляет оружие у персонажа */
+  removeWeaponFromChar(this: void, ped: PedHandle, weaponId: number): void;
 
-/** Очищает задачи персонажа немедленно */
-declare function ClearCharTasksImmediately(ped: PedHandle): void;
-export const clearCharTasksImmediately: typeof ClearCharTasksImmediately = _G.clearCharTasksImmediately;
+  /** Устанавливает текущее оружие персонажа */
+  setCurrentCharWeapon(this: void, ped: PedHandle, weaponId: number): void;
 
-/** Проверяет, сидит ли персонаж в каком-либо транспорте */
-declare function IsCharInAnyCar(ped: PedHandle): boolean;
-export const isCharInAnyCar: typeof IsCharInAnyCar = _G.isCharInAnyCar;
+  /** Получает текущее оружие персонажа */
+  getCurrentCharWeapon(this: void, ped: PedHandle): number;
 
-/** Проверяет, сидит ли персонаж в конкретном транспорте */
-declare function IsCharInCar(ped: PedHandle, car: VehicleHandle): boolean;
-export const isCharInCar: typeof IsCharInCar = _G.isCharInCar;
+  /** Устанавливает точность стрельбы персонажа */
+  setCharAccuracy(this: void, ped: PedHandle, accuracy: number): void;
 
-/** Проверяет, находится ли персонаж в области */
-declare function IsCharInArea2d(
-  ped: PedHandle,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  sphere: boolean
-): boolean;
-export const isCharInArea2d: typeof IsCharInArea2d = _G.isCharInArea2d;
+  /** Заставляет персонажа сесть в машину в качестве водителя */
+  taskEnterCarAsDriver(this: void, ped: PedHandle, car: VehicleHandle, timeout: number): void;
 
-/** Проверяет, находится ли персонаж в области 3D */
-declare function IsCharInArea3d(
-  ped: PedHandle,
-  x1: number,
-  y1: number,
-  z1: number,
-  x2: number,
-  y2: number,
-  z2: number,
-  sphere: boolean
-): boolean;
-export const isCharInArea3d: typeof IsCharInArea3d = _G.isCharInArea3d;
+  /** Заставляет персонажа сесть в машину в качестве пассажира */
+  taskEnterCarAsPassenger(
+    this: void,
+    ped: PedHandle,
+    car: VehicleHandle,
+    timeout: number,
+    seatId: number
+  ): void;
 
-/** Получает транспорт, в котором находится персонаж */
-declare function GetCarCharIsUsing(ped: PedHandle): VehicleHandle;
-export const getCarCharIsUsing: typeof GetCarCharIsUsing = _G.getCarCharIsUsing;
+  /** Заставляет персонажа покинуть транспорт */
+  taskLeaveAnyCar(this: void, ped: PedHandle): void;
 
-/** Ищет случайного персонажа в заданных координатах в пределах указанного радиуса */
-declare function FindAllRandomCharsInSphere(
-  x: number,
-  y: number,
-  z: number,
-  radius: number,
-  findNext: boolean,
-  skipDead: boolean
-): LuaMultiReturn<[boolean, PedHandle?]>;
-export const findAllRandomCharsInSphere: typeof FindAllRandomCharsInSphere = _G.findAllRandomCharsInSphere;
+  /** Заставляет персонажа идти к координатам */
+  taskGoToCoordAnyMeans(
+    this: void,
+    ped: PedHandle,
+    x: number,
+    y: number,
+    z: number,
+    mode: number,
+    radius: number
+  ): void;
 
-/** Устанавливает видимость персонажа */
-declare function SetCharVisible(ped: PedHandle, visible: boolean): void;
-export const setCharVisible: typeof SetCharVisible = _G.setCharVisible;
+  /** Заставляет персонажа бежать к указанному персонажу */
+  taskGotoChar(
+    this: void,
+    ped: PedHandle,
+    targetPed: PedHandle,
+    timelimit: number,
+    stopWithinRadius: number
+  ): void;
 
-/** Устанавливает деньги персонажу */
-declare function SetCharMoney(ped: PedHandle, money: number): void;
-export const setCharMoney: typeof SetCharMoney = _G.setCharMoney;
+  /** Заставляет персонажа следовать за целью */
+  taskFollowPathNodesToCoord(
+    this: void,
+    ped: PedHandle,
+    x: number,
+    y: number,
+    z: number,
+    mode: number,
+    timeout: number
+  ): void;
 
-/** Замораживает персонажа */
-declare function FreezeCharPosition(ped: PedHandle, freeze: boolean): void;
-export const freezeCharPosition: typeof FreezeCharPosition = _G.freezeCharPosition;
+  /** Проиграть анимацию */
+  taskPlayAnim(
+    this: void,
+    ped: PedHandle,
+    animName: string,
+    ifpName: string,
+    speed: number,
+    loop: boolean,
+    lockX: boolean,
+    lockY: boolean,
+    lockF: boolean,
+    time: number
+  ): void;
 
-/** Устанавливает невидимость для персонажа */
-declare function SetCharProofs(
-  ped: PedHandle,
-  bullet: boolean,
-  fire: boolean,
-  explosion: boolean,
-  collision: boolean,
-  melee: boolean
-): void;
-export const setCharProofs: typeof SetCharProofs = _G.setCharProofs;
+  /** Остановить анимацию */
+  taskDie(this: void, ped: PedHandle): void;
 
-/** Устанавливает можно ли сбивать персонажа с ног */
-declare function SetCharCanBeKnockedOffBike(ped: PedHandle, state: boolean): void;
-export const setCharCanBeKnockedOffBike: typeof SetCharCanBeKnockedOffBike = _G.setCharCanBeKnockedOffBike;
+  /** Заставляет персонажа бродить */
+  taskWanderStandard(this: void, ped: PedHandle): void;
 
-/** Устанавливает можно ли вытащить персонажа из машины */
-declare function SetCharCanBeDraggedOut(ped: PedHandle, state: boolean): void;
-export const setCharCanBeDraggedOut: typeof SetCharCanBeDraggedOut = _G.setCharCanBeDraggedOut;
+  /** Заставляет персонажа атаковать */
+  taskCombat(this: void, ped: PedHandle, targetPed: PedHandle): void;
 
-/** Устанавливает можно ли застрелить персонажа в машине */
-declare function SetCharCanBeShotInVehicle(ped: PedHandle, state: boolean): void;
-export const setCharCanBeShotInVehicle: typeof SetCharCanBeShotInVehicle = _G.setCharCanBeShotInVehicle;
+  /** Очищает задачи персонажа */
+  clearCharTasks(this: void, ped: PedHandle): void;
 
-/** Возвращает скорость персонажа */
-declare function GetCharSpeed(ped: PedHandle): number;
-export const getCharSpeed: typeof GetCharSpeed = _G.getCharSpeed;
+  /** Очищает задачи персонажа немедленно */
+  clearCharTasksImmediately(this: void, ped: PedHandle): void;
 
-/** Устанавливает максимальное здоровье */
-declare function SetCharMaxHealth(ped: PedHandle, health: number): void;
-export const setCharMaxHealth: typeof SetCharMaxHealth = _G.setCharMaxHealth;
+  /** Проверяет, сидит ли персонаж в каком-либо транспорте */
+  isCharInAnyCar(this: void, ped: PedHandle): boolean;
+
+  /** Проверяет, сидит ли персонаж в конкретном транспорте */
+  isCharInCar(this: void, ped: PedHandle, car: VehicleHandle): boolean;
+
+  /** Проверяет, находится ли персонаж в области */
+  isCharInArea2d(
+    this: void,
+    ped: PedHandle,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    sphere: boolean
+  ): boolean;
+
+  /** Проверяет, находится ли персонаж в области 3D */
+  isCharInArea3d(
+    this: void,
+    ped: PedHandle,
+    x1: number,
+    y1: number,
+    z1: number,
+    x2: number,
+    y2: number,
+    z2: number,
+    sphere: boolean
+  ): boolean;
+
+  /** Получает транспорт, в котором находится персонаж */
+  getCarCharIsUsing(this: void, ped: PedHandle): VehicleHandle;
+
+  /** Ищет случайного персонажа в заданных координатах в пределах указанного радиуса */
+  findAllRandomCharsInSphere(
+    this: void,
+    x: number,
+    y: number,
+    z: number,
+    radius: number,
+    findNext: boolean,
+    skipDead: boolean
+  ): LuaMultiReturn<[boolean, PedHandle?]>;
+
+  /** Устанавливает видимость персонажа */
+  setCharVisible(this: void, ped: PedHandle, visible: boolean): void;
+
+  /** Устанавливает деньги персонажу */
+  setCharMoney(this: void, ped: PedHandle, money: number): void;
+
+  /** Замораживает персонажа */
+  freezeCharPosition(this: void, ped: PedHandle, freeze: boolean): void;
+
+  /** Устанавливает невидимость для персонажа */
+  setCharProofs(
+    this: void,
+    ped: PedHandle,
+    bullet: boolean,
+    fire: boolean,
+    explosion: boolean,
+    collision: boolean,
+    melee: boolean
+  ): void;
+
+  /** Устанавливает можно ли сбивать персонажа с ног */
+  setCharCanBeKnockedOffBike(this: void, ped: PedHandle, state: boolean): void;
+
+  /** Устанавливает можно ли вытащить персонажа из машины */
+  setCharCanBeDraggedOut(this: void, ped: PedHandle, state: boolean): void;
+
+  /** Устанавливает можно ли застрелить персонажа в машине */
+  setCharCanBeShotInVehicle(this: void, ped: PedHandle, state: boolean): void;
+
+  /** Возвращает скорость персонажа */
+  getCharSpeed(this: void, ped: PedHandle): number;
+
+  /** Устанавливает максимальное здоровье */
+  setCharMaxHealth(this: void, ped: PedHandle, health: number): void;
+}
+
+declare const _G: CharGlobal;
+
+export const {
+  createChar,
+  createCharInsideCar,
+  createCharAsPassenger,
+  deleteChar,
+  doesCharExist,
+  setCharHeading,
+  getCharHeading,
+  getCharCoordinates,
+  setCharCoordinates,
+  dontRemoveChar,
+  setLoadCollisionForCharFlag,
+  isCharDead,
+  isCharPlayingAnim,
+  setCharHealth,
+  setCharCollision,
+  setCharNeverTargetted,
+  getCharHealth,
+  setCharArmour,
+  getCharArmour,
+  giveWeaponToChar,
+  removeWeaponFromChar,
+  setCurrentCharWeapon,
+  getCurrentCharWeapon,
+  setCharAccuracy,
+  taskEnterCarAsDriver,
+  taskEnterCarAsPassenger,
+  taskLeaveAnyCar,
+  taskGoToCoordAnyMeans,
+  taskGotoChar,
+  taskFollowPathNodesToCoord,
+  taskPlayAnim,
+  taskDie,
+  taskWanderStandard,
+  taskCombat,
+  clearCharTasks,
+  clearCharTasksImmediately,
+  isCharInAnyCar,
+  isCharInCar,
+  isCharInArea2d,
+  isCharInArea3d,
+  getCarCharIsUsing,
+  findAllRandomCharsInSphere,
+  setCharVisible,
+  setCharMoney,
+  freezeCharPosition,
+  setCharProofs,
+  setCharCanBeKnockedOffBike,
+  setCharCanBeDraggedOut,
+  setCharCanBeShotInVehicle,
+  getCharSpeed,
+  setCharMaxHealth,
+} = _G;

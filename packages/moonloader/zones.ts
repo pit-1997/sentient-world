@@ -1,14 +1,17 @@
-// Декларируем глобальный объект Lua
-declare const _G: any;
+/**
+ * Интерфейс функций для работы с зонами и городами
+ */
+interface ZonesGlobal {
+  /** Получает название зоны по координатам */
+  getNameOfZone(this: void, x: number, y: number, z: number): string;
 
-/** Получает название зоны */
-declare function GetNameOfZone(x: number, y: number, z: number): string;
-export const getNameOfZone: typeof GetNameOfZone = _G.getNameOfZone;
+  /** Получает название города (this: void, info zone) по координатам */
+  getNameOfInfoZone(this: void, x: number, y: number, z: number): string;
 
-/** Получает название города */
-declare function GetNameOfInfoZone(x: number, y: number, z: number): string;
-export const getNameOfInfoZone: typeof GetNameOfInfoZone = _G.getNameOfInfoZone;
+  /** Получает текущее значение зоны для игрока */
+  getCurrentZoneScavengerValue(this: void): number;
+}
 
-/** Получает текущую зону игрока */
-declare function GetCurrentZoneScavengerValue(): number;
-export const getCurrentZoneScavengerValue: typeof GetCurrentZoneScavengerValue = _G.getCurrentZoneScavengerValue;
+declare const _G: ZonesGlobal;
+
+export const { getNameOfZone, getNameOfInfoZone, getCurrentZoneScavengerValue } = _G;
