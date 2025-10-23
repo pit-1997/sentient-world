@@ -1,3 +1,11 @@
+import {
+  wait,
+  wasKeyPressed,
+  getCharCoordinates,
+  getCharHeading,
+  print,
+  PLAYER_PED,
+} from '@sentient-world/moonloader';
 import * as vkeys from 'vkeys';
 
 import { World } from './world';

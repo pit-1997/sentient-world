@@ -1,3 +1,5 @@
+import { getCharCoordinates, getDistanceBetweenCoords3d } from '@sentient-world/moonloader';
+
 import type { ISentientWorldState } from '../types';
 
 export function isAtHome(context: ISentientWorldState): boolean {

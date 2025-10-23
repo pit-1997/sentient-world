@@ -53,6 +53,12 @@ export default defineConfig([
       '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
       '@typescript-eslint/no-extraneous-class': ['error', { allowWithDecorator: true }],
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-invalid-void-type': [
+        'error',
+        {
+          allowAsThisParameter: true,
+        },
+      ],
 
       // Core rules
       'func-style': ['error', 'declaration'],

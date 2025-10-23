@@ -1,4 +1,19 @@
 import { Agent } from '@sentient-world/htn';
+import {
+  addEventHandler,
+  createChar,
+  deleteChar,
+  doesCharExist,
+  dontRemoveChar,
+  getTimeOfDay,
+  loadAllModelsNow,
+  markModelAsNoLongerNeeded,
+  requestModel,
+  setCharHeading,
+  setLoadCollisionForCharFlag,
+  wait,
+  type PedHandle,
+} from '@sentient-world/moonloader';
 
 import type { ICharacter } from '../characters';
 import { LiveDayTask } from '../tasks/compounds/live-day-task';
@@ -7,7 +22,7 @@ import type { ISentientWorldState } from '../types';
 export class NPC {
   constructor(
     private readonly character: ICharacter,
-    private readonly ped: Ped
+    private readonly ped: PedHandle
   ) {
     const brain = new Agent(new LiveDayTask());
 

@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "verbatimModuleSyntax": false,
     "paths": {
-      "@sentient-world/htn": ["../htn/index.ts"]
+      "@sentient-world/htn": ["../htn/index.ts"],
+      "@sentient-world/moonloader": ["../moonloader/index.ts"],
+      "vkeys": ["../moonloader/vkeys.ts"]
     }
   },
   "tstl": {
@@ -20,5 +22,5 @@
     "noImplicitSelf": true,
     "noResolvePaths": ["vkeys"]
   },
-  "include": ["global.d.ts", "**/*.ts"]
+  "include": ["./**/*.ts"]
 }

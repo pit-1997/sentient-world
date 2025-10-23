@@ -1,4 +1,20 @@
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
+import {
+  addEventHandler,
+  clearCharTasks,
+  createChar,
+  deleteChar,
+  doesCharExist,
+  freezeCharPosition,
+  getCharCoordinates,
+  getDistanceBetweenCoords3d,
+  setCharCollision,
+  setCharNeverTargetted,
+  setCharProofs,
+  setCharVisible,
+  taskGotoChar,
+  type PedHandle,
+} from '@sentient-world/moonloader';
 
 import type { ISentientWorldState } from '../../types';
 
@@ -11,7 +27,7 @@ export interface Point {
 export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
   name = 'GoToPointTask';
   private started = false;
-  private guide: Ped | null = null;
+  private guide: PedHandle | null = null;
 
   constructor(private readonly targetPoint: Point) {}
 
@@ -71,7 +87,7 @@ export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
     });
   }
 
-  private complete(ped: Ped) {
+  private complete(ped: PedHandle) {
     if (this.guide) {
       if (doesCharExist(this.guide)) {
         deleteChar(this.guide);
