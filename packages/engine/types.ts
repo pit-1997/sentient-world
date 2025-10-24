@@ -1,3 +1,5 @@
+import type { EventEmitter } from '@sentient-world/event-emitter';
+
 import type { Point } from './geometry';
 
 export type Time = {
@@ -26,14 +28,7 @@ export type EventName = keyof Events;
 export type Callback<EN extends EventName> = (...args: Parameters<Events[EN]>) => void;
 
 export interface IEngine {
-  /** Позволяет навесить обработчик на одно из событий движка */
-  on: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
-
-  /** Позволяет навесить обработчик на одно из событий движка. Обработчик выполнится только один раз */
-  once: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
-
-  /** Отвязать обработчик события */
-  off: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
+  events: EventEmitter<Events>;
 
   /** Создаёт персонажа */
   createCharacterHandle: (options: CharacterHandleConstructorOptions) => ICharacterHandle;

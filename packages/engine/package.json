@@ -2,5 +2,8 @@
   "name": "@sentient-world/engine",
   "private": true,
   "version": "1.0.0",
-  "description": "Контракт для работы с игровым движком"
+  "description": "Контракт для работы с игровым движком",
+  "dependencies": {
+    "@sentient-world/event-emitter": "1.0.0"
+  }
 }
