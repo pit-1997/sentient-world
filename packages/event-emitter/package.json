@@ -1,0 +1,6 @@
+{
+  "name": "@sentient-world/event-emitter",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Типизированный EventEmitter с поддержкой дженериков"
+}
