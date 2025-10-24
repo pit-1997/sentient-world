@@ -98,6 +98,9 @@ interface CharGlobal {
   /** Устанавливает точность стрельбы персонажа */
   setCharAccuracy(this: void, ped: PedHandle, accuracy: number): void;
 
+  /** Заставляет персонажа повернуться таким образом, чтоб смотреть в сторону angle */
+  taskAchieveHeading(this: void, ped: PedHandle, angle: number): void;
+
   /** Заставляет персонажа сесть в машину в качестве водителя */
   taskEnterCarAsDriver(this: void, ped: PedHandle, car: VehicleHandle, timeout: number): void;
 
@@ -226,7 +229,10 @@ interface CharGlobal {
   /** Замораживает персонажа */
   freezeCharPosition(this: void, ped: PedHandle, freeze: boolean): void;
 
-  /** Устанавливает невидимость для персонажа */
+  /**
+   * Устанавливает иммунитет персонажу
+   * true включить иммунитет, false выключить
+   */
   setCharProofs(
     this: void,
     ped: PedHandle,
@@ -280,6 +286,7 @@ export const {
   setCurrentCharWeapon,
   getCurrentCharWeapon,
   setCharAccuracy,
+  taskAchieveHeading,
   taskEnterCarAsDriver,
   taskEnterCarAsPassenger,
   taskLeaveAnyCar,

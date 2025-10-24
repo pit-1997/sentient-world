@@ -6,7 +6,9 @@ export type {
   IEngine,
   ICharacterHandle,
   CharacterHandleConstructorOptions,
+  Key,
   Time,
   EventName,
+  Events,
   Callback,
 } from './types';

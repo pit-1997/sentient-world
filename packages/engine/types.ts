@@ -10,9 +10,9 @@ export type Time = {
   minutes: number;
 };
 
-type Key = 'N' | 'Y';
+export type Key = 'N' | 'Y';
 
-type Events = {
+export type Events = {
   /** Была ли нажата клавиша */
   keydown: (key: Key) => void;
 
