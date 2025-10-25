@@ -17,6 +17,7 @@ import {
   loadAllModelsNow,
   markModelAsNoLongerNeeded,
   PedType,
+  PLAYER_PED,
   requestModel,
   setCharCollision,
   setCharCoordinates,
@@ -27,6 +28,7 @@ import {
   setLoadCollisionForCharFlag,
   taskAchieveHeading,
   taskGotoChar,
+  taskWanderStandard,
   type PedHandle,
 } from '@sentient-world/moonloader';
 
@@ -35,20 +37,32 @@ export class CharacterHandle implements ICharacterHandle {
   private readonly modelId: number;
   private readonly ped: PedHandle;
 
-  constructor(engine: IEngine, options: CharacterHandleConstructorOptions) {
-    this.engine = engine;
-    this.modelId = options.modelId;
-
-    requestModel(this.modelId);
+  /** Создаёт игрового персонажа, возвращает его модель */
+  static createNpc(engine: IEngine, options: CharacterHandleConstructorOptions) {
+    requestModel(options.modelId);
     loadAllModelsNow();
 
     const { x, y, z } = options.point;
-    this.ped = createChar(PedType.CIVMALE, this.modelId, x, y, z);
-    setCharHeading(this.ped, options.angle);
-    setLoadCollisionForCharFlag(this.ped, true);
-    dontRemoveChar(this.ped);
+    const ped = createChar(PedType.CIVMALE, options.modelId, x, y, z);
+    setCharHeading(ped, options.angle);
+    setLoadCollisionForCharFlag(ped, true);
+    dontRemoveChar(ped);
 
-    markModelAsNoLongerNeeded(this.modelId);
+    markModelAsNoLongerNeeded(options.modelId);
+
+    return new CharacterHandle(engine, options.modelId, ped);
+  }
+
+  /** Возвращает модель персонажа игрока */
+  static createPlayerHandle(engine: IEngine) {
+    const CJ_MODEL = 0;
+    return new CharacterHandle(engine, CJ_MODEL, PLAYER_PED);
+  }
+
+  constructor(engine: IEngine, modelId: number, ped: PedHandle) {
+    this.engine = engine;
+    this.modelId = modelId;
+    this.ped = ped;
   }
 
   destroy() {
@@ -95,10 +109,14 @@ export class CharacterHandle implements ICharacterHandle {
 
     taskGotoChar(this.ped, guide, -1, 1.0);
 
-    this.engine.on('terminate', () => {
+    this.engine.events.on('terminate', () => {
       if (doesCharExist(guide)) {
         deleteChar(guide);
       }
     });
+  }
+
+  taskWander(): void {
+    taskWanderStandard(this.ped);
   }
 }

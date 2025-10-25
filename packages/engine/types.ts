@@ -27,14 +27,65 @@ export type EventName = keyof Events;
 
 export type Callback<EN extends EventName> = (...args: Parameters<Events[EN]>) => void;
 
+export type ThreadStatus = 'dead' | 'suspended' | 'running' | 'yielded' | 'error';
+
+export type ThreadFunction<Args extends unknown[]> = (thread: IThread<Args>, ...args: Args) => void;
+
+/**
+ * Поток выполнения
+ */
+export interface IThread<Args extends unknown[]> {
+  /**
+   * Запустить поток с начала
+   */
+  run(...args: Args): void;
+
+  /**
+   * Принудительно завершить поток
+   */
+  terminate(): void;
+
+  /**
+   * Получить текущий статус потока
+   */
+  status(): ThreadStatus;
+
+  /**
+   * Приостановить выполнение текущего потока
+   * @param timeInMs - время приостановки в миллисекундах
+   */
+  wait(timeInMs: number): void;
+
+  /**
+   * Проверить завершён ли поток
+   */
+  readonly dead: boolean;
+
+  /**
+   * Определяет выполнение потока во время паузы игры
+   */
+  workInPause: boolean;
+}
+
 export interface IEngine {
   events: EventEmitter<Events>;
 
   /** Создаёт персонажа */
-  createCharacterHandle: (options: CharacterHandleConstructorOptions) => ICharacterHandle;
+  createCharacterHandle(options: CharacterHandleConstructorOptions): ICharacterHandle;
+
+  /**
+   * Создать и сразу запустить новый поток
+   * @param fn - функция, которая будет выполняться в потоке
+   * @param args - параметры, которые будут передаваться в тред
+   * @returns созданный поток
+   */
+  createThread<Args extends unknown[] = []>(fn: ThreadFunction<Args>, ...args: Args): IThread<Args>;
+
+  /** Возвращает модель персонажа игрока */
+  getPlayerCharacterHandle(): ICharacterHandle;
 
   /** Возвращает время в мире игры */
-  getTime: () => Time;
+  getTime(): Time;
 }
 
 export type CharacterHandleConstructorOptions = {
@@ -50,26 +101,29 @@ export type CharacterHandleConstructorOptions = {
 
 export interface ICharacterHandle {
   /** Функция, которая должна вызваться при удалении персонажа из игры */
-  destroy: () => void;
+  destroy(): void;
 
   /** Возвращает угол поворота персонажа */
-  getAngle: () => number;
+  getAngle(): number;
 
   /** Устанавливает персонажу угол поворота */
-  setAngle: (angle: number) => void;
+  setAngle(angle: number): void;
 
   /** Возвращает положение персонажа */
-  getPoint: () => Point;
+  getPoint(): Point;
 
   /** Устанавливает позицию персонажа */
-  setPoint: (point: Point) => void;
+  setPoint(point: Point): void;
 
   /** Заставляет персонажа достичь определённого угла поворота */
-  taskAchieveAngle: (angle: number) => void;
+  taskAchieveAngle(angle: number): void;
 
   /** Отменяет текущие задачи персонажа */
-  taskClear: () => void;
+  taskClear(): void;
 
   /** Заставляет персонажа идти на указанную точку */
-  taskGoToPoint: (point: Point) => void;
+  taskGoToPoint(point: Point): void;
+
+  /** Заставляет персонажа бесцельно бродить */
+  taskWander(): void;
 }

@@ -39,4 +39,6 @@ declare class LuaThread<Args extends unknown[]> {
 
 declare const _G: LuaGlobal;
 
+export { LuaThread };
+
 export const lua_thread = _G.lua_thread;

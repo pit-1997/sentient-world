@@ -5,6 +5,9 @@ export type { ILogger } from './logger';
 export type {
   IEngine,
   ICharacterHandle,
+  IThread,
+  ThreadFunction,
+  ThreadStatus,
   CharacterHandleConstructorOptions,
   Key,
   Time,

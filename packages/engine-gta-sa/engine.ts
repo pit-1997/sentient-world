@@ -2,14 +2,15 @@ import type {
   CharacterHandleConstructorOptions,
   Events,
   IEngine,
+  IThread,
   Key,
+  ThreadFunction,
 } from '@sentient-world/engine';
 
 import { EventEmitter } from '@sentient-world/event-emitter';
 import {
   addEventHandler,
   getTimeOfDay,
-  wait,
   wasKeyPressed,
   type VKey,
 } from '@sentient-world/moonloader';
@@ -17,6 +18,7 @@ import {
 import * as vkeys from 'vkeys';
 
 import { CharacterHandle } from './character-handle';
+import { Thread } from './thread';
 
 export class Engine implements IEngine {
   readonly events: EventEmitter<Events>;
@@ -29,9 +31,23 @@ export class Engine implements IEngine {
   }
 
   createCharacterHandle(options: CharacterHandleConstructorOptions) {
-    const characterHandle = new CharacterHandle(this, options);
+    const characterHandle = CharacterHandle.createNpc(this, options);
+    this.events.on('terminate', () => characterHandle.destroy());
 
     return characterHandle;
+  }
+
+  createThread<Args extends unknown[] = []>(
+    fn: ThreadFunction<Args>,
+    ...args: Args
+  ): IThread<Args> {
+    const thread = new Thread<Args>((...subArgs) => fn(...subArgs));
+    thread.run(...args);
+    return thread;
+  }
+
+  getPlayerCharacterHandle() {
+    return CharacterHandle.createPlayerHandle(this);
   }
 
   getTime() {
@@ -45,10 +61,12 @@ export class Engine implements IEngine {
   }
 
   private listenTick() {
-    while (true) {
-      wait(0);
-      this.events.emit('tick');
-    }
+    this.createThread((thread) => {
+      while (true) {
+        thread.wait(16);
+        this.events.emit('tick');
+      }
+    });
   }
 
   private listenKeydown() {
