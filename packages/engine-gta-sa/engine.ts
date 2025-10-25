@@ -1,5 +1,5 @@
 import type {
-  CharacterHandleConstructorOptions,
+  ActorConstructorOptions,
   Events,
   IEngine,
   IThread,
@@ -17,7 +17,7 @@ import {
 
 import * as vkeys from 'vkeys';
 
-import { CharacterHandle } from './character-handle';
+import { Actor } from './actor';
 import { Thread } from './thread';
 
 export class Engine implements IEngine {
@@ -30,8 +30,8 @@ export class Engine implements IEngine {
     this.listenKeydown();
   }
 
-  createCharacterHandle(options: CharacterHandleConstructorOptions) {
-    const characterHandle = CharacterHandle.createNpc(options);
+  createActor(options: ActorConstructorOptions) {
+    const characterHandle = Actor.createNpc(options);
     this.events.on('terminate', () => characterHandle.destroy());
 
     return characterHandle;
@@ -46,8 +46,8 @@ export class Engine implements IEngine {
     return thread;
   }
 
-  getPlayerCharacterHandle() {
-    return CharacterHandle.getPlayerHandle();
+  getPlayerActor() {
+    return Actor.getPlayerHandle();
   }
 
   getTime() {

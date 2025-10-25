@@ -1,4 +1,4 @@
-import type { ICharacterHandle, IEngine, IGeometry } from '@sentient-world/engine';
+import type { IActor, IEngine, IGeometry } from '@sentient-world/engine';
 import type { IState } from '@sentient-world/htn';
 
 import type { ICharacter } from './characters';
@@ -9,8 +9,8 @@ export interface Time {
 }
 
 export interface ISentientWorldState extends IState {
+  actor: IActor;
   character: ICharacter;
-  characterHandle: ICharacterHandle;
   clone: () => this;
   engine: IEngine;
   geometry: IGeometry;

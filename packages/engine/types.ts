@@ -71,7 +71,7 @@ export interface IEngine {
   events: EventEmitter<Events>;
 
   /** Создаёт персонажа */
-  createCharacterHandle(options: CharacterHandleConstructorOptions): ICharacterHandle;
+  createActor(options: ActorConstructorOptions): IActor;
 
   /**
    * Создать и сразу запустить новый поток
@@ -82,13 +82,13 @@ export interface IEngine {
   createThread<Args extends unknown[] = []>(fn: ThreadFunction<Args>, ...args: Args): IThread<Args>;
 
   /** Возвращает модель персонажа игрока */
-  getPlayerCharacterHandle(): ICharacterHandle;
+  getPlayerActor(): IActor;
 
   /** Возвращает время в мире игры */
   getTime(): Time;
 }
 
-export type CharacterHandleConstructorOptions = {
+export type ActorConstructorOptions = {
   /** Угол поворота при спавне */
   angle: number;
 
@@ -99,7 +99,7 @@ export type CharacterHandleConstructorOptions = {
   point: Point;
 };
 
-export interface ICharacterHandle {
+export interface IActor {
   /** Функция, которая должна вызваться при удалении персонажа из игры */
   destroy(): void;
 

@@ -1,4 +1,4 @@
-import type { ICharacterHandle, Point } from '@sentient-world/engine';
+import type { IActor, Point } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
 import type { ISentientWorldState } from '../../types';
@@ -18,11 +18,11 @@ export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
   }
 
   execute(state: ISentientWorldState): ExecutionStatus {
-    const point = state.characterHandle.getPoint();
+    const point = state.actor.getPoint();
     const distance = state.geometry.getDistance(point, this.targetPoint);
 
     if (distance <= 1) {
-      this.complete(state.characterHandle);
+      this.complete(state.actor);
       return 'success';
     }
 
@@ -34,11 +34,11 @@ export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
   }
 
   private start(state: ISentientWorldState) {
-    state.characterHandle.taskGoToPoint(this.targetPoint);
+    state.actor.taskGoToPoint(this.targetPoint);
     this.started = true;
   }
 
-  private complete(handle: ICharacterHandle) {
-    handle.taskClear();
+  private complete(actor: IActor) {
+    actor.taskClear();
   }
 }

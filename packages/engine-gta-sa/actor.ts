@@ -1,8 +1,4 @@
-import type {
-  CharacterHandleConstructorOptions,
-  ICharacterHandle,
-  Point,
-} from '@sentient-world/engine';
+import type { ActorConstructorOptions, IActor, Point } from '@sentient-world/engine';
 
 import {
   clearCharTasks,
@@ -26,11 +22,11 @@ import {
   type PedHandle,
 } from '@sentient-world/moonloader';
 
-export class CharacterHandle implements ICharacterHandle {
+export class Actor implements IActor {
   private readonly ped: PedHandle;
 
   /** Создаёт игрового персонажа, возвращает его модель */
-  static createNpc(options: CharacterHandleConstructorOptions) {
+  static createNpc(options: ActorConstructorOptions) {
     requestModel(options.modelId);
     loadAllModelsNow();
 
@@ -42,12 +38,12 @@ export class CharacterHandle implements ICharacterHandle {
 
     markModelAsNoLongerNeeded(options.modelId);
 
-    return new CharacterHandle(ped);
+    return new Actor(ped);
   }
 
   /** Возвращает модель персонажа игрока */
   static getPlayerHandle() {
-    return new CharacterHandle(PLAYER_PED);
+    return new Actor(PLAYER_PED);
   }
 
   constructor(ped: PedHandle) {

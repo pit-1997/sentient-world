@@ -2,7 +2,7 @@ import type { ISentientWorldState } from '../types';
 
 export function isAtHome(context: ISentientWorldState): boolean {
   const spawn = context.character.data.spawn;
-  const point = context.characterHandle.getPoint();
+  const point = context.actor.getPoint();
 
   return context.geometry.getDistance(point, spawn) < 1;
 }

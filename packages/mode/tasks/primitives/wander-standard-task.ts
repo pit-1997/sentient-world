@@ -1,4 +1,4 @@
-import type { ICharacterHandle } from '@sentient-world/engine';
+import type { IActor } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
 import type { ISentientWorldState } from '../../types';
@@ -21,23 +21,23 @@ export class WanderStandardTask implements IPrimitiveTask<ISentientWorldState> {
 
   execute(state: ISentientWorldState): ExecutionStatus {
     if (this.shouldStop(state)) {
-      this.complete(state.characterHandle);
+      this.complete(state.actor);
       return 'success';
     }
 
     if (!this.started) {
-      this.start(state.characterHandle);
+      this.start(state.actor);
     }
 
     return 'running';
   }
 
-  private start(characterHandle: ICharacterHandle) {
-    characterHandle.taskWander();
+  private start(actor: IActor) {
+    actor.taskWander();
     this.started = true;
   }
 
-  private complete(characterHandle: ICharacterHandle) {
-    characterHandle.taskClear();
+  private complete(actor: IActor) {
+    actor.taskClear();
   }
 }

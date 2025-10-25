@@ -14,7 +14,7 @@ function main() {
     }
 
     if (key === 'Y') {
-      const player = engine.getPlayerCharacterHandle();
+      const player = engine.getPlayerActor();
       const angle = player.getAngle();
       const point = player.getPoint();
 
