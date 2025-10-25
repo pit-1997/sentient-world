@@ -1,5 +1,5 @@
+import type { IActor } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
-import { clearCharTasks, taskWanderStandard, type PedHandle } from '@sentient-world/moonloader';
 
 import type { ISentientWorldState } from '../../types';
 
@@ -21,25 +21,23 @@ export class WanderStandardTask implements IPrimitiveTask<ISentientWorldState> {
 
   execute(state: ISentientWorldState): ExecutionStatus {
     if (this.shouldStop(state)) {
-      this.complete(state.ped);
+      this.complete(state.actor);
       return 'success';
     }
 
     if (!this.started) {
-      this.start(state.ped);
+      this.start(state.actor);
     }
 
     return 'running';
   }
 
-  private start(ped: PedHandle) {
-    taskWanderStandard(ped);
+  private start(actor: IActor) {
+    actor.taskWander();
     this.started = true;
   }
 
-  private complete(ped: PedHandle) {
-    if (this.started) {
-      clearCharTasks(ped);
-    }
+  private complete(actor: IActor) {
+    actor.taskClear();
   }
 }

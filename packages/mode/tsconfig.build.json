@@ -10,6 +10,9 @@
     "moduleResolution": "node",
     "verbatimModuleSyntax": false,
     "paths": {
+      "@sentient-world/engine": ["../engine/index.ts"],
+      "@sentient-world/engine-gta-sa": ["../engine-gta-sa/index.ts"],
+      "@sentient-world/event-emitter": ["../event-emitter/index.ts"],
       "@sentient-world/htn": ["../htn/index.ts"],
       "@sentient-world/moonloader": ["../moonloader/index.ts"],
       "vkeys": ["../moonloader/vkeys.ts"]

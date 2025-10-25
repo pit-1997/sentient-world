@@ -1,3 +1,5 @@
+import type { EventEmitter } from '@sentient-world/event-emitter';
+
 import type { Point } from './geometry';
 
 export type Time = {
@@ -8,9 +10,9 @@ export type Time = {
   minutes: number;
 };
 
-type Key = 'N' | 'Y';
+export type Key = 'N' | 'Y';
 
-type Events = {
+export type Events = {
   /** Была ли нажата клавиша */
   keydown: (key: Key) => void;
 
@@ -25,24 +27,68 @@ export type EventName = keyof Events;
 
 export type Callback<EN extends EventName> = (...args: Parameters<Events[EN]>) => void;
 
-export interface IEngine {
-  /** Позволяет навесить обработчик на одно из событий движка */
-  on: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
+export type ThreadStatus = 'dead' | 'suspended' | 'running' | 'yielded' | 'error';
 
-  /** Позволяет навесить обработчик на одно из событий движка. Обработчик выполнится только один раз */
-  once: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
+export type ThreadFunction<Args extends unknown[]> = (thread: IThread<Args>, ...args: Args) => void;
 
-  /** Отвязать обработчик события */
-  off: <EN extends EventName>(eventName: EN, callback: Callback<EN>) => void;
+/**
+ * Поток выполнения
+ */
+export interface IThread<Args extends unknown[]> {
+  /**
+   * Запустить поток с начала
+   */
+  run(...args: Args): void;
 
-  /** Создаёт персонажа */
-  createCharacterHandle: (options: CharacterHandleConstructorOptions) => ICharacterHandle;
+  /**
+   * Принудительно завершить поток
+   */
+  terminate(): void;
 
-  /** Возвращает время в мире игры */
-  getTime: () => Time;
+  /**
+   * Получить текущий статус потока
+   */
+  status(): ThreadStatus;
+
+  /**
+   * Приостановить выполнение текущего потока
+   * @param timeInMs - время приостановки в миллисекундах
+   */
+  wait(timeInMs: number): void;
+
+  /**
+   * Проверить завершён ли поток
+   */
+  readonly dead: boolean;
+
+  /**
+   * Определяет выполнение потока во время паузы игры
+   */
+  workInPause: boolean;
 }
 
-export type CharacterHandleConstructorOptions = {
+export interface IEngine {
+  events: EventEmitter<Events>;
+
+  /** Создаёт персонажа */
+  createActor(options: ActorConstructorOptions): IActor;
+
+  /**
+   * Создать и сразу запустить новый поток
+   * @param fn - функция, которая будет выполняться в потоке
+   * @param args - параметры, которые будут передаваться в тред
+   * @returns созданный поток
+   */
+  createThread<Args extends unknown[] = []>(fn: ThreadFunction<Args>, ...args: Args): IThread<Args>;
+
+  /** Возвращает модель персонажа игрока */
+  getPlayerActor(): IActor;
+
+  /** Возвращает время в мире игры */
+  getTime(): Time;
+}
+
+export type ActorConstructorOptions = {
   /** Угол поворота при спавне */
   angle: number;
 
@@ -53,28 +99,31 @@ export type CharacterHandleConstructorOptions = {
   point: Point;
 };
 
-export interface ICharacterHandle {
+export interface IActor {
   /** Функция, которая должна вызваться при удалении персонажа из игры */
-  destroy: () => void;
+  destroy(): void;
 
   /** Возвращает угол поворота персонажа */
-  getAngle: () => number;
+  getAngle(): number;
 
   /** Устанавливает персонажу угол поворота */
-  setAngle: (angle: number) => void;
+  setAngle(angle: number): void;
 
   /** Возвращает положение персонажа */
-  getPoint: () => Point;
+  getPoint(): Point;
 
   /** Устанавливает позицию персонажа */
-  setPoint: (point: Point) => void;
+  setPoint(point: Point): void;
 
   /** Заставляет персонажа достичь определённого угла поворота */
-  taskAchieveAngle: (angle: number) => void;
+  taskAchieveAngle(angle: number): void;
 
   /** Отменяет текущие задачи персонажа */
-  taskClear: () => void;
+  taskClear(): void;
 
   /** Заставляет персонажа идти на указанную точку */
-  taskGoToPoint: (point: Point) => void;
+  taskGoToPoint(point: Point): void;
+
+  /** Заставляет персонажа бесцельно бродить */
+  taskWander(): void;
 }

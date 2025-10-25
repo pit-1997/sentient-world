@@ -1,31 +1,26 @@
-import {
-  wait,
-  wasKeyPressed,
-  getCharCoordinates,
-  getCharHeading,
-  print,
-  PLAYER_PED,
-} from '@sentient-world/moonloader';
-import * as vkeys from 'vkeys';
+import { Engine, Geometry, Logger } from '@sentient-world/engine-gta-sa';
 
 import { World } from './world';
 
 function main() {
-  const world = new World();
+  const engine = new Engine();
+  const logger = new Logger();
+  const geometry = new Geometry();
+  const world = new World(engine, geometry);
 
-  while (true) {
-    wait(0);
-
-    if (wasKeyPressed(vkeys.VK_N)) {
+  engine.events.on('keydown', (key) => {
+    if (key === 'N') {
       world.start();
     }
 
-    if (wasKeyPressed(vkeys.VK_Y)) {
-      const [x, y, z] = getCharCoordinates(PLAYER_PED);
-      const angle = getCharHeading(PLAYER_PED);
-      print(`x=${x}, y=${y}, z=${z}, angle=${angle}`);
+    if (key === 'Y') {
+      const player = engine.getPlayerActor();
+      const angle = player.getAngle();
+      const point = player.getPoint();
+
+      logger.log(`x: ${point.x}, y: ${point.y}, z: ${point.z}, angle: ${angle}`);
     }
-  }
+  });
 }
 
 // Функция main должна быть в глобальной облас видимости,

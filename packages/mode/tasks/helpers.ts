@@ -1,16 +1,14 @@
-import { getCharCoordinates, getDistanceBetweenCoords3d } from '@sentient-world/moonloader';
-
 import type { ISentientWorldState } from '../types';
 
 export function isAtHome(context: ISentientWorldState): boolean {
   const spawn = context.character.data.spawn;
-  const [x, y, z] = getCharCoordinates(context.ped);
+  const point = context.actor.getPoint();
 
-  return getDistanceBetweenCoords3d(spawn.x, spawn.y, spawn.z, x, y, z) < 1;
+  return context.geometry.getDistance(point, spawn) < 1;
 }
 
 export function isNight(context: ISentientWorldState): boolean {
-  const hours = context.getTime().hours;
+  const { hours } = context.engine.getTime();
 
   return hours >= 22 || hours < 8;
 }

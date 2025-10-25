@@ -1,0 +1,11 @@
+{
+  "name": "@sentient-world/engine-gta-sa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Адаптер @sentient-world/engine для gta sa",
+  "dependencies": {
+    "@sentient-world/engine": "1.0.0",
+    "@sentient-world/event-emitter": "1.0.0",
+    "@sentient-world/moonloader": "1.0.0"
+  }
+}

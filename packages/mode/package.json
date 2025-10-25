@@ -5,7 +5,8 @@
     "build": "tstl -p ./tsconfig.build.json"
   },
   "dependencies": {
-    "@sentient-world/htn": "1.0.0",
-    "@sentient-world/moonloader": "1.0.0"
+    "@sentient-world/engine": "1.0.0",
+    "@sentient-world/engine-gta-sa": "1.0.0",
+    "@sentient-world/htn": "1.0.0"
   }
 }
