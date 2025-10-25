@@ -98,6 +98,9 @@ interface CharGlobal {
   /** Устанавливает точность стрельбы персонажа */
   setCharAccuracy(this: void, ped: PedHandle, accuracy: number): void;
 
+  /** Установить игнорирование высоты при поиске пути */
+  ignoreHeightDifferenceFollowingNodes(this: void, ped: PedHandle, ignore: boolean): void;
+
   /** Заставляет персонажа повернуться таким образом, чтоб смотреть в сторону angle */
   taskAchieveHeading(this: void, ped: PedHandle, angle: number): void;
 
@@ -127,6 +130,17 @@ interface CharGlobal {
     radius: number
   ): void;
 
+  /** Заставляет персонажа идти к координатам */
+  taskGoStraightToCoord(
+    this: void,
+    ped: PedHandle,
+    x: number,
+    y: number,
+    z: number,
+    mode: number,
+    timeout: number
+  ): void;
+
   /** Заставляет персонажа бежать к указанному персонажу */
   taskGotoChar(
     this: void,
@@ -134,6 +148,25 @@ interface CharGlobal {
     targetPed: PedHandle,
     timelimit: number,
     stopWithinRadius: number
+  ): void;
+
+  /** Заставляет персонажа идти к указанному персонажу */
+  taskGotoCharAiming(
+    this: void,
+    ped: PedHandle,
+    targetPed: PedHandle,
+    minRadius: number,
+    maxRadius: number
+  ): void;
+
+  /** Заставляет персонажа идти к указанному персонажу */
+  taskGotoCharOffset(
+    this: void,
+    ped: PedHandle,
+    targetPed: PedHandle,
+    timelimit: number,
+    approachDistance: number,
+    approachAngle: number
   ): void;
 
   /** Заставляет персонажа следовать за целью */
@@ -286,12 +319,16 @@ export const {
   setCurrentCharWeapon,
   getCurrentCharWeapon,
   setCharAccuracy,
+  ignoreHeightDifferenceFollowingNodes,
   taskAchieveHeading,
   taskEnterCarAsDriver,
   taskEnterCarAsPassenger,
   taskLeaveAnyCar,
   taskGoToCoordAnyMeans,
+  taskGoStraightToCoord,
   taskGotoChar,
+  taskGotoCharAiming,
+  taskGotoCharOffset,
   taskFollowPathNodesToCoord,
   taskPlayAnim,
   taskDie,

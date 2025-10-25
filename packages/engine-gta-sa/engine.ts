@@ -31,7 +31,7 @@ export class Engine implements IEngine {
   }
 
   createCharacterHandle(options: CharacterHandleConstructorOptions) {
-    const characterHandle = CharacterHandle.createNpc(this, options);
+    const characterHandle = CharacterHandle.createNpc(options);
     this.events.on('terminate', () => characterHandle.destroy());
 
     return characterHandle;
@@ -47,7 +47,7 @@ export class Engine implements IEngine {
   }
 
   getPlayerCharacterHandle() {
-    return CharacterHandle.createPlayerHandle(this);
+    return CharacterHandle.getPlayerHandle();
   }
 
   getTime() {

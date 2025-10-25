@@ -1,7 +1,6 @@
 import type {
   CharacterHandleConstructorOptions,
   ICharacterHandle,
-  IEngine,
   Point,
 } from '@sentient-world/engine';
 
@@ -11,7 +10,6 @@ import {
   deleteChar,
   doesCharExist,
   dontRemoveChar,
-  freezeCharPosition,
   getCharCoordinates,
   getCharHeading,
   loadAllModelsNow,
@@ -19,26 +17,20 @@ import {
   PedType,
   PLAYER_PED,
   requestModel,
-  setCharCollision,
   setCharCoordinates,
   setCharHeading,
-  setCharNeverTargetted,
-  setCharProofs,
-  setCharVisible,
   setLoadCollisionForCharFlag,
   taskAchieveHeading,
-  taskGotoChar,
+  taskGoStraightToCoord,
   taskWanderStandard,
   type PedHandle,
 } from '@sentient-world/moonloader';
 
 export class CharacterHandle implements ICharacterHandle {
-  private readonly engine: IEngine;
-  private readonly modelId: number;
   private readonly ped: PedHandle;
 
   /** Создаёт игрового персонажа, возвращает его модель */
-  static createNpc(engine: IEngine, options: CharacterHandleConstructorOptions) {
+  static createNpc(options: CharacterHandleConstructorOptions) {
     requestModel(options.modelId);
     loadAllModelsNow();
 
@@ -50,18 +42,15 @@ export class CharacterHandle implements ICharacterHandle {
 
     markModelAsNoLongerNeeded(options.modelId);
 
-    return new CharacterHandle(engine, options.modelId, ped);
+    return new CharacterHandle(ped);
   }
 
   /** Возвращает модель персонажа игрока */
-  static createPlayerHandle(engine: IEngine) {
-    const CJ_MODEL = 0;
-    return new CharacterHandle(engine, CJ_MODEL, PLAYER_PED);
+  static getPlayerHandle() {
+    return new CharacterHandle(PLAYER_PED);
   }
 
-  constructor(engine: IEngine, modelId: number, ped: PedHandle) {
-    this.engine = engine;
-    this.modelId = modelId;
+  constructor(ped: PedHandle) {
     this.ped = ped;
   }
 
@@ -98,22 +87,7 @@ export class CharacterHandle implements ICharacterHandle {
   }
 
   taskGoToPoint(point: Point) {
-    // TODO: Избавиться от вспомогательного персонажа и заставлять текущего персонажа бежать например к объекту
-    // Только путём создания вспомогательного педа можно заставить педа побежать на рандомные координаты
-    const guide = createChar(PedType.CIVMALE, this.modelId, point.x, point.y, point.z);
-    setCharVisible(guide, false);
-    setCharCollision(guide, false);
-    setCharProofs(guide, true, true, true, true, true);
-    setCharNeverTargetted(guide, true);
-    freezeCharPosition(guide, true);
-
-    taskGotoChar(this.ped, guide, -1, 1.0);
-
-    this.engine.events.on('terminate', () => {
-      if (doesCharExist(guide)) {
-        deleteChar(guide);
-      }
-    });
+    taskGoStraightToCoord(this.ped, point.x, point.y, point.z, 4, 0);
   }
 
   taskWander(): void {
