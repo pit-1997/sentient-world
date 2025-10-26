@@ -1,20 +1,188 @@
 # @sentient-world/htn
 
-Реализация HTN (Hierarchical Task Network) системы планирования.
+Простая и эффективная реализация HTN (Hierarchical Task Network) системы планирования для управления поведением NPC.
 
-## Описание
+## Что такое HTN
 
-HTN (Hierarchical Task Network) — это алгоритм планирования, который разбивает сложные задачи на простые действия. Система состоит из трёх основных компонентов:
+HTN (Hierarchical Task Network) — это алгоритм планирования, который разбивает сложные задачи на простые действия через иерархическую декомпозицию. Вместо поиска пути к цели, HTN описывает **как** достигать цели через методы и подзадачи.
 
-- **Планировщик (Planner)** — разбивает составные задачи на примитивные действия
-- **Исполнитель (Executor)** — последовательно выполняет план действий
-- **Агент (Agent)** — объединяет планировщик и исполнителя, автоматически перепланируя при необходимости
+## Архитектурные принципы
+
+### Простота состояния
+
+Состояние — это обычный объект с данными, без методов:
+
+```typescript
+interface GameState {
+  health: number;
+  position: Point;
+  inventory: string[];
+}
+```
+
+### Dependency Injection
+
+Сервисы и зависимости передаются в конструкторе задач:
+
+```typescript
+class MoveTask implements IPrimitiveTask<GameState> {
+  constructor(private actor: IActor) {}
+
+  execute(state: GameState): ExecutionStatus {
+    return this.actor.moveTo(state.targetPosition);
+  }
+}
+```
+
+### Разделение планирования и выполнения
+
+- **Планирование** (`canExecute`, `applyEffects`, `preconditions`) — работает только с данными состояния
+- **Выполнение** (`execute`) — может использовать сервисы и изменять мир
+
+## Компоненты системы
+
+### Примитивные задачи
+
+Атомарные действия, которые не разбиваются на подзадачи:
+
+```typescript
+class EatTask implements IPrimitiveTask<GameState> {
+  constructor(private actor: IActor) {}
+
+  canExecute(state: GameState): boolean {
+    return state.hasFood && state.hunger > 50;
+  }
+
+  execute(state: GameState): ExecutionStatus {
+    return this.actor.eat() ? 'success' : 'failure';
+  }
+
+  applyEffects(state: GameState): GameState {
+    return { ...state, hunger: 0, hasFood: false };
+  }
+}
+```
+
+### Составные задачи
+
+Сложные задачи, которые разбиваются на подзадачи через методы:
+
+```typescript
+class SurviveTask implements ICompoundTask<GameState> {
+  name = 'Survive';
+
+  getMethods(): IMethod<GameState>[] {
+    return [
+      {
+        name: 'EatWhenHungry',
+        preconditions: (state) => state.hunger > 50 && state.hasFood,
+        decompose: () => [new EatTask(this.actor)],
+      },
+      {
+        name: 'FindFood',
+        preconditions: (state) => state.hunger > 50 && !state.hasFood,
+        decompose: () => [new FindFoodTask(this.actor)],
+      },
+    ];
+  }
+}
+```
+
+### Планировщик
+
+Рекурсивно декомпозирует задачи до примитивных действий:
+
+```typescript
+const planner = new Planner<GameState>();
+const plan = planner.plan(rootTask, currentState);
+// Результат: [FindFoodTask, EatTask]
+```
+
+### Исполнитель
+
+Последовательно выполняет план:
+
+```typescript
+const executor = new Executor(plan);
+const result = executor.tick(currentState); // 'success' | 'running' | 'failure'
+```
+
+### Агент
+
+Автоматически управляет планированием и выполнением:
+
+```typescript
+const agent = new Agent(new SurviveTask());
+
+// В игровом цикле
+function gameLoop() {
+  const state = getCurrentGameState();
+  agent.tick(state); // планирует и выполняет автоматически
+}
+```
+
+## Быстрый старт
+
+```typescript
+import { Agent } from '@sentient-world/htn';
+
+// 1. Определите состояние
+interface GameState {
+  health: number;
+  position: Point;
+  hasWeapon: boolean;
+}
+
+// 2. Создайте примитивные задачи
+class AttackTask implements IPrimitiveTask<GameState> {
+  constructor(private actor: IActor) {}
+
+  canExecute(state: GameState): boolean {
+    return state.hasWeapon && state.health > 0;
+  }
+
+  execute(state: GameState): ExecutionStatus {
+    return this.actor.attack() ? 'success' : 'failure';
+  }
+
+  applyEffects(state: GameState): GameState {
+    return { ...state, health: state.health - 10 };
+  }
+}
+
+// 3. Создайте составную задачу
+class FightTask implements ICompoundTask<GameState> {
+  constructor(private actor: IActor) {}
+
+  name = 'Fight';
+
+  getMethods(): IMethod<GameState>[] {
+    return [
+      {
+        name: 'AttackWithWeapon',
+        preconditions: (state) => state.hasWeapon,
+        decompose: () => [new AttackTask(this.actor)],
+      },
+    ];
+  }
+}
+
+// 4. Создайте и запустите агента
+const actor = new Actor();
+const agent = new Agent(new FightTask(actor));
+
+// В игровом цикле
+const state = { health: 100, position: { x: 0, y: 0 }, hasWeapon: true };
+agent.tick(state);
+```
 
 ## Ключевые особенности
 
-- **Разделение контекста и состояния** — контекст содержит сервисы, состояние содержит данные
-- **Архитектурная защита** — планировщик работает только с состоянием, исключая случайные побочные эффекты
-- **Типобезопасность** — полная поддержка TypeScript с выводом типов
+- **Типобезопасность** — полная поддержка TypeScript
+- **Простота** — состояние это обычные объекты
+- **Производительность** — эффективное клонирование состояния
+- **Гибкость** — любые зависимости через DI
+- **Автоматическое переplanирование** — агент перестраивает план при провале
 
 ## Установка
 
@@ -22,289 +190,32 @@ HTN (Hierarchical Task Network) — это алгоритм планирован
 npm install @sentient-world/htn
 ```
 
-## Быстрый старт
+## Важные моменты
 
-### 1. Определите состояние мира и контекст
+### Чистота планирования
+
+Методы планирования (`canExecute`, `applyEffects`, `preconditions`) должны работать **только с данными состояния**. Не обращайтесь к сервисам в этих методах — это может нарушить корректность планирования.
 
 ```typescript
-import type { IContext } from '@sentient-world/htn';
-
-// Состояние мира - только данные
-interface GameState {
-  playerEnergy: number;
-  isHungry: boolean;
-  position: Vector3;
+// ❌ Плохо - обращение к сервису при планировании
+canExecute(state: GameState): boolean {
+  return state.hasWeapon && this.actor.isAlive(); // опасно!
 }
 
-// Контекст - состояние + сервисы
-interface GameContext extends IContext<GameState> {
-  state: GameState;
-  services: {
-    actor: Actor;
-    world: World;
-    ui: UIManager;
-  };
-  cloneState(): GameState;
-}
-
-function createGameContext(actor: Actor, world: World): GameContext {
-  return {
-    state: {
-      playerEnergy: actor.getEnergy(),
-      isHungry: actor.isHungry(),
-      position: actor.getPosition(),
-    },
-    services: { actor, world, ui: new UIManager() },
-    cloneState() {
-      return { ...this.state };
-    },
-  };
+// ✅ Хорошо - только данные состояния
+canExecute(state: GameState): boolean {
+  return state.hasWeapon && state.health > 0;
 }
 ```
 
-### 2. Создайте примитивные задачи
+### Immutable состояние
+
+Всегда возвращайте новое состояние в `applyEffects`:
 
 ```typescript
-import type { IPrimitiveTask, ExecutionStatus } from '@sentient-world/htn';
-
-class EatTask implements IPrimitiveTask<GameContext> {
-  name = 'Eat';
-
-  canExecute(state: GameState): boolean {
-    return state.isHungry;
-  }
-
-  execute(context: GameContext): ExecutionStatus {
-    // Используем сервисы для реального действия
-    const success = context.services.actor.eat();
-    if (success) {
-      context.services.ui.showMessage('Player is eating...');
-      return 'success';
-    }
-    return 'failure';
-  }
-
-  applyEffects(state: GameState): GameState {
-    // Только симуляция для планирования - никаких сервисов!
-    return {
-      ...state,
-      isHungry: false,
-      playerEnergy: state.playerEnergy + 20,
-    };
-  }
-}
-
-class SleepTask implements IPrimitiveTask<GameContext> {
-  name = 'Sleep';
-
-  canExecute(state: GameState): boolean {
-    return state.playerEnergy < 50;
-  }
-
-  execute(context: GameContext): ExecutionStatus {
-    context.services.actor.sleep();
-    context.services.ui.showMessage('Player is sleeping...');
-    return 'success';
-  }
-
-  applyEffects(state: GameState): GameState {
-    return {
-      ...state,
-      playerEnergy: 100,
-    };
-  }
+applyEffects(state: GameState): GameState {
+  return { ...state, health: state.health - 10 }; // новый объект
 }
 ```
 
-### 3. Создайте составную задачу с методами
-
-```typescript
-import type { ICompoundTask, IMethod } from '@sentient-world/htn';
-
-class LiveDayTask implements ICompoundTask<GameContext> {
-  name = 'LiveDay';
-
-  getMethods(): IMethod<GameContext>[] {
-    return [
-      {
-        name: 'TiredAndHungry',
-        preconditions: (state) => state.playerEnergy < 30 && state.isHungry,
-        decompose: () => [new EatTask(), new SleepTask()],
-      },
-      {
-        name: 'OnlyTired',
-        preconditions: (state) => state.playerEnergy < 30,
-        decompose: () => [new SleepTask()],
-      },
-      {
-        name: 'OnlyHungry',
-        preconditions: (state) => state.isHungry,
-        decompose: () => [new EatTask()],
-      },
-      {
-        name: 'DoNothing',
-        preconditions: () => true, // fallback
-        decompose: () => [],
-      },
-    ];
-  }
-}
-```
-
-### 4. Создайте и запустите агента
-
-```typescript
-import { Agent } from '@sentient-world/htn';
-
-const actor = new Actor();
-const world = new World();
-const rootTask = new LiveDayTask();
-const agent = new Agent(rootTask);
-
-// Каждый игровой тик
-function gameLoop() {
-  const context = createGameContext(actor, world);
-  agent.tick(context);
-}
-```
-
-## Основные концепции
-
-### Разделение контекста и состояния
-
-**Ключевая особенность:** HTN строго разделяет контекст (сервисы) и состояние (данные).
-
-```typescript
-interface IContext<TState> {
-  state: TState; // Данные для планирования
-  cloneState(): TState; // Клонирование состояния
-  // + любые сервисы на усмотрение реализации
-}
-```
-
-- **Состояние (State)** — снимок данных мира на момент планирования
-- **Контекст (Context)** — содержит состояние + ссылки на сервисы/объекты
-- **Планировщик** работает только с состоянием (защита от побочных эффектов)
-- **Исполнитель** использует полный контекст (доступ к сервисам)
-
-### Примитивные задачи (Primitive Tasks)
-
-Атомарные действия, которые не могут быть разбиты на более мелкие:
-
-- `canExecute(state)` — проверка возможности выполнения (только состояние)
-- `execute(context)` — выполнение действия (полный контекст с сервисами)
-- `applyEffects(state)` — симуляция эффектов для планирования (только состояние)
-
-**Важно:** `applyEffects` получает только состояние — планировщик **не может** случайно вызвать реальные действия.
-
-### Составные задачи (Compound Tasks)
-
-Сложные задачи, которые разбиваются на подзадачи через методы:
-
-- `getMethods()` — возвращает список методов в порядке приоритета
-
-### Методы (Methods)
-
-Способы декомпозиции составной задачи:
-
-- `preconditions(state)` — проверка применимости метода (только состояние)
-- `decompose(state)` — разбиение на подзадачи (только состояние)
-
-Планировщик выбирает **первый метод**, чьи предусловия выполнены.
-
-### Планировщик (Planner)
-
-Рекурсивно декомпозирует корневую задачу до списка примитивных действий:
-
-```typescript
-import { Planner } from '@sentient-world/htn';
-
-const planner = new Planner<GameContext>();
-const plan = planner.plan(rootTask, context);
-// plan: [EatTask, SleepTask]
-```
-
-Планировщик передаёт в `applyEffects` и `preconditions` только состояние, что исключает случайные побочные эффекты.
-
-### Исполнитель (Executor)
-
-Последовательно выполняет примитивные задачи из плана:
-
-```typescript
-import { Executor } from '@sentient-world/htn';
-
-const executor = new Executor<GameContext>(plan);
-const result = executor.tick(context); // 'success' | 'running' | 'failure'
-```
-
-Статусы выполнения:
-
-- `'success'` — задача выполнена успешно
-- `'running'` — задача ещё выполняется
-- `'failure'` — задача провалилась
-
-### Агент (Agent)
-
-Автоматически управляет планированием и выполнением:
-
-```typescript
-import { Agent } from '@sentient-world/htn';
-
-const agent = new Agent(rootTask);
-agent.tick(context); // планирует и выполняет
-```
-
-Агент автоматически:
-
-- Создаёт план при первом вызове `tick()`
-- Перепланирует если план провалился или завершился
-- Ограничивает количество попыток переплана (максимум 3)
-
-## Вложенные составные задачи
-
-```typescript
-class PrepareSupperTask implements ICompoundTask<KitchenContext> {
-  name = 'PrepareSupper';
-
-  getMethods(): IMethod<KitchenContext>[] {
-    return [
-      {
-        name: 'PastaAndSide',
-        preconditions: (state) => state.ingredients.pasta && state.ingredients.rice,
-        decompose: () => [
-          new CookPastaTask(),
-          new PrepareSideTask(), // ← вложенная составная задача
-        ],
-      },
-    ];
-  }
-}
-```
-
-## Задачи с долгим выполнением
-
-```typescript
-class MoveToPointTask implements IPrimitiveTask<GameContext> {
-  name = 'MoveToPoint';
-  private progress = 0;
-
-  canExecute(state: GameState): boolean {
-    return !state.isAtDestination;
-  }
-
-  execute(context: GameContext): ExecutionStatus {
-    this.progress += 0.1;
-    context.services.ui.updateProgress(this.progress);
-
-    if (this.progress >= 1) {
-      return 'success';
-    }
-
-    return 'running'; // продолжаем выполнение на следующем тике
-  }
-
-  applyEffects(state: GameState): GameState {
-    return { ...state, position: this.targetPosition };
-  }
-}
-```
+Эта архитектура обеспечивает простоту использования, высокую производительность и надёжность планирования для создания сложного поведения NPC.
