@@ -5,12 +5,14 @@ import type {
   IThread,
   Key,
   ThreadFunction,
+  Time,
 } from '@sentient-world/engine';
 
 import { EventEmitter } from '@sentient-world/event-emitter';
 import {
   addEventHandler,
   getTimeOfDay,
+  setTimeOfDay,
   wasKeyPressed,
   type VKey,
 } from '@sentient-world/moonloader';
@@ -54,6 +56,10 @@ export class Engine implements IEngine {
     const [hours, minutes] = getTimeOfDay();
 
     return { hours, minutes };
+  }
+
+  setTime(time: Time) {
+    setTimeOfDay(time.hours, time.minutes);
   }
 
   private listenTerminate() {

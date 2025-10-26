@@ -17,7 +17,7 @@ import {
   setCharHeading,
   setLoadCollisionForCharFlag,
   taskAchieveHeading,
-  taskGoStraightToCoord,
+  taskFollowPathNodesToCoord,
   taskWanderStandard,
   type PedHandle,
 } from '@sentient-world/moonloader';
@@ -83,7 +83,7 @@ export class Actor implements IActor {
   }
 
   taskGoToPoint(point: Point) {
-    taskGoStraightToCoord(this.ped, point.x, point.y, point.z, 4, 0);
+    taskFollowPathNodesToCoord(this.ped, point.x, point.y, point.z, 4, 0);
   }
 
   taskWander(): void {

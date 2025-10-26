@@ -3,10 +3,6 @@ export function deepClone<T>(obj: T): T {
     return obj;
   }
 
-  if (obj instanceof Date) {
-    return new Date(obj.getTime()) as T;
-  }
-
   if (Array.isArray(obj)) {
     return obj.map((item) => deepClone(item)) as T;
   }

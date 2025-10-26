@@ -112,27 +112,6 @@ describe('deepClone', () => {
     });
   });
 
-  describe('даты', () => {
-    it('если передан объект Date, возвращает новую дату с тем же временем', () => {
-      const original = new Date('2023-01-01T00:00:00Z');
-      const cloned = deepClone(original);
-
-      expect(cloned).toStrictEqual(original);
-      expect(cloned).not.toBe(original);
-      expect(cloned.getTime()).toBe(original.getTime());
-    });
-
-    it('если изменяется клонированная дата, оригинальная дата не изменяется', () => {
-      const original = new Date('2023-01-01T00:00:00Z');
-      const cloned = deepClone(original);
-
-      cloned.setFullYear(2024);
-
-      expect(original.getFullYear()).toBe(2023);
-      expect(cloned.getFullYear()).toBe(2024);
-    });
-  });
-
   describe('функции', () => {
     it('если передана функция, возвращает ту же функцию', () => {
       const original = jest.fn().mockReturnValue(42);

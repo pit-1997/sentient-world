@@ -1,5 +1,4 @@
-import type { IActor, IEngine, IGeometry, Point, Time } from '@sentient-world/engine';
-import type { IContext } from '@sentient-world/htn';
+import type { Point, Time } from '@sentient-world/engine';
 
 export type SentientWorldState = {
   world: {
@@ -8,13 +7,5 @@ export type SentientWorldState = {
   character: {
     location: Point;
     spawn: Point;
-  };
-};
-
-export type SentientWorldContext = IContext<SentientWorldState> & {
-  services: {
-    actor: IActor;
-    engine: IEngine;
-    geometry: IGeometry;
   };
 };
