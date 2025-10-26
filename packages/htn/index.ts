@@ -2,13 +2,13 @@ export type {
   ExecutionStatus,
   IAgent,
   ICompoundTask,
+  IContext,
   IExecutor,
   IExecutorFactory,
   IMethod,
   IPlanner,
   IPlannerFactory,
   IPrimitiveTask,
-  IState,
   ITask,
 } from './types';
 

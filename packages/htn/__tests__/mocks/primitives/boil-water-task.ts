@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
 /** Вскипятить воду */
-export class BoilWaterTask implements IPrimitiveTask<KitchenState> {
+export class BoilWaterTask implements IPrimitiveTask<KitchenContext> {
   name = 'BoilWater';
 
   canExecute(state: KitchenState): boolean {
@@ -15,8 +15,9 @@ export class BoilWaterTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.time += 10; // 10 минут на кипячение
-    return newState;
+    return {
+      ...state,
+      time: state.time + 10,
+    };
   }
 }

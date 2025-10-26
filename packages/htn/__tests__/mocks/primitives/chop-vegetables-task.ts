@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
 /** Нарезать овощи */
-export class ChopVegetablesTask implements IPrimitiveTask<KitchenState> {
+export class ChopVegetablesTask implements IPrimitiveTask<KitchenContext> {
   name = 'ChopVegetables';
 
   constructor(private vegetable: 'tomatoes' | 'onion') {}
@@ -17,8 +17,9 @@ export class ChopVegetablesTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.time += 5; // 5 минут на нарезку
-    return newState;
+    return {
+      ...state,
+      time: state.time + 5, // 5 минут на нарезку
+    };
   }
 }

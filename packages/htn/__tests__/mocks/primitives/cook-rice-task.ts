@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
 /** Варить рис */
-export class CookRiceTask implements IPrimitiveTask<KitchenState> {
+export class CookRiceTask implements IPrimitiveTask<KitchenContext> {
   name = 'CookRice';
 
   canExecute(state: KitchenState): boolean {
@@ -15,9 +15,13 @@ export class CookRiceTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients.rice = false;
-    newState.time += 20; // рис варится дольше
-    return newState;
+    return {
+      ...state,
+      time: state.time + 20, // рис варится дольше
+      ingredients: {
+        ...state.ingredients,
+        rice: false,
+      },
+    };
   }
 }

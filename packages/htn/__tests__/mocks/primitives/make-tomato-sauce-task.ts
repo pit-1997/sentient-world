@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
 /** Приготовить томатный соус */
-export class MakeTomatoSauceTask implements IPrimitiveTask<KitchenState> {
+export class MakeTomatoSauceTask implements IPrimitiveTask<KitchenContext> {
   name = 'MakeTomatoSauce';
 
   canExecute(state: KitchenState): boolean {
@@ -15,9 +15,13 @@ export class MakeTomatoSauceTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients.tomatoes = false;
-    newState.time += 15;
-    return newState;
+    return {
+      ...state,
+      time: state.time + 15,
+      ingredients: {
+        ...state.ingredients,
+        tomatoes: false,
+      },
+    };
   }
 }

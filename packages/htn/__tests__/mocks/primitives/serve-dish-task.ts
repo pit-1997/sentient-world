@@ -1,8 +1,8 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
-export class ServeDishTask implements IPrimitiveTask<KitchenState> {
+export class ServeDishTask implements IPrimitiveTask<KitchenContext> {
   constructor(
     public name: string,
     private dishName: string
@@ -17,8 +17,9 @@ export class ServeDishTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.prepared.push(this.dishName);
-    return newState;
+    return {
+      ...state,
+      prepared: [...state.prepared, this.dishName],
+    };
   }
 }

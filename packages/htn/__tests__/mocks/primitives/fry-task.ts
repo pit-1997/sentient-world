@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenState } from '../state';
+import type { KitchenContext, KitchenState } from '../context';
 
 /** Жарить на сковороде */
-export class FryTask implements IPrimitiveTask<KitchenState> {
+export class FryTask implements IPrimitiveTask<KitchenContext> {
   name = 'Fry';
 
   constructor(private ingredient: 'onion' | 'chicken') {}
@@ -17,9 +17,13 @@ export class FryTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients[this.ingredient] = false;
-    newState.time += 10;
-    return newState;
+    return {
+      ...state,
+      time: state.time + 10,
+      ingredients: {
+        ...state.ingredients,
+        [this.ingredient]: false,
+      },
+    };
   }
 }
