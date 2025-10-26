@@ -2,7 +2,6 @@ import type { IMethod, ICompoundTask } from '../../../types';
 
 import { PlainRiceMethod } from '../methods/plain-rice-method';
 import { RiceWithVegetablesMethod } from '../methods/rice-with-vegetables-method';
-
 import type { KitchenState } from '../state';
 
 /** Составная задача: Приготовить гарнир */

@@ -15,8 +15,9 @@ export class BoilWaterTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.time += 10; // 10 минут на кипячение
-    return newState;
+    return {
+      ...state,
+      time: state.time + 10,
+    };
   }
 }

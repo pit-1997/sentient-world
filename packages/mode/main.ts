@@ -18,6 +18,7 @@ function main() {
       const angle = player.getAngle();
       const point = player.getPoint();
 
+      engine.setTime({ hours: 21, minutes: 30 });
       logger.log(`x: ${point.x}, y: ${point.y}, z: ${point.z}, angle: ${angle}`);
     }
   });

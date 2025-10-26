@@ -17,8 +17,9 @@ export class ServeDishTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.prepared.push(this.dishName);
-    return newState;
+    return {
+      ...state,
+      prepared: [...state.prepared, this.dishName],
+    };
   }
 }

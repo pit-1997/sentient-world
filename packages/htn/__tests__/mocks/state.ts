@@ -1,41 +1,33 @@
-import type { IState } from '../../types';
-
 type Ingredient = 'pasta' | 'rice' | 'tomatoes' | 'onion' | 'cheese' | 'chicken';
 type Equipment = 'pot' | 'pan' | 'knife' | 'oven';
 
-export class KitchenState implements IState {
-  constructor(
-    public ingredients: Record<Ingredient, boolean>,
-    public equipment: Record<Equipment, boolean>,
-    public prepared: string[] = [],
-    public time: number = 0
-  ) {}
+export type KitchenState = {
+  ingredients: Record<Ingredient, boolean>;
+  equipment: Record<Equipment, boolean>;
+  prepared: string[];
+  time: number;
+};
 
-  static create(ingredients: Ingredient[], equipment: Equipment[]) {
-    return new KitchenState(
-      {
-        pasta: ingredients.includes('pasta'),
-        rice: ingredients.includes('rice'),
-        tomatoes: ingredients.includes('tomatoes'),
-        onion: ingredients.includes('onion'),
-        cheese: ingredients.includes('cheese'),
-        chicken: ingredients.includes('chicken'),
-      },
-      {
-        pot: equipment.includes('pot'),
-        pan: equipment.includes('pan'),
-        knife: equipment.includes('knife'),
-        oven: equipment.includes('oven'),
-      }
-    );
-  }
-
-  clone(): this {
-    return new KitchenState(
-      { ...this.ingredients },
-      { ...this.equipment },
-      [...this.prepared],
-      this.time
-    ) as this;
-  }
+export function createKitchen(
+  ingridients: Array<keyof KitchenState['ingredients']>,
+  equipment: Array<keyof KitchenState['equipment']>
+): KitchenState {
+  return {
+    prepared: [],
+    time: 0,
+    ingredients: {
+      pasta: ingridients.includes('pasta'),
+      rice: ingridients.includes('rice'),
+      tomatoes: ingridients.includes('tomatoes'),
+      onion: ingridients.includes('onion'),
+      cheese: ingridients.includes('cheese'),
+      chicken: ingridients.includes('chicken'),
+    },
+    equipment: {
+      pot: equipment.includes('pot'),
+      pan: equipment.includes('pan'),
+      knife: equipment.includes('knife'),
+      oven: equipment.includes('oven'),
+    },
+  };
 }

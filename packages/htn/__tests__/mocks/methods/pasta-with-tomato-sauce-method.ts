@@ -4,7 +4,6 @@ import { BoilWaterTask } from '../primitives/boil-water-task';
 import { CookPastaTask } from '../primitives/cook-pasta-task';
 import { MakeTomatoSauceTask } from '../primitives/make-tomato-sauce-task';
 import { ServeDishTask } from '../primitives/serve-dish-task';
-
 import type { KitchenState } from '../state';
 
 /** Метод: Приготовить пасту с томатным соусом */

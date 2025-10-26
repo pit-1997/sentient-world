@@ -15,9 +15,13 @@ export class MakeTomatoSauceTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients.tomatoes = false;
-    newState.time += 15;
-    return newState;
+    return {
+      ...state,
+      time: state.time + 15,
+      ingredients: {
+        ...state.ingredients,
+        tomatoes: false,
+      },
+    };
   }
 }

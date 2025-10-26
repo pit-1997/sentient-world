@@ -17,4 +17,4 @@ export { FryTask } from './primitives/fry-task';
 export { MakeTomatoSauceTask } from './primitives/make-tomato-sauce-task';
 export { ServeDishTask } from './primitives/serve-dish-task';
 
-export { KitchenState } from './state';
+export { type KitchenState, createKitchen } from './state';

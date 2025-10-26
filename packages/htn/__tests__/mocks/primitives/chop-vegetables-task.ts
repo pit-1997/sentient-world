@@ -17,8 +17,9 @@ export class ChopVegetablesTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.time += 5; // 5 минут на нарезку
-    return newState;
+    return {
+      ...state,
+      time: state.time + 5, // 5 минут на нарезку
+    };
   }
 }

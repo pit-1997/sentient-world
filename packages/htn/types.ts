@@ -3,9 +3,10 @@
  */
 export type ExecutionStatus = 'success' | 'running' | 'failure';
 
-export interface IState {
-  clone: () => this;
-}
+/**
+ * Состояние окружения при планировании задач
+ */
+export type IState = Record<string, unknown>;
 
 /**
  * Базовый интерфейс для всех задач
@@ -23,15 +24,15 @@ export interface ITask<TState extends IState> {
 export interface IPrimitiveTask<TState extends IState> extends ITask<TState> {
   /**
    * Выполнить задачу
-   * @param state текущее состояние окружения
+   * @param state состояние окружения
    * @returns результат выполнения (SUCCESS, RUNNING, FAILURE)
    */
   execute: (state: TState) => ExecutionStatus;
 
   /**
    * Проверить можно ли выполнить задачу в текущем состоянии
-   * Проверяется во время выполнения (не планирования)
-   * @param state текущее состояние мира
+   * Проверяется при планировании и при выполнении
+   * @param state состояние окружения
    * @returns true если задачу можно выполнить
    */
   canExecute: (state: TState) => boolean;
@@ -39,7 +40,7 @@ export interface IPrimitiveTask<TState extends IState> extends ITask<TState> {
   /**
    * Применить эффекты задачи к состоянию
    * Возвращает новое состояние с применёнными изменениями
-   * @param state состояние до выполнения задачи
+   * @param state состояние окружения
    * @returns новое состояние после выполнения задачи
    */
   applyEffects: (state: TState) => TState;
@@ -68,7 +69,7 @@ export interface IMethod<TState extends IState> {
   /**
    * Проверить предусловия метода
    * Проверяется во время планирования
-   * @param state состояние мира на момент планирования
+   * @param state состояние окружения
    * @returns true если метод подходит для текущего состояния
    */
   preconditions: (state: TState) => boolean;
@@ -76,7 +77,7 @@ export interface IMethod<TState extends IState> {
   /**
    * Декомпозировать задачу на подзадачи
    * Вызывается только если preconditions вернул true
-   * @param state состояние мира на момент планирования
+   * @param state состояние окружения
    * @returns массив подзадач (примитивных или составных)
    */
   decompose: (state: TState) => ITask<TState>[];
@@ -99,8 +100,8 @@ export interface IPlanner<TState extends IState> {
   /**
    * Построить план выполнения задачи
    * @param rootTask корневая задача (примитивная или составная)
-   * @param state начальное состояние мира
-   * @returns массив примитивных задач для выполнения или null если план построить не удалось
+   * @param state состояние окружения
+   * @returns массив примитивных задач для выполнения или пустой массив если план построить не удалось
    */
   plan: (rootTask: ITask<TState>, state: TState) => IPrimitiveTask<TState>[];
 }
@@ -121,7 +122,7 @@ export interface IExecutorFactory<TState extends IState> {
 export interface IExecutor<TState extends IState> {
   /**
    * Выполнить один тик (один шаг выполнения текущей задачи)
-   * @param state Текущее состояние мира
+   * @param state состояние окружения
    * @returns Результат выполнения текущей задачи
    */
   tick: (state: TState) => ExecutionStatus;
@@ -134,7 +135,7 @@ export interface IAgent<TState extends IState> {
   /**
    * Обновляет состояние агента на один такт
    * Автоматически планирует и перепланирует при необходимости
-   * @param state текущее состояние мира
+   * @param state состояние окружения
    */
   tick(state: TState): void;
 }

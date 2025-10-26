@@ -6,13 +6,14 @@ import { Planner } from '../planner';
 import type { ICompoundTask } from '../types';
 
 import {
+  createKitchen,
   BakedChickenMethod,
   BoilWaterTask,
   ElaborateSupperTask,
-  KitchenState,
   PastaWithTomatoSauceMethod,
   PrepareSupperTask,
   RiceWithVegetablesMethod,
+  type KitchenState,
 } from './mocks';
 
 describe(Planner.name, () => {
@@ -20,7 +21,7 @@ describe(Planner.name, () => {
     describe('планирование примитивной задачи', () => {
       it('если canExecute возвращает true, возвращает массив с одной задачей', () => {
         // Есть кастрюля для кипячения воды
-        const state = KitchenState.create([], ['pot']);
+        const state = createKitchen([], ['pot']);
         const task = new BoilWaterTask();
         const planner = new Planner<KitchenState>();
 
@@ -32,7 +33,7 @@ describe(Planner.name, () => {
 
       it('если canExecute возвращает false, возвращает пустой массив', () => {
         // Нет кастрюли для кипячения воды
-        const state = KitchenState.create([], []);
+        const state = createKitchen([], []);
         const task = new BoilWaterTask();
         const planner = new Planner<KitchenState>();
 
@@ -45,7 +46,7 @@ describe(Planner.name, () => {
     describe('планирование составной задачи', () => {
       it('выбирает первый метод preconditions которого вернул true', () => {
         // Есть всё для пасты (первый метод) и для риса (третий метод)
-        const state = KitchenState.create(
+        const state = createKitchen(
           ['pasta', 'rice', 'tomatoes', 'onion'],
           ['pot', 'pan', 'knife']
         );
@@ -65,7 +66,7 @@ describe(Planner.name, () => {
       it('пропускает методы preconditions которых вернули false', () => {
         // Нет пасты (первый метод не подходит), нет курицы (второй не подходит),
         // но есть рис и овощи (третий метод подходит)
-        const state = KitchenState.create(['rice', 'onion'], ['pot', 'pan', 'knife']);
+        const state = createKitchen(['rice', 'onion'], ['pot', 'pan', 'knife']);
         const task = new PrepareSupperTask();
         const planner = new Planner<KitchenState>();
 
@@ -81,7 +82,7 @@ describe(Planner.name, () => {
       it('пропускает методы, вложенные составные задачи которого не могут быть декомпозированы', () => {
         // Есть паста и помидоры для основного блюда,
         // но для гарнира (PrepareSideTask) нет ни риса, ни овощей
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot', 'pan', 'knife']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot', 'pan', 'knife']);
         const task = new ElaborateSupperTask();
         const planner = new Planner<KitchenState>();
 
@@ -93,7 +94,7 @@ describe(Planner.name, () => {
 
       it('пропускает методы, примитивные задачи которого не могут быть выполнены (canExecute = false)', () => {
         // Есть паста и помидоры, но нет сковороды для соуса
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
 
         const method = new PastaWithTomatoSauceMethod();
         const taskWithFailingPrimitive: ICompoundTask<KitchenState> = {
@@ -110,7 +111,7 @@ describe(Planner.name, () => {
 
       it('применяет эффекты примитивных задач к состоянию для планирования следующих задач', () => {
         // Есть паста, помидоры и всё оборудование
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot', 'pan']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot', 'pan']);
         const planner = new Planner<KitchenState>();
         const method = new PastaWithTomatoSauceMethod();
         const task: ICompoundTask<KitchenState> = {
@@ -137,7 +138,7 @@ describe(Planner.name, () => {
         // Второй метод (курица) не подходит - нет курицы
         // Третий метод (рис с овощами) не подходит - нет овощей
         // Четвёртый метод (простой рис) должен сработать
-        const state = KitchenState.create(['rice'], ['pot']);
+        const state = createKitchen(['rice'], ['pot']);
         const task = new PrepareSupperTask();
         const planner = new Planner<KitchenState>();
 
@@ -153,7 +154,7 @@ describe(Planner.name, () => {
 
       it('последовательность составных и примитивных задач сводит к массиву примитивных задач', () => {
         // Есть паста, рис, помидоры, овощи - всё для сложного ужина
-        const state = KitchenState.create(
+        const state = createKitchen(
           ['pasta', 'rice', 'tomatoes', 'onion'],
           ['pot', 'pan', 'knife']
         );
@@ -172,7 +173,7 @@ describe(Planner.name, () => {
 
       it('декомпозирует вложенные составные задачи', () => {
         // Есть всё для сложного ужина с вложенной составной задачей
-        const state = KitchenState.create(
+        const state = createKitchen(
           ['pasta', 'rice', 'tomatoes', 'onion'],
           ['pot', 'pan', 'knife']
         );
@@ -197,7 +198,7 @@ describe(Planner.name, () => {
 
       it('если ни один из методов не может быть выполнен, возвращает пустой массив', () => {
         // Совершенно пустая кухня - ни ингредиентов, ни оборудования
-        const state = KitchenState.create([], []);
+        const state = createKitchen([], []);
         const planner = new Planner<KitchenState>();
 
         // Составная задача без fallback метода

@@ -3,7 +3,7 @@ import { Agent } from '@sentient-world/htn';
 
 import type { ICharacter } from '../characters';
 import { LiveDayTask } from '../tasks/compounds/live-day-task';
-import type { ISentientWorldState } from '../types';
+import type { SentientWorldState } from '../types';
 
 export class NPC {
   constructor(
@@ -12,22 +12,27 @@ export class NPC {
     private readonly engine: IEngine,
     private readonly geometry: IGeometry
   ) {
-    const brain = new Agent(new LiveDayTask());
-
-    const state: ISentientWorldState = {
-      actor: this.actor,
-      character: this.character,
-      clone: () => state,
-      engine: this.engine,
-      geometry: this.geometry,
-    };
+    const liveDayTask = new LiveDayTask(this.actor, this.geometry);
+    const brain = new Agent(liveDayTask);
 
     this.engine.createThread((thread) => {
       while (true) {
         thread.wait(1000);
-        brain.tick(state);
+        brain.tick(this.getState());
       }
     });
+  }
+
+  private getState(): SentientWorldState {
+    return {
+      world: {
+        time: this.engine.getTime(),
+      },
+      character: {
+        location: this.actor.getPoint(),
+        spawn: this.character.data.spawn,
+      },
+    };
   }
 
   static spawn(engine: IEngine, geometry: IGeometry, character: ICharacter): NPC {

@@ -11,7 +11,7 @@ import type {
   ExecutionStatus,
 } from '../types';
 
-import { BoilWaterTask, KitchenState, CookPastaTask } from './mocks';
+import { createKitchen, BoilWaterTask, CookPastaTask, type KitchenState } from './mocks';
 
 describe(Agent.name, () => {
   describe('#tick', () => {
@@ -24,7 +24,7 @@ describe(Agent.name, () => {
           create: () => new Executor<KitchenState>([]),
         };
         const agent = new Agent(rootTask, plannerFactory, executorFactory);
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
         const planSpy = jest.spyOn(planner, 'plan');
 
         agent.tick(state);
@@ -41,7 +41,7 @@ describe(Agent.name, () => {
           create: (plan: IPrimitiveTask<KitchenState>[]) => new Executor(plan),
         };
         const agent = new Agent(new CookPastaTask(), plannerFactory, executorFactory);
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
         jest.spyOn(planner, 'plan').mockReturnValueOnce([boilWaterTask]);
         const createExecutorSpy = jest.spyOn(executorFactory, 'create');
         const executeSpy = jest.spyOn(Executor.prototype, 'tick');
@@ -57,7 +57,7 @@ describe(Agent.name, () => {
 
     describe('при последующих вызовах', () => {
       it('если исполнитель на прошлом такте вернул "running", продолжает выполнение', () => {
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
 
         const planner = new Planner<KitchenState>();
         const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
@@ -79,7 +79,7 @@ describe(Agent.name, () => {
       it.each(['success', 'failure'] as const)(
         'если исполнитель на прошлом такте вернул "%s", корневая задача перепланируется',
         (result: ExecutionStatus) => {
-          const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+          const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
 
           const planner = new Planner<KitchenState>();
           const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };
@@ -100,7 +100,7 @@ describe(Agent.name, () => {
       it.each(['success', 'failure'] as const)(
         'если исполнитель на прошлом такте вернул "%s", начинает исполнение нового плана',
         (result: ExecutionStatus) => {
-          const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+          const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
 
           const planner = new Planner<KitchenState>();
           const firstPlan: IPrimitiveTask<KitchenState>[] = [];
@@ -130,7 +130,7 @@ describe(Agent.name, () => {
 
     describe('попытки переплана', () => {
       it('предпринимается, максимум три попытки переплана, после этого переплан не вызывается', () => {
-        const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+        const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
 
         const planner = new Planner<KitchenState>();
         const plannerFactory: IPlannerFactory<KitchenState> = { create: () => planner };

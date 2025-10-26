@@ -3,12 +3,12 @@ import { describe, expect, jest, it } from '@jest/globals';
 import { Executor } from '../executor';
 import type { IPrimitiveTask } from '../types';
 
-import { BoilWaterTask, CookPastaTask, KitchenState } from './mocks';
+import { createKitchen, BoilWaterTask, CookPastaTask, type KitchenState } from './mocks';
 
 describe(Executor.name, () => {
   describe('#tick', () => {
     it('если план пустой, возвращает success', () => {
-      const state = KitchenState.create([], []);
+      const state = createKitchen([], []);
       const executor = new Executor<KitchenState>([]);
 
       const result = executor.tick(state);
@@ -17,7 +17,7 @@ describe(Executor.name, () => {
     });
 
     it('если задача вернула running, возвращает running', () => {
-      const state = KitchenState.create([], ['pot']);
+      const state = createKitchen([], ['pot']);
       const runningTask = new BoilWaterTask();
       jest.spyOn(runningTask, 'execute').mockReturnValue('running');
       const executor = new Executor<KitchenState>([runningTask]);
@@ -28,8 +28,8 @@ describe(Executor.name, () => {
     });
 
     it('если задача вернула failure, возвращает failure', () => {
-      const state = KitchenState.create([], ['pot']);
-      const failingTask = new BoilWaterTask();
+      const state = createKitchen([], ['pot']);
+      const failingTask: IPrimitiveTask<KitchenState> = new BoilWaterTask();
       jest.spyOn(failingTask, 'execute').mockReturnValue('failure');
       const executor = new Executor([failingTask]);
 
@@ -39,8 +39,8 @@ describe(Executor.name, () => {
     });
 
     it('если canExecute текущей задачи возвращает false, возвращает failure', () => {
-      const state = KitchenState.create([], []);
-      const executor = new Executor([new BoilWaterTask()]); // Требует кастрюлю, которой нет
+      const state = createKitchen([], []);
+      const executor = new Executor<KitchenState>([new BoilWaterTask()]); // Требует кастрюлю, которой нет
 
       const result = executor.tick(state);
 
@@ -48,8 +48,8 @@ describe(Executor.name, () => {
     });
 
     it('если задача вернула success и есть ещё задачи к выполнению, возвращает running', () => {
-      const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
-      const executor = new Executor([new BoilWaterTask(), new CookPastaTask()]);
+      const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
+      const executor = new Executor<KitchenState>([new BoilWaterTask(), new CookPastaTask()]);
 
       const result = executor.tick(state); // Первая задача выполнена. Есть ещё задачи, которые можно выполнить
 
@@ -57,8 +57,8 @@ describe(Executor.name, () => {
     });
 
     it('если задача вернула success и это последняя задача, возвращает success', () => {
-      const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
-      const executor = new Executor([new BoilWaterTask(), new CookPastaTask()]);
+      const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
+      const executor = new Executor<KitchenState>([new BoilWaterTask(), new CookPastaTask()]);
 
       executor.tick(state); // Первая задача
       const result = executor.tick(state); // Вторая задача (последняя)
@@ -67,7 +67,7 @@ describe(Executor.name, () => {
     });
 
     it('если предыдущая задача была выполнена, начинает выполнять следующую задачу', () => {
-      const state = KitchenState.create(['pasta', 'tomatoes'], ['pot']);
+      const state = createKitchen(['pasta', 'tomatoes'], ['pot']);
       const boilWaterTask = new BoilWaterTask();
       const cookPastaTask: IPrimitiveTask<KitchenState> = new CookPastaTask();
       const cookPastaTaskSpy = jest.spyOn(cookPastaTask, 'execute');
@@ -80,8 +80,8 @@ describe(Executor.name, () => {
     });
 
     it('если план уже выполнен, возвращает success', () => {
-      const state = KitchenState.create([], ['pot']);
-      const executor = new Executor([new BoilWaterTask()]);
+      const state = createKitchen([], ['pot']);
+      const executor = new Executor<KitchenState>([new BoilWaterTask()]);
 
       const result1 = executor.tick(state); // Завершаем план
       const result2 = executor.tick(state);
@@ -91,10 +91,10 @@ describe(Executor.name, () => {
     });
 
     it('если план уже выполнен, не пытается выполнить последнюю задачу повторно', () => {
-      const state = KitchenState.create([], ['pot']);
+      const state = createKitchen([], ['pot']);
       const boilWaterTask = new BoilWaterTask();
       const canExecuteSpy = jest.spyOn(boilWaterTask, 'canExecute');
-      const executor = new Executor([boilWaterTask]);
+      const executor = new Executor<KitchenState>([boilWaterTask]);
 
       const result1 = executor.tick(state); // Завершаем план
       const result2 = executor.tick(state);
@@ -105,8 +105,8 @@ describe(Executor.name, () => {
     });
 
     it('если план уже провален, возвращает failure', () => {
-      const state = KitchenState.create([], []);
-      const executor = new Executor([new BoilWaterTask()]); // Требует кастрюлю
+      const state = createKitchen([], []);
+      const executor = new Executor<KitchenState>([new BoilWaterTask()]); // Требует кастрюлю
 
       const result1 = executor.tick(state); // Проваливаем план
       const result2 = executor.tick(state);
@@ -116,10 +116,10 @@ describe(Executor.name, () => {
     });
 
     it('если план уже провален, не пытается выполнить задачу ещё раз', () => {
-      const state = KitchenState.create([], []);
+      const state = createKitchen([], []);
       const boilWaterTask = new BoilWaterTask();
       const canExecuteSpy = jest.spyOn(boilWaterTask, 'canExecute');
-      const executor = new Executor([boilWaterTask]); // Требует кастрюлю
+      const executor = new Executor<KitchenState>([boilWaterTask]); // Требует кастрюлю
 
       executor.tick(state); // Проваливаем план
       executor.tick(state);

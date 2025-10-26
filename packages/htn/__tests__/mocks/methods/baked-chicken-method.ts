@@ -2,7 +2,6 @@ import type { IMethod, IPrimitiveTask } from '../../../types';
 
 import { BakeTask } from '../primitives/bake-task';
 import { ServeDishTask } from '../primitives/serve-dish-task';
-
 import type { KitchenState } from '../state';
 
 /** Метод: Запечённая курица */

@@ -1,3 +1,4 @@
+import { deepClone } from './deep-clone';
 import { isCompoundTask, isPrimitiveTask } from './guards';
 import type {
   ICompoundTask,
@@ -18,20 +19,9 @@ interface Decomposition<TState extends IState> {
   state: TState;
 }
 
-/**
- * Реализация планировщика HTN
- * Рекурсивно декомпозирует составные задачи до примитивных
- */
 export class Planner<TState extends IState> implements IPlanner<TState> {
-  /**
-   * Построить план выполнения задачи
-   * @param rootTask корневая задача
-   * @param state начальное состояние мира
-   * @returns массив примитивных задач для выполнения или пустой массив если план построить не удалось
-   */
   plan(rootTask: ITask<TState>, state: TState): IPrimitiveTask<TState>[] {
-    const result = this.decomposeTask(rootTask, state);
-    return result.plan;
+    return this.decomposeTask(rootTask, state).plan;
   }
 
   /**
@@ -100,12 +90,12 @@ export class Planner<TState extends IState> implements IPlanner<TState> {
   /**
    * Декомпозирует список подзадач
    * @param subtasks подзадачи
-   * @param state начальное состояние
+   * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если хотя бы одна подзадача не декомпозируется)
    */
   private decomposeSubtasks(subtasks: ITask<TState>[], state: TState): Decomposition<TState> {
     const plan: IPrimitiveTask<TState>[] = [];
-    let currentState = state.clone();
+    let currentState: TState = deepClone(state); // реализовать клонирование
 
     for (const subtask of subtasks) {
       const result = this.decomposeTask(subtask, currentState);

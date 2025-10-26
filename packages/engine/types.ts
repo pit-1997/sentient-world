@@ -86,6 +86,9 @@ export interface IEngine {
 
   /** Возвращает время в мире игры */
   getTime(): Time;
+
+  /** Устанавливает время в мире игры */
+  setTime(time: Time): void;
 }
 
 export type ActorConstructorOptions = {

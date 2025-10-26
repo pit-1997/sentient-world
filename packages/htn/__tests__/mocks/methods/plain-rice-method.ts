@@ -3,7 +3,6 @@ import type { IMethod, IPrimitiveTask } from '../../../types';
 import { BoilWaterTask } from '../primitives/boil-water-task';
 import { CookRiceTask } from '../primitives/cook-rice-task';
 import { ServeDishTask } from '../primitives/serve-dish-task';
-
 import type { KitchenState } from '../state';
 
 /** Метод: Простой рис (если нет овощей) */

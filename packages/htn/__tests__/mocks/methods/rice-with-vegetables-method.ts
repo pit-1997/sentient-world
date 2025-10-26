@@ -5,7 +5,6 @@ import { ChopVegetablesTask } from '../primitives/chop-vegetables-task';
 import { CookRiceTask } from '../primitives/cook-rice-task';
 import { FryTask } from '../primitives/fry-task';
 import { ServeDishTask } from '../primitives/serve-dish-task';
-
 import type { KitchenState } from '../state';
 
 /** Метод: Приготовить рис с овощами */

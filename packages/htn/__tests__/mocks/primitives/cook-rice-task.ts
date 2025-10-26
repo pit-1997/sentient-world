@@ -15,9 +15,13 @@ export class CookRiceTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients.rice = false;
-    newState.time += 20; // рис варится дольше
-    return newState;
+    return {
+      ...state,
+      time: state.time + 20, // рис варится дольше
+      ingredients: {
+        ...state.ingredients,
+        rice: false,
+      },
+    };
   }
 }

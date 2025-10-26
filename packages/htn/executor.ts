@@ -1,4 +1,4 @@
-import type { IExecutor, IPrimitiveTask, IState, ExecutionStatus, IExecutorFactory } from './types';
+import type { IExecutor, IExecutorFactory, IPrimitiveTask, IState, ExecutionStatus } from './types';
 
 export class Executor<TState extends IState> implements IExecutor<TState> {
   private currentTaskIndex: number = 0;

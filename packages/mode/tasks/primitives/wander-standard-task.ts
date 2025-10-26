@@ -1,43 +1,46 @@
 import type { IActor } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import type { ISentientWorldState } from '../../types';
+import type { SentientWorldState } from '../../types';
 
-type ShouldStopCondition = (state: ISentientWorldState) => boolean;
+type ShouldStopCondition = (state: SentientWorldState) => boolean;
 
-export class WanderStandardTask implements IPrimitiveTask<ISentientWorldState> {
+export class WanderStandardTask implements IPrimitiveTask<SentientWorldState> {
   name = 'WanderTask';
   private started = false;
 
-  constructor(private readonly shouldStop: ShouldStopCondition) {}
+  constructor(
+    private readonly shouldStop: ShouldStopCondition,
+    private readonly actor: IActor
+  ) {}
 
-  applyEffects(state: ISentientWorldState): ISentientWorldState {
+  applyEffects(state: SentientWorldState): SentientWorldState {
     return state;
   }
 
-  canExecute(state: ISentientWorldState) {
+  canExecute(state: SentientWorldState) {
     return !this.shouldStop(state);
   }
 
-  execute(state: ISentientWorldState): ExecutionStatus {
+  execute(state: SentientWorldState): ExecutionStatus {
     if (this.shouldStop(state)) {
-      this.complete(state.actor);
+      this.complete();
       return 'success';
     }
 
     if (!this.started) {
-      this.start(state.actor);
+      this.start();
     }
 
     return 'running';
   }
 
-  private start(actor: IActor) {
-    actor.taskWander();
+  private start() {
+    this.actor.taskWander();
     this.started = true;
   }
 
-  private complete(actor: IActor) {
-    actor.taskClear();
+  private complete() {
+    this.actor.taskClear();
   }
 }

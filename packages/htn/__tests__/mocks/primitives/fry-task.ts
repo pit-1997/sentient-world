@@ -17,9 +17,13 @@ export class FryTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients[this.ingredient] = false;
-    newState.time += 10;
-    return newState;
+    return {
+      ...state,
+      time: state.time + 10,
+      ingredients: {
+        ...state.ingredients,
+        [this.ingredient]: false,
+      },
+    };
   }
 }

@@ -15,9 +15,13 @@ export class CookPastaTask implements IPrimitiveTask<KitchenState> {
   }
 
   applyEffects(state: KitchenState): KitchenState {
-    const newState = state.clone();
-    newState.ingredients.pasta = false; // использовали пасту
-    newState.time += 15; // 15 минут варки
-    return newState;
+    return {
+      ...state,
+      time: state.time + 15,
+      ingredients: {
+        ...state.ingredients,
+        pasta: false, // использовали пасту
+      },
+    };
   }
 }
