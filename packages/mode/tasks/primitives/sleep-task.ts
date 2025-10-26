@@ -1,24 +1,24 @@
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import type { ISentientWorldState } from '../../types';
+import type { SentientWorldContext, SentientWorldState } from '../../types';
 
-type ShouldStopCondition = (state: ISentientWorldState) => boolean;
+type ShouldStopCondition = (state: SentientWorldState) => boolean;
 
-export class SleepTask implements IPrimitiveTask<ISentientWorldState> {
+export class SleepTask implements IPrimitiveTask<SentientWorldContext> {
   name = 'SleepTask';
 
   constructor(private readonly shouldStop: ShouldStopCondition) {}
 
-  applyEffects(state: ISentientWorldState): ISentientWorldState {
+  applyEffects(state: SentientWorldState): SentientWorldState {
     return state;
   }
 
-  canExecute(state: ISentientWorldState) {
+  canExecute(state: SentientWorldState) {
     return !this.shouldStop(state);
   }
 
-  execute(state: ISentientWorldState): ExecutionStatus {
-    if (this.shouldStop(state)) {
+  execute(context: SentientWorldContext): ExecutionStatus {
+    if (this.shouldStop(context.state)) {
       return 'success';
     }
 

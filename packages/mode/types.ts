@@ -1,17 +1,20 @@
-import type { IActor, IEngine, IGeometry } from '@sentient-world/engine';
-import type { IState } from '@sentient-world/htn';
+import type { IActor, IEngine, IGeometry, Point, Time } from '@sentient-world/engine';
+import type { IContext } from '@sentient-world/htn';
 
-import type { ICharacter } from './characters';
+export type SentientWorldState = {
+  world: {
+    time: Time;
+  };
+  character: {
+    location: Point;
+    spawn: Point;
+  };
+};
 
-export interface Time {
-  hours: number;
-  minutes: number;
-}
-
-export interface ISentientWorldState extends IState {
-  actor: IActor;
-  character: ICharacter;
-  clone: () => this;
-  engine: IEngine;
-  geometry: IGeometry;
-}
+export type SentientWorldContext = IContext<SentientWorldState> & {
+  services: {
+    actor: IActor;
+    engine: IEngine;
+    geometry: IGeometry;
+  };
+};

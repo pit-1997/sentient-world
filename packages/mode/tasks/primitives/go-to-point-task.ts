@@ -1,15 +1,15 @@
 import type { IActor, Point } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import type { ISentientWorldState } from '../../types';
+import type { SentientWorldContext, SentientWorldState } from '../../types';
 
-export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
+export class GoToPointTask implements IPrimitiveTask<SentientWorldContext> {
   name = 'GoToPointTask';
   private started = false;
 
   constructor(private readonly targetPoint: Point) {}
 
-  applyEffects(state: ISentientWorldState): ISentientWorldState {
+  applyEffects(state: SentientWorldState): SentientWorldState {
     return state;
   }
 
@@ -17,24 +17,24 @@ export class GoToPointTask implements IPrimitiveTask<ISentientWorldState> {
     return true;
   }
 
-  execute(state: ISentientWorldState): ExecutionStatus {
-    const point = state.actor.getPoint();
-    const distance = state.geometry.getDistance(point, this.targetPoint);
+  execute(context: SentientWorldContext): ExecutionStatus {
+    const point = context.services.actor.getPoint();
+    const distance = context.services.geometry.getDistance(point, this.targetPoint);
 
     if (distance <= 1) {
-      this.complete(state.actor);
+      this.complete(context.services.actor);
       return 'success';
     }
 
     if (!this.started) {
-      this.start(state);
+      this.start(context.services.actor);
     }
 
     return 'running';
   }
 
-  private start(state: ISentientWorldState) {
-    state.actor.taskGoToPoint(this.targetPoint);
+  private start(actor: IActor) {
+    actor.taskGoToPoint(this.targetPoint);
     this.started = true;
   }
 
