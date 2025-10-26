@@ -1,63 +1,55 @@
+import { deepClone } from './deep-clone';
 import { isCompoundTask, isPrimitiveTask } from './guards';
 import type {
   ICompoundTask,
-  IContext,
   IPlanner,
   IPlannerFactory,
   IPrimitiveTask,
+  IState,
   ITask,
 } from './types';
 
 /**
  * Результат декомпозиции задачи
  */
-interface Decomposition<TContext extends IContext<unknown>> {
+interface Decomposition<TState extends IState> {
   /** Список примитивных задач (пустой если декомпозиция не удалась) */
-  plan: IPrimitiveTask<TContext>[];
+  plan: IPrimitiveTask<TState>[];
   /** Состояние после применения эффектов (исходное если декомпозиция не удалась) */
-  state: TContext['state'];
+  state: TState;
 }
 
-export class Planner<TContext extends IContext<unknown>> implements IPlanner<TContext> {
-  plan(rootTask: ITask<TContext>, context: TContext): IPrimitiveTask<TContext>[] {
-    return this.decomposeTask(rootTask, context, context.state).plan;
+export class Planner<TState extends IState> implements IPlanner<TState> {
+  plan(rootTask: ITask<TState>, state: TState): IPrimitiveTask<TState>[] {
+    return this.decomposeTask(rootTask, state).plan;
   }
 
   /**
    * Декомпозирует задачу
    * @param task задача для декомпозиции
-   * @param context текущий контекст выполнения
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если декомпозиция невозможна)
    */
-  private decomposeTask(
-    task: ITask<TContext>,
-    context: TContext,
-    state: TContext['state']
-  ): Decomposition<TContext> {
+  private decomposeTask(task: ITask<TState>, state: TState): Decomposition<TState> {
     if (isPrimitiveTask(task)) {
       return this.decomposePrimitive(task, state);
     }
 
     if (isCompoundTask(task)) {
-      return this.decomposeCompound(task, context, state);
+      return this.decomposeCompound(task, state);
     }
 
     // Неизвестный тип задачи
-    return { plan: [], state: context.state };
+    return { plan: [], state };
   }
 
   /**
    * Декомпозирует примитивную задачу
    * @param task примитивная задача
-   * @param context текущий контекст выполнения
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если задачу нельзя выполнить)
    */
-  private decomposePrimitive(
-    task: IPrimitiveTask<TContext>,
-    state: TContext['state']
-  ): Decomposition<TContext> {
+  private decomposePrimitive(task: IPrimitiveTask<TState>, state: TState): Decomposition<TState> {
     if (!task.canExecute(state)) {
       return { plan: [], state };
     }
@@ -72,15 +64,10 @@ export class Planner<TContext extends IContext<unknown>> implements IPlanner<TCo
    * Декомпозировать составную задачу
    * Пробует методы в порядке приоритета до первого успешного
    * @param task составная задача
-   * @param context текущий контекст выполнения
    * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если ни один метод не подошёл)
    */
-  private decomposeCompound(
-    task: ICompoundTask<TContext>,
-    context: TContext,
-    state: TContext['state']
-  ): Decomposition<TContext> {
+  private decomposeCompound(task: ICompoundTask<TState>, state: TState): Decomposition<TState> {
     const methods = task.getMethods();
 
     for (const method of methods) {
@@ -89,7 +76,7 @@ export class Planner<TContext extends IContext<unknown>> implements IPlanner<TCo
       }
 
       const subtasks = method.decompose(state);
-      const result = this.decomposeSubtasks(subtasks, context);
+      const result = this.decomposeSubtasks(subtasks, state);
 
       if (result.plan.length > 0) {
         return result;
@@ -103,22 +90,19 @@ export class Planner<TContext extends IContext<unknown>> implements IPlanner<TCo
   /**
    * Декомпозирует список подзадач
    * @param subtasks подзадачи
-   * @param context текущий контекст выполнения
+   * @param state текущее состояние
    * @returns результат декомпозиции (пустой план если хотя бы одна подзадача не декомпозируется)
    */
-  private decomposeSubtasks(
-    subtasks: ITask<TContext>[],
-    context: TContext
-  ): Decomposition<TContext> {
-    const plan: IPrimitiveTask<TContext>[] = [];
-    let currentState: TContext['state'] = context.cloneState();
+  private decomposeSubtasks(subtasks: ITask<TState>[], state: TState): Decomposition<TState> {
+    const plan: IPrimitiveTask<TState>[] = [];
+    let currentState: TState = deepClone(state); // реализовать клонирование
 
     for (const subtask of subtasks) {
-      const result = this.decomposeTask(subtask, context, currentState);
+      const result = this.decomposeTask(subtask, currentState);
 
       // Если подзадача не декомпозировалась - возвращаем пустой план
       if (!result.plan.length) {
-        return { plan: [], state: context.state };
+        return { plan: [], state };
       }
 
       // Добавляем примитивные задачи в план
@@ -135,10 +119,8 @@ export class Planner<TContext extends IContext<unknown>> implements IPlanner<TCo
   }
 }
 
-export class PlannerFactory<TContext extends IContext<unknown>>
-  implements IPlannerFactory<TContext>
-{
-  create(): IPlanner<TContext> {
+export class PlannerFactory<TState extends IState> implements IPlannerFactory<TState> {
+  create(): IPlanner<TState> {
     return new Planner();
   }
 }

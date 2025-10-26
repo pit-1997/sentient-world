@@ -1,8 +1,8 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenContext, KitchenState } from '../context';
+import type { KitchenState } from '../state';
 
-export class ServeDishTask implements IPrimitiveTask<KitchenContext> {
+export class ServeDishTask implements IPrimitiveTask<KitchenState> {
   constructor(
     public name: string,
     private dishName: string

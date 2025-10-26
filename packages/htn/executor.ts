@@ -1,19 +1,13 @@
-import type {
-  IContext,
-  IExecutor,
-  IPrimitiveTask,
-  ExecutionStatus,
-  IExecutorFactory,
-} from './types';
+import type { IExecutor, IExecutorFactory, IPrimitiveTask, IState, ExecutionStatus } from './types';
 
-export class Executor<TContext extends IContext<unknown>> implements IExecutor<TContext> {
+export class Executor<TState extends IState> implements IExecutor<TState> {
   private currentTaskIndex: number = 0;
   private isCompleted: boolean = false;
   private isFailed: boolean = false;
 
-  constructor(private readonly plan: IPrimitiveTask<TContext>[]) {}
+  constructor(private readonly plan: IPrimitiveTask<TState>[]) {}
 
-  tick(context: TContext): ExecutionStatus {
+  tick(state: TState): ExecutionStatus {
     // План уже завершён
     if (this.isCompleted) return 'success';
     if (this.isFailed) return 'failure';
@@ -26,12 +20,12 @@ export class Executor<TContext extends IContext<unknown>> implements IExecutor<T
       return 'success';
     }
 
-    if (!task.canExecute(context)) {
+    if (!task.canExecute(state)) {
       this.isFailed = true;
       return 'failure';
     }
 
-    const result = task.execute(context);
+    const result = task.execute(state);
 
     // Обрабатываем результат
     if (result === 'failure') {
@@ -57,10 +51,8 @@ export class Executor<TContext extends IContext<unknown>> implements IExecutor<T
   }
 }
 
-export class ExecutorFactory<TContext extends IContext<unknown>>
-  implements IExecutorFactory<TContext>
-{
-  create(plan: IPrimitiveTask<TContext>[]): IExecutor<TContext> {
+export class ExecutorFactory<TState extends IState> implements IExecutorFactory<TState> {
+  create(plan: IPrimitiveTask<TState>[]): IExecutor<TState> {
     return new Executor(plan);
   }
 }

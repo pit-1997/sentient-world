@@ -1,11 +1,11 @@
 import { ExecutorFactory } from './executor';
 import { PlannerFactory } from './planner';
 import type {
-  IContext,
   IExecutor,
   IExecutorFactory,
   IPlannerFactory,
   IPrimitiveTask,
+  IState,
   ITask,
   ExecutionStatus,
 } from './types';
@@ -15,7 +15,7 @@ const MAX_REPLAN_ATTEMPTS = 3;
 /**
  * HTN агент, управляющий планированием и выполнением задач
  */
-export class Agent<TContext extends IContext<unknown>> {
+export class Agent<TContext extends IState> {
   private executor: IExecutor<TContext> | null = null;
   private lastResult: ExecutionStatus | null = null;
   private replanAttempts: number = 0;

@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenContext, KitchenState } from '../context';
+import type { KitchenState } from '../state';
 
 /** Нарезать овощи */
-export class ChopVegetablesTask implements IPrimitiveTask<KitchenContext> {
+export class ChopVegetablesTask implements IPrimitiveTask<KitchenState> {
   name = 'ChopVegetables';
 
   constructor(private vegetable: 'tomatoes' | 'onion') {}

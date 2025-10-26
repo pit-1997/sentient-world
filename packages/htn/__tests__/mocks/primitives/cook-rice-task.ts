@@ -1,9 +1,9 @@
 import type { IPrimitiveTask, ExecutionStatus } from '../../../types';
 
-import type { KitchenContext, KitchenState } from '../context';
+import type { KitchenState } from '../state';
 
 /** Варить рис */
-export class CookRiceTask implements IPrimitiveTask<KitchenContext> {
+export class CookRiceTask implements IPrimitiveTask<KitchenState> {
   name = 'CookRice';
 
   canExecute(state: KitchenState): boolean {

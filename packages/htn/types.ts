@@ -4,25 +4,16 @@
 export type ExecutionStatus = 'success' | 'running' | 'failure';
 
 /**
- * Контекст выполнения задач - данные + сервисы
+ * Состояние окружения при планировании задач
  */
-export interface IContext<TState> {
-  /** Состояние для планирования */
-  state: TState;
-
-  /**
-   * Клонировать состояние для планирования
-   * @returns новая копия состояния
-   */
-  cloneState: () => TState;
-}
+export type IState = Record<string, unknown>;
 
 /**
  * Базовый интерфейс для всех задач
  */
 // @ts-expect-error -- намеренно не использую TState - это нужно для упрощения дальнейшей типизации
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- нужно для упрощения дальнейшей типизации
-export interface ITask<TContext extends IContext<unknown>> {
+export interface ITask<TState extends IState> {
   /** Название задачи */
   name: string;
 }
@@ -30,121 +21,121 @@ export interface ITask<TContext extends IContext<unknown>> {
 /**
  * Примитивная задача - атомарное действие, которое может быть выполнено
  */
-export interface IPrimitiveTask<TContext extends IContext<unknown>> extends ITask<TContext> {
+export interface IPrimitiveTask<TState extends IState> extends ITask<TState> {
   /**
    * Выполнить задачу
-   * @param context контекст выполнения (данные + сервисы)
+   * @param state состояние окружения
    * @returns результат выполнения (SUCCESS, RUNNING, FAILURE)
    */
-  execute: (context: TContext) => ExecutionStatus;
+  execute: (state: TState) => ExecutionStatus;
 
   /**
    * Проверить можно ли выполнить задачу в текущем состоянии
    * Проверяется при планировании и при выполнении
-   * @param state текущее состояние мира (только данные)
+   * @param state состояние окружения
    * @returns true если задачу можно выполнить
    */
-  canExecute: (state: TContext['state']) => boolean;
+  canExecute: (state: TState) => boolean;
 
   /**
    * Применить эффекты задачи к состоянию
    * Возвращает новое состояние с применёнными изменениями
-   * @param state состояние до выполнения задачи
+   * @param state состояние окружения
    * @returns новое состояние после выполнения задачи
    */
-  applyEffects: (state: TContext['state']) => TContext['state'];
+  applyEffects: (state: TState) => TState;
 }
 
 /**
  * Составная задача - задача, которая декомпозируется на подзадачи
  */
-export interface ICompoundTask<TContext extends IContext<unknown>> extends ITask<TContext> {
+export interface ICompoundTask<TState extends IState> extends ITask<TState> {
   /**
    * Получить список методов декомпозиции
    * Методы проверяются в порядке приоритета (первый = высший приоритет)
    * @returns массив методов декомпозиции
    */
-  getMethods: () => IMethod<TContext>[];
+  getMethods: () => IMethod<TState>[];
 }
 
 /**
  * Метод декомпозиции составной задачи
  * Проверяет условия и возвращает список подзадач
  */
-export interface IMethod<TContext extends IContext<unknown>> {
+export interface IMethod<TState extends IState> {
   /** Название метода */
   name: string;
 
   /**
    * Проверить предусловия метода
    * Проверяется во время планирования
-   * @param state состояние мира на момент планирования (только данные)
+   * @param state состояние окружения
    * @returns true если метод подходит для текущего состояния
    */
-  preconditions: (state: TContext['state']) => boolean;
+  preconditions: (state: TState) => boolean;
 
   /**
    * Декомпозировать задачу на подзадачи
    * Вызывается только если preconditions вернул true
-   * @param state состояние мира на момент планирования (только данные)
+   * @param state состояние окружения
    * @returns массив подзадач (примитивных или составных)
    */
-  decompose: (state: TContext['state']) => ITask<TContext>[];
+  decompose: (state: TState) => ITask<TState>[];
 }
 
 /**
  * Фабрика для создания планировщика
  */
-export interface IPlannerFactory<TContext extends IContext<unknown>> {
+export interface IPlannerFactory<TState extends IState> {
   /**
    * Создаёт новый экземпляр планировщика
    */
-  create(): IPlanner<TContext>;
+  create(): IPlanner<TState>;
 }
 
 /**
  * Ищет подходящий метод выполнения основной задачи
  */
-export interface IPlanner<TContext extends IContext<unknown>> {
+export interface IPlanner<TState extends IState> {
   /**
    * Построить план выполнения задачи
    * @param rootTask корневая задача (примитивная или составная)
-   * @param context контекст с начальным состоянием мира
+   * @param state состояние окружения
    * @returns массив примитивных задач для выполнения или пустой массив если план построить не удалось
    */
-  plan: (rootTask: ITask<TContext>, context: TContext) => IPrimitiveTask<TContext>[];
+  plan: (rootTask: ITask<TState>, state: TState) => IPrimitiveTask<TState>[];
 }
 
 /**
  * Фабрика для создания исполнителя
  */
-export interface IExecutorFactory<TContext extends IContext<unknown>> {
+export interface IExecutorFactory<TState extends IState> {
   /**
    * Создаёт новый экземпляр исполнителя
    */
-  create(plan: IPrimitiveTask<TContext>[]): IExecutor<TContext>;
+  create(plan: IPrimitiveTask<TState>[]): IExecutor<TState>;
 }
 
 /**
  * Исполнитель плана - последовательно выполняет примитивные задачи из плана
  */
-export interface IExecutor<TContext extends IContext<unknown>> {
+export interface IExecutor<TState extends IState> {
   /**
    * Выполнить один тик (один шаг выполнения текущей задачи)
-   * @param context текущий контекст выполнения
+   * @param state состояние окружения
    * @returns Результат выполнения текущей задачи
    */
-  tick: (context: TContext) => ExecutionStatus;
+  tick: (state: TState) => ExecutionStatus;
 }
 
 /**
  * HTN агент, управляющий планированием и выполнением задач
  */
-export interface IAgent<TContext extends IContext<unknown>> {
+export interface IAgent<TState extends IState> {
   /**
    * Обновляет состояние агента на один такт
    * Автоматически планирует и перепланирует при необходимости
-   * @param context текущий контекст мира
+   * @param state состояние окружения
    */
-  tick(context: TContext): void;
+  tick(state: TState): void;
 }
