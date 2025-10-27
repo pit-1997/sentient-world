@@ -1,4 +1,4 @@
-export type { IGeometry, Point } from './geometry';
+export type { IGeometry, Point, Position } from './geometry';
 
 export type { ILogger } from './logger';
 

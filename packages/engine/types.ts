@@ -1,6 +1,6 @@
 import type { EventEmitter } from '@sentient-world/event-emitter';
 
-import type { Point } from './geometry';
+import type { Point, Position } from './geometry';
 
 export type Time = {
   /** Часы от 0 до 23 */
@@ -92,14 +92,11 @@ export interface IEngine {
 }
 
 export type ActorConstructorOptions = {
-  /** Угол поворота при спавне */
-  angle: number;
-
   /** ID модели персонажа */
   modelId: number;
 
   /** Позиция при спавне */
-  point: Point;
+  position: Position;
 };
 
 export interface IActor {
@@ -112,11 +109,17 @@ export interface IActor {
   /** Устанавливает персонажу угол поворота */
   setAngle(angle: number): void;
 
-  /** Возвращает положение персонажа */
+  /** Возвращает расположение персонажа */
   getPoint(): Point;
 
-  /** Устанавливает позицию персонажа */
+  /** Устанавливает расположение персонажа */
   setPoint(point: Point): void;
+
+  /** Возвращает позицию персонажа */
+  getPosition(): Position;
+
+  /** Устанавливает позицию персонажа */
+  setPosition(position: Position): void;
 
   /** Заставляет персонажа достичь определённого угла поворота */
   taskAchieveAngle(angle: number): void;
