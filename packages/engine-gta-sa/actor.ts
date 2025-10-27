@@ -1,4 +1,4 @@
-import type { ActorConstructorOptions, IActor, Point } from '@sentient-world/engine';
+import type { ActorConstructorOptions, IActor, Point, Position } from '@sentient-world/engine';
 
 import {
   clearCharTasks,
@@ -30,9 +30,9 @@ export class Actor implements IActor {
     requestModel(options.modelId);
     loadAllModelsNow();
 
-    const { x, y, z } = options.point;
+    const { angle, x, y, z } = options.position;
     const ped = createChar(PedType.CIVMALE, options.modelId, x, y, z);
-    setCharHeading(ped, options.angle);
+    setCharHeading(ped, angle);
     setLoadCollisionForCharFlag(ped, true);
     dontRemoveChar(ped);
 
@@ -72,6 +72,18 @@ export class Actor implements IActor {
 
   setPoint(point: Point) {
     setCharCoordinates(this.ped, point.x, point.y, point.z);
+  }
+
+  getPosition(): Position {
+    return {
+      ...this.getPoint(),
+      angle: this.getAngle(),
+    };
+  }
+
+  setPosition(position: Position): void {
+    this.setPoint(position);
+    this.setAngle(position.angle);
   }
 
   taskAchieveAngle(angle: number) {
