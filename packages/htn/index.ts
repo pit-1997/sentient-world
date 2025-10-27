@@ -1,6 +1,7 @@
 export type {
   ExecutionStatus,
   IAgent,
+  IAgentFactory,
   ICompoundTask,
   IExecutor,
   IExecutorFactory,
