@@ -1,6 +1,7 @@
 import type { EventEmitter } from '@sentient-world/event-emitter';
 
 import type { Point, Position } from './geometry';
+import type { IThread, ThreadFunction } from './thread';
 
 export type Time = {
   /** Часы от 0 до 23 */
@@ -26,46 +27,6 @@ export type Events = {
 export type EventName = keyof Events;
 
 export type Callback<EN extends EventName> = (...args: Parameters<Events[EN]>) => void;
-
-export type ThreadStatus = 'dead' | 'suspended' | 'running' | 'yielded' | 'error';
-
-export type ThreadFunction<Args extends unknown[]> = (thread: IThread<Args>, ...args: Args) => void;
-
-/**
- * Поток выполнения
- */
-export interface IThread<Args extends unknown[]> {
-  /**
-   * Запустить поток с начала
-   */
-  run(...args: Args): void;
-
-  /**
-   * Принудительно завершить поток
-   */
-  terminate(): void;
-
-  /**
-   * Получить текущий статус потока
-   */
-  status(): ThreadStatus;
-
-  /**
-   * Приостановить выполнение текущего потока
-   * @param timeInMs - время приостановки в миллисекундах
-   */
-  wait(timeInMs: number): void;
-
-  /**
-   * Проверить завершён ли поток
-   */
-  readonly dead: boolean;
-
-  /**
-   * Определяет выполнение потока во время паузы игры
-   */
-  workInPause: boolean;
-}
 
 export interface IEngine {
   events: EventEmitter<Events>;
