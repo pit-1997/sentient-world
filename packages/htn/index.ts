@@ -13,6 +13,6 @@ export type {
   ITask,
 } from './types';
 
-export { Agent } from './agent';
+export { Agent, AgentFactory } from './agent';
 export { Executor, ExecutorFactory } from './executor';
 export { Planner, PlannerFactory } from './planner';
