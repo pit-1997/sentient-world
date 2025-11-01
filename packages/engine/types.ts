@@ -1,6 +1,7 @@
 import type { EventEmitter } from '@sentient-world/event-emitter';
 
-import type { Point } from './geometry';
+import type { Point, Position } from './geometry';
+import type { IThread, ThreadFunction } from './thread';
 
 export type Time = {
   /** Часы от 0 до 23 */
@@ -27,46 +28,6 @@ export type EventName = keyof Events;
 
 export type Callback<EN extends EventName> = (...args: Parameters<Events[EN]>) => void;
 
-export type ThreadStatus = 'dead' | 'suspended' | 'running' | 'yielded' | 'error';
-
-export type ThreadFunction<Args extends unknown[]> = (thread: IThread<Args>, ...args: Args) => void;
-
-/**
- * Поток выполнения
- */
-export interface IThread<Args extends unknown[]> {
-  /**
-   * Запустить поток с начала
-   */
-  run(...args: Args): void;
-
-  /**
-   * Принудительно завершить поток
-   */
-  terminate(): void;
-
-  /**
-   * Получить текущий статус потока
-   */
-  status(): ThreadStatus;
-
-  /**
-   * Приостановить выполнение текущего потока
-   * @param timeInMs - время приостановки в миллисекундах
-   */
-  wait(timeInMs: number): void;
-
-  /**
-   * Проверить завершён ли поток
-   */
-  readonly dead: boolean;
-
-  /**
-   * Определяет выполнение потока во время паузы игры
-   */
-  workInPause: boolean;
-}
-
 export interface IEngine {
   events: EventEmitter<Events>;
 
@@ -92,14 +53,11 @@ export interface IEngine {
 }
 
 export type ActorConstructorOptions = {
-  /** Угол поворота при спавне */
-  angle: number;
-
   /** ID модели персонажа */
   modelId: number;
 
   /** Позиция при спавне */
-  point: Point;
+  position: Position;
 };
 
 export interface IActor {
@@ -112,11 +70,17 @@ export interface IActor {
   /** Устанавливает персонажу угол поворота */
   setAngle(angle: number): void;
 
-  /** Возвращает положение персонажа */
+  /** Возвращает расположение персонажа */
   getPoint(): Point;
 
-  /** Устанавливает позицию персонажа */
+  /** Устанавливает расположение персонажа */
   setPoint(point: Point): void;
+
+  /** Возвращает позицию персонажа */
+  getPosition(): Position;
+
+  /** Устанавливает позицию персонажа */
+  setPosition(position: Position): void;
 
   /** Заставляет персонажа достичь определённого угла поворота */
   taskAchieveAngle(angle: number): void;
