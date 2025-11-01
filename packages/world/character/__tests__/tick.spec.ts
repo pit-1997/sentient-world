@@ -1,10 +1,10 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { MockedAgentFactory } from '@sentient-world/htn/mocks';
 
-import { mockedState } from '../../state/__tests__/mocks';
+import { mockedState } from '../../state/mocks';
 import { Character } from '../character';
 
-import { getMockedCharacterDeps, peetData } from './mocks';
+import { getMockedCharacterDeps, peetData } from '../mocks';
 
 describe(Character.name, () => {
   describe('#tick', () => {

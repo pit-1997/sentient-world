@@ -1,9 +1,10 @@
-import { getExternalMocks } from '../../__tests__/mocks';
-import type { IRepository } from '../../repository';
-import { MemoryRepository } from '../../repository/__tests__/mocks';
-import { Character } from '../character';
-import type { CharacterData, CharacterDeps, ICharacter } from '../character';
-import type { ICharacterFactory } from '../factory';
+import { getExternalMocks } from '../mocks';
+import type { IRepository } from '../repository';
+import { MemoryRepository } from '../repository/mocks';
+
+import { Character } from './character';
+import type { CharacterData, CharacterDeps, ICharacter } from './character';
+import type { ICharacterFactory } from './factory';
 
 export function getMockedCharacterDeps(deps?: Partial<CharacterDeps>): CharacterDeps {
   return getExternalMocks(deps);

@@ -3,8 +3,7 @@ import type { Position } from '@sentient-world/engine';
 import { MockedEngine } from '@sentient-world/engine/mocks';
 
 import { Character } from '../character';
-
-import { getMockedCharacterDeps, peetData } from './mocks';
+import { getMockedCharacterDeps, peetData } from '../mocks';
 
 describe(Character.name, () => {
   describe('#getState', () => {

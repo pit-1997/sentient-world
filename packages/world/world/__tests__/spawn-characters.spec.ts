@@ -5,11 +5,10 @@ import {
   MockedCharacterRepository,
   peetData,
   johnData,
-} from '../../character/__tests__/mocks';
+} from '../../character/mocks';
 
+import { getMockedWorldDeps } from '../mocks';
 import { World } from '../world';
-
-import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - спавн персонажей`, () => {
   it('загружает из charactersRepository всех персонажей и спавнит их', () => {

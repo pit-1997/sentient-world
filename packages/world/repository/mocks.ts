@@ -1,4 +1,4 @@
-import type { IRepository } from '../types';
+import type { IRepository } from './types';
 
 /**
  * Репозиторий, хранящий данные в памяти

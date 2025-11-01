@@ -4,8 +4,7 @@ import { MockedAgentFactory } from '@sentient-world/htn/mocks';
 
 import { LiveDayTask } from '../../tasks/live-day-task';
 import { Character } from '../character';
-
-import { getMockedCharacterDeps, peetData } from './mocks';
+import { getMockedCharacterDeps, peetData } from '../mocks';
 
 describe(Character.name, () => {
   describe('#constructor', () => {

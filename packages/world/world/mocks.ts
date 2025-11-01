@@ -2,9 +2,9 @@ import {
   getMockedCharacterDeps,
   MockedCharacterFactory,
   MockedCharacterRepository,
-} from '../../character/__tests__/mocks';
+} from '../character/mocks';
 
-import type { WorldDeps } from '../world';
+import type { WorldDeps } from './world';
 
 export function getMockedWorldDeps(deps?: Partial<WorldDeps>): WorldDeps {
   const mockedCharacterDeps = getMockedCharacterDeps();

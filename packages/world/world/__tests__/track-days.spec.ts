@@ -2,9 +2,8 @@ import { describe, expect, it } from '@jest/globals';
 import { MockedEngine } from '@sentient-world/engine/mocks';
 
 import { constants } from '../constants';
+import { getMockedWorldDeps } from '../mocks';
 import { World } from '../world';
-
-import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - отслеживание дней`, () => {
   describe('начальное состояние', () => {

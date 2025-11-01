@@ -1,6 +1,6 @@
-import { peetData } from '../../character/__tests__/mocks';
+import { peetData } from '../character/mocks';
 
-import type { CharacterSlice, WorldSlice, State } from '../types';
+import type { CharacterSlice, WorldSlice, State } from './types';
 
 export const mockedCharacterState: CharacterSlice = {
   location: peetData.spawn,

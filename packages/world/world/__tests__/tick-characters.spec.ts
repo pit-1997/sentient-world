@@ -8,12 +8,11 @@ import {
   MockedCharacterRepository,
   peetData,
   johnData,
-} from '../../character/__tests__/mocks';
+} from '../../character/mocks';
 
 import { constants } from '../constants';
+import { getMockedWorldDeps } from '../mocks';
 import { World } from '../world';
-
-import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - обновление персонажей`, () => {
   it('вызывает tick персонажей с состоянием мира', () => {

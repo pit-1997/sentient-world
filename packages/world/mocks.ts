@@ -3,7 +3,7 @@ import { MockedEngine } from '@sentient-world/engine/mocks';
 import type { IAgentFactory } from '@sentient-world/htn';
 import { MockedAgentFactory } from '@sentient-world/htn/mocks';
 
-import type { State } from '../state';
+import type { State } from './state';
 
 export type ExternalDeps = {
   agentFactory: IAgentFactory<State>;
