@@ -6,7 +6,7 @@ import { LiveDayTask } from '../../tasks/live-day-task';
 import type { State } from '../../world';
 import { Character } from '../character';
 
-import { peetData, mockedCharacterDeps } from './mocks';
+import { getMockedCharacterDeps, peetData } from './mocks';
 
 describe(Character.name, () => {
   describe('#constructor', () => {
@@ -15,7 +15,7 @@ describe(Character.name, () => {
         create: jest.fn<IAgentFactory<State>['create']>(),
       } satisfies IAgentFactory<State>;
 
-      new Character(peetData, { ...mockedCharacterDeps, agentFactory });
+      new Character(peetData, getMockedCharacterDeps({ agentFactory }));
 
       expect(agentFactory.create).toHaveBeenCalledWith(expect.any(LiveDayTask));
     });
@@ -24,7 +24,7 @@ describe(Character.name, () => {
       const engine = new MockedEngine();
       const createActor = jest.spyOn(engine, 'createActor');
 
-      new Character(peetData, { ...mockedCharacterDeps, engine });
+      new Character(peetData, getMockedCharacterDeps({ engine }));
 
       expect(createActor).toHaveBeenCalledWith(
         expect.objectContaining({ position: peetData.spawn })
@@ -35,7 +35,7 @@ describe(Character.name, () => {
       const engine = new MockedEngine();
       const createActor = jest.spyOn(engine, 'createActor');
 
-      new Character(peetData, { ...mockedCharacterDeps, engine });
+      new Character(peetData, getMockedCharacterDeps({ engine }));
 
       expect(createActor).toHaveBeenCalledWith(
         expect.objectContaining({ modelId: peetData.modelId })

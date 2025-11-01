@@ -4,12 +4,12 @@ import { MockedEngine } from '@sentient-world/engine/mocks';
 import { constants } from '../constants';
 import { World } from '../world';
 
-import { mockedWorldDeps } from './mocks';
+import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - отслеживание дней`, () => {
   describe('начальное состояние', () => {
     it('день начинается с 1', () => {
-      const world = new World(mockedWorldDeps);
+      const world = new World(getMockedWorldDeps());
       const state = world.getState();
 
       expect(state.day).toBe(1);
@@ -19,7 +19,7 @@ describe(`${World.name} - отслеживание дней`, () => {
   describe('интервал отслеживания', () => {
     it(`проверяет смену дня раз в ${constants.DAY_TRACKING_INTERVAL} мс`, () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       engine.setTime({ hours: 23, minutes: 0 }); // Устанавливаем время на поздний вечер
       engine.resumeThreads(constants.DAY_TRACKING_INTERVAL - 1); // Ждём почти полный интервал - день не должен измениться
@@ -46,7 +46,7 @@ describe(`${World.name} - отслеживание дней`, () => {
   describe('переход на следующий день', () => {
     it('происходит когда время меняется с позднего вечера на раннее утро', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       // Поздний вечер
       engine.setTime({ hours: 23, minutes: 59 });
@@ -61,7 +61,7 @@ describe(`${World.name} - отслеживание дней`, () => {
 
     it('происходит даже если пропущено несколько часов ночи', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       // Поздний вечер
       engine.setTime({ hours: 22, minutes: 0 });
@@ -76,7 +76,7 @@ describe(`${World.name} - отслеживание дней`, () => {
 
     it('может происходить несколько раз подряд', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       // Первый переход: день 1 -> день 2
       engine.setTime({ hours: 23, minutes: 0 });
@@ -107,7 +107,7 @@ describe(`${World.name} - отслеживание дней`, () => {
   describe('не происходит переход на следующий день', () => {
     it('при обычном течении времени днём', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       engine.setTime({ hours: 12, minutes: 0 });
       engine.resumeThreads(constants.DAY_TRACKING_INTERVAL);
@@ -119,7 +119,7 @@ describe(`${World.name} - отслеживание дней`, () => {
 
     it('при обычном течении времени утром', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       engine.setTime({ hours: 5, minutes: 0 });
       engine.resumeThreads(constants.DAY_TRACKING_INTERVAL);
@@ -131,7 +131,7 @@ describe(`${World.name} - отслеживание дней`, () => {
 
     it('при обычном течении времени вечером', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       engine.setTime({ hours: 19, minutes: 0 });
       engine.resumeThreads(constants.DAY_TRACKING_INTERVAL);
@@ -143,7 +143,7 @@ describe(`${World.name} - отслеживание дней`, () => {
 
     it('при движении времени в пределах раннего утра после перехода через полночь', () => {
       const engine = new MockedEngine();
-      const world = new World({ ...mockedWorldDeps, engine });
+      const world = new World(getMockedWorldDeps({ engine }));
 
       // Переходим через полночь
       engine.setTime({ hours: 23, minutes: 0 });

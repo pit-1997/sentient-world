@@ -13,7 +13,7 @@ import {
 import { constants } from '../constants';
 import { World } from '../world';
 
-import { mockedWorldDeps } from './mocks';
+import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - обновление персонажей`, () => {
   it('вызывает tick персонажей с состоянием мира', () => {
@@ -22,7 +22,7 @@ describe(`${World.name} - обновление персонажей`, () => {
     const characterRepository = new MockedCharacterRepository(charactersData);
     const characterFactory = new MockedCharacterFactory();
 
-    const world = new World({ ...mockedWorldDeps, engine, characterFactory, characterRepository });
+    const world = new World(getMockedWorldDeps({ engine, characterFactory, characterRepository }));
     const characters = characterFactory.getCreatedCharacters();
     const tickSpies = characters.map((character) => jest.spyOn(character, 'tick'));
     engine.resumeThreads(constants.CHARACTERS_TICK_INTERVAL);
@@ -39,7 +39,7 @@ describe(`${World.name} - обновление персонажей`, () => {
     const characterRepository = new MockedCharacterRepository([peetData]);
     const characterFactory = new MockedCharacterFactory();
 
-    new World({ ...mockedWorldDeps, engine, characterFactory, characterRepository });
+    new World(getMockedWorldDeps({ engine, characterFactory, characterRepository }));
     const [character] = characterFactory.getCreatedCharacters();
     const tickSpy = jest.spyOn(character!, 'tick');
 

@@ -8,12 +8,14 @@ import { Character } from '../character';
 import type { CharacterData, CharacterDeps, ICharacter } from '../character';
 import type { ICharacterFactory } from '../factory';
 
-export const mockedCharacterDeps: CharacterDeps = {
-  agentFactory: {
-    create: (rootTask: ITask<State>) => new Agent<State>(rootTask),
-  },
-  engine: new MockedEngine(),
-};
+export function getMockedCharacterDeps(deps?: Partial<CharacterDeps>): CharacterDeps {
+  return {
+    agentFactory: deps?.agentFactory ?? {
+      create: (rootTask: ITask<State>) => new Agent<State>(rootTask),
+    },
+    engine: deps?.engine ?? new MockedEngine(),
+  };
+}
 
 export const peetData: CharacterData = {
   id: 1,
@@ -55,7 +57,7 @@ export class MockedCharacterFactory implements ICharacterFactory {
   private readonly createdCharacters: ICharacter[] = [];
 
   create(characterData: CharacterData) {
-    const character = new Character(characterData, mockedCharacterDeps);
+    const character = new Character(characterData, getMockedCharacterDeps());
     this.createdCharacters.push(character);
     return character;
   }

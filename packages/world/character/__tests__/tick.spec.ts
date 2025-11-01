@@ -4,7 +4,7 @@ import type { IAgent, IAgentFactory } from '@sentient-world/htn';
 import type { State } from '../../world/state';
 import { Character } from '../character';
 
-import { mockedCharacterDeps, peetData, state } from './mocks';
+import { getMockedCharacterDeps, peetData, state } from './mocks';
 
 describe(Character.name, () => {
   describe('#tick', () => {
@@ -13,7 +13,7 @@ describe(Character.name, () => {
       const agentFactory = {
         create: jest.fn<IAgentFactory<State>['create']>().mockReturnValue(agent),
       } satisfies IAgentFactory<State>;
-      const character = new Character(peetData, { ...mockedCharacterDeps, agentFactory });
+      const character = new Character(peetData, getMockedCharacterDeps({ agentFactory }));
 
       character.tick(state);
 

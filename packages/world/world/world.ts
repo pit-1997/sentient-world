@@ -53,7 +53,7 @@ export class World {
     const characters = this.characters;
     const getState = () => this.getState();
 
-    this.engine.createThread(function* (this: World) {
+    this.engine.createThread(function* () {
       while (true) {
         yield constants.CHARACTERS_TICK_INTERVAL;
         const state = getState();

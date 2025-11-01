@@ -9,7 +9,7 @@ import {
 
 import { World } from '../world';
 
-import { mockedWorldDeps } from './mocks';
+import { getMockedWorldDeps } from './mocks';
 
 describe(`${World.name} - спавн персонажей`, () => {
   it('загружает из charactersRepository всех персонажей и спавнит их', () => {
@@ -17,7 +17,7 @@ describe(`${World.name} - спавн персонажей`, () => {
     const characterFactory = new MockedCharacterFactory();
     const createCharacterSpy = jest.spyOn(characterFactory, 'create');
 
-    new World({ ...mockedWorldDeps, characterFactory, characterRepository });
+    new World(getMockedWorldDeps({ characterFactory, characterRepository }));
 
     expect(createCharacterSpy).toHaveBeenCalledWith(peetData);
     expect(createCharacterSpy).toHaveBeenCalledWith(johnData);

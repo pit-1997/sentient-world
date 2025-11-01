@@ -12,7 +12,7 @@ export interface ICharacterFactory {
 
 export type CharacterFactoryDeps = CharacterDeps;
 
-export class CharacterFactory {
+export class CharacterFactory implements ICharacterFactory {
   private readonly agentFactory: IAgentFactory<State>;
   private readonly engine: IEngine;
 
