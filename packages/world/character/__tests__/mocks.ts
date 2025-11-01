@@ -1,20 +1,12 @@
-import { MockedEngine } from '@sentient-world/engine/mocks';
-import { Agent, type ITask } from '@sentient-world/htn';
-
+import { getExternalMocks } from '../../__tests__/mocks';
 import type { IRepository } from '../../repository';
 import { MemoryRepository } from '../../repository/__tests__/mocks';
-import type { State } from '../../state';
 import { Character } from '../character';
 import type { CharacterData, CharacterDeps, ICharacter } from '../character';
 import type { ICharacterFactory } from '../factory';
 
 export function getMockedCharacterDeps(deps?: Partial<CharacterDeps>): CharacterDeps {
-  return {
-    agentFactory: deps?.agentFactory ?? {
-      create: (rootTask: ITask<State>) => new Agent<State>(rootTask),
-    },
-    engine: deps?.engine ?? new MockedEngine(),
-  };
+  return getExternalMocks(deps);
 }
 
 export const peetData: CharacterData = {

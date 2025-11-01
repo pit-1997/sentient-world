@@ -9,11 +9,14 @@ import { MockedThread } from './thread';
 export class MockedEngine implements IEngine {
   events = new EventEmitter<Events>();
 
+  private createdActors: MockedActor[] = [];
   private time: Time = { hours: 0, minutes: 0 };
   private threads: MockedThread<unknown[]>[] = [];
 
   createActor(options: ActorConstructorOptions) {
-    return new MockedActor(options);
+    const actor = new MockedActor(options);
+    this.createdActors.push(actor);
+    return actor;
   }
 
   createThread<Args extends unknown[]>(fn: ThreadFunction<Args>, ...args: Args): IThread<Args> {
@@ -44,5 +47,10 @@ export class MockedEngine implements IEngine {
    */
   resumeThreads(ms: number) {
     this.threads.forEach((thread) => thread.resume(ms));
+  }
+
+  /** Возвращает массив созданных акторов */
+  getCreatedActors(): MockedActor[] {
+    return this.createdActors;
   }
 }

@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { describe, expect, it } from '@jest/globals';
 import type { Position } from '@sentient-world/engine';
 import { MockedEngine } from '@sentient-world/engine/mocks';
 
@@ -13,7 +13,7 @@ describe(Character.name, () => {
       const character = new Character(peetData, getMockedCharacterDeps({ engine }));
       const currentPosition: Position = { x: 1, y: 2, z: 3, angle: 45 };
 
-      jest.spyOn(character.getActor(), 'getPosition').mockReturnValue(currentPosition);
+      engine.getCreatedActors().forEach((actor) => actor.setPosition(currentPosition));
       const state = character.getState();
 
       expect(state.location).toStrictEqual(currentPosition);
