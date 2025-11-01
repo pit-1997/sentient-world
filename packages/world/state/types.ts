@@ -2,18 +2,18 @@ import type { Position, Time } from '@sentient-world/engine';
 
 import type { CharacterData } from '../character';
 
-export type CharacterState = {
+export type CharacterSlice = {
   /** Текущая позиция персонажа */
   location: Position;
   data: CharacterData;
 };
 
-export type WorldState = {
+export type WorldSlice = {
   day: number;
   time: Time;
 };
 
 export type State = {
-  character: CharacterState;
-  world: WorldState;
+  character: CharacterSlice;
+  world: WorldSlice;
 };

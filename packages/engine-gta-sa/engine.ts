@@ -67,10 +67,12 @@ export class Engine implements IEngine {
   }
 
   private listenTick() {
-    this.createThread((thread) => {
+    const emitTick = () => this.events.emit('tick');
+
+    this.createThread(function* () {
       while (true) {
-        thread.wait(16);
-        this.events.emit('tick');
+        yield 16;
+        emitTick();
       }
     });
   }

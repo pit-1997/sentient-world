@@ -1,7 +1,7 @@
 import type { IEngine } from '@sentient-world/engine';
 import type { IAgentFactory } from '@sentient-world/htn';
 
-import type { State } from '../world';
+import type { State } from '../state';
 
 import { Character } from './character';
 import type { CharacterData, CharacterDeps, ICharacter } from './character';

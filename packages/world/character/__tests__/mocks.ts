@@ -3,7 +3,7 @@ import { Agent, type ITask } from '@sentient-world/htn';
 
 import type { IRepository } from '../../repository';
 import { MemoryRepository } from '../../repository/__tests__/mocks';
-import type { State } from '../../world';
+import type { State } from '../../state';
 import { Character } from '../character';
 import type { CharacterData, CharacterDeps, ICharacter } from '../character';
 import type { ICharacterFactory } from '../factory';
@@ -31,17 +31,6 @@ export const johnData: CharacterData = {
   name: 'John',
   surname: 'Doe',
   spawn: { x: 2518.11, y: 11.04, z: 24.04, angle: 45.08 },
-};
-
-export const state: State = {
-  character: {
-    location: peetData.spawn,
-    data: peetData,
-  },
-  world: {
-    day: 1,
-    time: { hours: 8, minutes: 10 },
-  },
 };
 
 export class MockedCharacterRepository

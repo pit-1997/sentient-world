@@ -1,8 +1,8 @@
 import type { Position, IActor, IEngine } from '@sentient-world/engine';
 import type { IAgent, IAgentFactory } from '@sentient-world/htn';
 
+import type { CharacterSlice, State } from '../state';
 import { LiveDayTask } from '../tasks/live-day-task';
-import type { CharacterState, State } from '../world';
 
 export type CharacterData = {
   id: number;
@@ -20,7 +20,7 @@ export type CharacterDeps = {
 export interface ICharacter {
   getActor(): IActor;
   getData(): CharacterData;
-  getState(): CharacterState;
+  getState(): CharacterSlice;
   tick(state: Omit<State, 'character'>): void;
 }
 
@@ -46,7 +46,7 @@ export class Character implements ICharacter {
     return this.data;
   }
 
-  getState(): CharacterState {
+  getState(): CharacterSlice {
     return {
       data: this.data,
       location: this.actor.getPosition(),

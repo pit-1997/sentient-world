@@ -2,9 +2,9 @@ import type { IEngine } from '@sentient-world/engine';
 
 import type { CharacterData, ICharacter, ICharacterFactory } from '../character';
 import type { IRepository } from '../repository';
+import type { WorldSlice } from '../state';
 
 import { constants } from './constants';
-import type { WorldState } from './state';
 
 export type WorldDeps = {
   characterFactory: ICharacterFactory;
@@ -34,7 +34,7 @@ export class World {
     this.tickCharacters();
   }
 
-  getState(): WorldState {
+  getState(): WorldSlice {
     return {
       day: this.day,
       time: this.engine.getTime(),

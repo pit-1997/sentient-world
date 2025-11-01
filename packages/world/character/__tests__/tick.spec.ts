@@ -1,10 +1,11 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import type { IAgent, IAgentFactory } from '@sentient-world/htn';
 
-import type { State } from '../../world/state';
+import type { State } from '../../state';
+import { mockedState } from '../../state/__tests__/mocks';
 import { Character } from '../character';
 
-import { getMockedCharacterDeps, peetData, state } from './mocks';
+import { getMockedCharacterDeps, peetData } from './mocks';
 
 describe(Character.name, () => {
   describe('#tick', () => {
@@ -15,10 +16,10 @@ describe(Character.name, () => {
       } satisfies IAgentFactory<State>;
       const character = new Character(peetData, getMockedCharacterDeps({ agentFactory }));
 
-      character.tick(state);
+      character.tick(mockedState);
 
       expect(agent.tick).toHaveBeenCalledWith({
-        ...state,
+        ...mockedState,
         character: character.getState(),
       });
     });

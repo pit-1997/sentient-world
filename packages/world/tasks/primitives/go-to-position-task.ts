@@ -1,7 +1,7 @@
 import type { IActor, IGeometry, Position } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import type { State } from '../../world';
+import type { State } from '../../state';
 
 export class GoToPositionTask implements IPrimitiveTask<State> {
   name = 'GoToPositionTask';

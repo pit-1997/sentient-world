@@ -2,8 +2,8 @@ import { describe, expect, it, jest } from '@jest/globals';
 import { MockedEngine } from '@sentient-world/engine/mocks';
 import type { IAgentFactory } from '@sentient-world/htn';
 
+import type { State } from '../../state';
 import { LiveDayTask } from '../../tasks/live-day-task';
-import type { State } from '../../world';
 import { Character } from '../character';
 
 import { getMockedCharacterDeps, peetData } from './mocks';
