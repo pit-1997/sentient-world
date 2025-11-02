@@ -1,0 +1,11 @@
+{
+  "name": "@sentient-world/mod",
+  "private": true,
+  "scripts": {
+    "build": "tstl -p ./tsconfig.build.json"
+  },
+  "dependencies": {
+    "@sentient-world/engine-gta-sa": "1.0.0",
+    "@sentient-world/world": "1.0.0"
+  }
+}

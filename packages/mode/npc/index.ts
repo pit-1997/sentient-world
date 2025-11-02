@@ -1,1 +1,0 @@
-export { NPC } from './npc';

@@ -129,6 +129,13 @@ export interface IExecutor<TState extends IState> {
 }
 
 /**
+ * Фабрика для создания HTN-агента
+ */
+export interface IAgentFactory<TState extends IState> {
+  create(rootTask: ITask<TState>): IAgent<TState>;
+}
+
+/**
  * HTN агент, управляющий планированием и выполнением задач
  */
 export interface IAgent<TState extends IState> {

@@ -1,6 +1,8 @@
 import { ExecutorFactory } from './executor';
 import { PlannerFactory } from './planner';
 import type {
+  IAgent,
+  IAgentFactory,
   IExecutor,
   IExecutorFactory,
   IPlannerFactory,
@@ -21,7 +23,7 @@ export class Agent<TContext extends IState> {
   private replanAttempts: number = 0;
 
   constructor(
-    private readonly rootTask: ITask<TContext>,
+    protected readonly rootTask: ITask<TContext>,
     private readonly plannerFactory: IPlannerFactory<TContext> = new PlannerFactory(),
     private readonly executorFactory: IExecutorFactory<TContext> = new ExecutorFactory()
   ) {}
@@ -66,5 +68,11 @@ export class Agent<TContext extends IState> {
     this.replanAttempts = plan.length > 0 ? 0 : this.replanAttempts + 1;
 
     return plan;
+  }
+}
+
+export class AgentFactory<TState extends IState> implements IAgentFactory<TState> {
+  create(rootTask: ITask<TState>): IAgent<TState> {
+    return new Agent(rootTask);
   }
 }

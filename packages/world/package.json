@@ -1,0 +1,10 @@
+{
+  "name": "@sentient-world/world",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "Высокоуровневая логика симуляции мира",
+  "dependencies": {
+    "@sentient-world/engine": "1.0.0",
+    "@sentient-world/htn": "1.0.0"
+  }
+}

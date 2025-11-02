@@ -1,11 +1,23 @@
 import type { IThread, ThreadFunction, ThreadStatus } from '@sentient-world/engine';
-import { lua_thread, type LuaThread, wait } from '@sentient-world/moonloader';
+import { lua_thread, wait, type LuaThread } from '@sentient-world/moonloader';
 
 export class Thread<Args extends unknown[]> implements IThread<Args> {
   private readonly thread: LuaThread<Args>;
+  private readonly threadFn: ThreadFunction<Args>;
 
-  constructor(fn: ThreadFunction<Args>) {
-    this.thread = lua_thread.create_suspended<Args>((...subArgs: Args) => fn(this, ...subArgs));
+  constructor(threadFn: ThreadFunction<Args>) {
+    this.threadFn = threadFn;
+
+    // Создаём suspended поток, который преобразует генератор в lua-функцию
+    this.thread = lua_thread.create_suspended<Args>((...args: Args) => {
+      const gen = this.threadFn(...args);
+      let result = gen.next();
+
+      while (!result.done) {
+        wait(result.value);
+        result = gen.next();
+      }
+    });
   }
 
   run(...args: Args): void {
@@ -18,10 +30,6 @@ export class Thread<Args extends unknown[]> implements IThread<Args> {
 
   status(): ThreadStatus {
     return this.thread.status();
-  }
-
-  wait(timeInMs: number): void {
-    wait(timeInMs);
   }
 
   get dead(): boolean {
