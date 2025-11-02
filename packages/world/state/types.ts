@@ -1,7 +1,7 @@
 import type { Position } from '@sentient-world/engine';
 
 import type { CharacterData } from '../character';
-import type { DateTime } from '../core';
+import type { DateTime } from '../date-time';
 
 export type CharacterSlice = {
   /** Текущая позиция персонажа */

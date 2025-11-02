@@ -1,6 +1,6 @@
 import { defaultActorConstructorOptions, MockedActor } from '@sentient-world/engine/mocks';
 
-import { DateTimeComparator } from '../../../core';
+import { DateTimeComparator } from '../../../date-time';
 
 import type { WanderTaskDeps } from './wander-task';
 

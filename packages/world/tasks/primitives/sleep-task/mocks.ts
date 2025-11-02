@@ -1,6 +1,6 @@
 import { Geometry } from '@sentient-world/engine/mocks';
 
-import { DateTimeComparator } from '../../../core';
+import { DateTimeComparator } from '../../../date-time';
 
 import type { SleepTaskDeps } from './sleep-task';
 

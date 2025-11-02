@@ -1,6 +1,6 @@
 import type { Point, Position } from '@sentient-world/engine';
 
-import type { DateTime } from '../core';
+import type { DateTime } from '../date-time';
 
 import type { State } from './types';
 

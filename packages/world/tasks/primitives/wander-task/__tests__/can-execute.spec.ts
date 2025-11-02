@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import type { DateTime } from '../../../../core';
-import { MockedComparator } from '../../../../core/mocks';
+import type { DateTime } from '../../../../date-time';
+import { MockedComparator } from '../../../../date-time/mocks';
 import { mockedState, StateBuilder } from '../../../../state/mocks';
 
 import { getMockedWanderTaskDeps } from '../mocks';

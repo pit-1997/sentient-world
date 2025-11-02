@@ -1,8 +1,8 @@
 import type { IGeometry } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import { Comparison, DateTimeComparator } from '../../../core';
-import type { DateTime, IComparator } from '../../../core';
+import { Comparison, DateTimeComparator } from '../../../date-time';
+import type { DateTime, IComparator } from '../../../date-time';
 import type { State } from '../../../state';
 
 /** Дистанция от дома в которой персонаж может спать */
