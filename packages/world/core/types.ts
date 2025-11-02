@@ -7,7 +7,7 @@ export enum Comparison {
 export type CompareFunction<T> = (a: T, b: T) => Comparison;
 
 export interface IComparator<T> {
-  compare: CompareFunction<T>;
+  compare(a: T, b: T): Comparison;
 }
 
 export type Date = number;

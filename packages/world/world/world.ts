@@ -1,15 +1,22 @@
-import type { IEngine } from '@sentient-world/engine';
+import type { IEngine, IGeometry } from '@sentient-world/engine';
 
-import type { CharacterData, ICharacter, ICharacterFactory } from '../character';
+import { CharacterFactory } from '../character';
+import type {
+  CharacterData,
+  CharacterFactoryDeps,
+  ICharacter,
+  ICharacterFactory,
+} from '../character';
 import type { IRepository } from '../repository';
 import type { WorldSlice } from '../state';
 
 import { constants } from './constants';
 
-export type WorldDeps = {
-  characterFactory: ICharacterFactory;
+export type WorldDeps = CharacterFactoryDeps & {
+  characterFactory?: ICharacterFactory;
   characterRepository: IRepository<CharacterData>;
   engine: IEngine;
+  geometry: IGeometry;
 };
 
 export class World {
@@ -25,9 +32,9 @@ export class World {
   private date: number = 1;
 
   constructor(deps: WorldDeps) {
-    this.characterFactory = deps.characterFactory;
     this.characterRepository = deps.characterRepository;
     this.engine = deps.engine;
+    this.characterFactory = deps.characterFactory ?? new CharacterFactory(deps);
 
     this.characters = this.spawnCharacters();
     this.tickCharacters();

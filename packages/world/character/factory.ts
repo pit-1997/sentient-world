@@ -13,7 +13,7 @@ export interface ICharacterFactory {
 export type CharacterFactoryDeps = CharacterDeps;
 
 export class CharacterFactory implements ICharacterFactory {
-  private readonly agentFactory: IAgentFactory<State>;
+  private readonly agentFactory: IAgentFactory<State> | undefined;
   private readonly engine: IEngine;
   private readonly geometry: IGeometry;
 
@@ -24,10 +24,15 @@ export class CharacterFactory implements ICharacterFactory {
   }
 
   create(characterData: CharacterData): ICharacter {
-    return new Character(characterData, {
-      agentFactory: this.agentFactory,
+    const deps: CharacterDeps = {
       engine: this.engine,
       geometry: this.geometry,
-    });
+    };
+
+    if (this.agentFactory) {
+      deps.agentFactory = this.agentFactory;
+    }
+
+    return new Character(characterData, deps);
   }
 }

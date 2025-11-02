@@ -1,16 +1,20 @@
 import { Engine, Geometry, Logger } from '@sentient-world/engine-gta-sa';
+import { World } from '@sentient-world/world';
 
-import { World } from './world';
+import { charactersData, CharactersRepository } from './characters';
 
 function main() {
   const engine = new Engine();
   const logger = new Logger();
   const geometry = new Geometry();
-  const world = new World(engine, geometry);
 
   engine.events.on('keydown', (key) => {
     if (key === 'N') {
-      world.start();
+      new World({
+        characterRepository: new CharactersRepository(charactersData),
+        engine,
+        geometry,
+      });
     }
 
     if (key === 'Y') {

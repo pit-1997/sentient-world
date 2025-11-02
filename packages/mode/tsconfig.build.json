@@ -15,11 +15,12 @@
       "@sentient-world/event-emitter": ["../event-emitter/index.ts"],
       "@sentient-world/htn": ["../htn/index.ts"],
       "@sentient-world/moonloader": ["../moonloader/index.ts"],
+      "@sentient-world/world": ["../world/index.ts"],
       "vkeys": ["../moonloader/vkeys.ts"]
     }
   },
   "tstl": {
-    "luaBundle": "/Games/GTA San Andreas/moonloader/sentient-world.lua",
+    "luaBundle": "./dist/sentient-world.lua",
     "luaBundleEntry": "./main.ts",
     "luaTarget": "JIT",
     "noImplicitSelf": true,

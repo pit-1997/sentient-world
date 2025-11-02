@@ -1,3 +1,4 @@
 export { Character } from './character';
 export type { CharacterData, ICharacter } from './character';
-export { CharacterFactory, type ICharacterFactory } from './factory';
+export { CharacterFactory } from './factory';
+export type { CharacterFactoryDeps, ICharacterFactory } from './factory';

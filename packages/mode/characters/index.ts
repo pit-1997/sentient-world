@@ -1,2 +1,1 @@
-export { Character } from './character';
-export type { ICharacter } from './types';
+export { charactersData, CharactersRepository } from './repository';
