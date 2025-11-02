@@ -1,5 +1,5 @@
 {
-  "name": "@sentient-world/mode",
+  "name": "@sentient-world/mod",
   "private": true,
   "scripts": {
     "build": "tstl -p ./tsconfig.build.json"

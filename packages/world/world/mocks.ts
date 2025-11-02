@@ -1,18 +1,14 @@
-import {
-  getMockedCharacterDeps,
-  MockedCharacterFactory,
-  MockedCharacterRepository,
-} from '../character/mocks';
+import { MockedCharacterFactory, MockedCharacterRepository } from '../character/mocks';
+
+import { getExternalMocks } from '../mocks';
 
 import type { WorldDeps } from './world';
 
-export function getMockedWorldDeps(deps?: Partial<WorldDeps>): WorldDeps {
-  const mockedCharacterDeps = getMockedCharacterDeps();
-
+export function getMockedWorldDeps(overrides: Partial<WorldDeps> = {}): WorldDeps {
   return {
-    characterFactory: deps?.characterFactory ?? new MockedCharacterFactory(),
-    characterRepository: deps?.characterRepository ?? new MockedCharacterRepository(),
-    // TODO: всё что касается внешних зависимостей (engine и agent) вынести в базовые моки
-    engine: deps?.engine ?? mockedCharacterDeps.engine,
+    ...getExternalMocks(),
+    characterFactory: new MockedCharacterFactory(),
+    characterRepository: new MockedCharacterRepository(),
+    ...overrides,
   };
 }

@@ -5,4 +5,4 @@ node_modules
 tsconfig.tsbuildinfo
 tsconfig.build.tsbuildinfo
 
-packages/mode/dist
+packages/mod/dist
