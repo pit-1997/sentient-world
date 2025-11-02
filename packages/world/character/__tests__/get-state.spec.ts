@@ -15,7 +15,7 @@ describe(Character.name, () => {
       engine.getCreatedActors().forEach((actor) => actor.setPosition(currentPosition));
       const state = character.getState();
 
-      expect(state.location).toStrictEqual(currentPosition);
+      expect(state.position).toStrictEqual(currentPosition);
     });
 
     it('в поле "data" возвращает данные о персонаже', () => {

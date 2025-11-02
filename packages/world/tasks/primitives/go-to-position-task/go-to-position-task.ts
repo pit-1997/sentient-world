@@ -1,24 +1,37 @@
 import type { IActor, IGeometry, Position } from '@sentient-world/engine';
 import type { ExecutionStatus, IPrimitiveTask } from '@sentient-world/htn';
 
-import type { State } from '../../state';
+import type { State } from '../../../state';
+
+export type GoToPositionTaskDeps = {
+  actor: IActor;
+  geometry: IGeometry;
+};
+
+export type GoToPositionTaskOptions = {
+  target: Position;
+};
 
 export class GoToPositionTask implements IPrimitiveTask<State> {
   name = 'GoToPositionTask';
   private started = false;
+  private readonly target: Position;
 
-  constructor(
-    private readonly targetPosition: Position,
-    private readonly actor: IActor,
-    private readonly geometry: IGeometry
-  ) {}
+  private readonly actor: IActor;
+  private readonly geometry: IGeometry;
+
+  constructor(options: GoToPositionTaskOptions, deps: GoToPositionTaskDeps) {
+    this.target = options.target;
+    this.actor = deps.actor;
+    this.geometry = deps.geometry;
+  }
 
   applyEffects(state: State): State {
     return {
       ...state,
       character: {
         ...state.character,
-        location: this.targetPosition,
+        position: this.target,
       },
     };
   }
@@ -28,7 +41,7 @@ export class GoToPositionTask implements IPrimitiveTask<State> {
   }
 
   execute(state: State): ExecutionStatus {
-    const distance = this.geometry.getDistance(state.character.location, this.targetPosition);
+    const distance = this.geometry.getDistance(state.character.position, this.target);
 
     if (distance <= 1) {
       this.complete();
@@ -42,13 +55,17 @@ export class GoToPositionTask implements IPrimitiveTask<State> {
     return 'running';
   }
 
+  getTarget() {
+    return this.target;
+  }
+
   private start() {
-    this.actor.taskGoToPoint(this.targetPosition);
+    this.actor.taskGoToPoint(this.target);
     this.started = true;
   }
 
   private complete() {
     this.actor.taskClear();
-    this.actor.taskAchieveAngle(this.targetPosition.angle);
+    this.actor.taskAchieveAngle(this.target.angle);
   }
 }

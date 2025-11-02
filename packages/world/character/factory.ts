@@ -1,4 +1,4 @@
-import type { IEngine } from '@sentient-world/engine';
+import type { IEngine, IGeometry } from '@sentient-world/engine';
 import type { IAgentFactory } from '@sentient-world/htn';
 
 import type { State } from '../state';
@@ -15,16 +15,19 @@ export type CharacterFactoryDeps = CharacterDeps;
 export class CharacterFactory implements ICharacterFactory {
   private readonly agentFactory: IAgentFactory<State>;
   private readonly engine: IEngine;
+  private readonly geometry: IGeometry;
 
   constructor(deps: CharacterFactoryDeps) {
     this.agentFactory = deps.agentFactory;
     this.engine = deps.engine;
+    this.geometry = deps.geometry;
   }
 
   create(characterData: CharacterData): ICharacter {
     return new Character(characterData, {
       agentFactory: this.agentFactory,
       engine: this.engine,
+      geometry: this.geometry,
     });
   }
 }

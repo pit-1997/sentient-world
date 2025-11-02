@@ -21,8 +21,8 @@ export class World {
   /** Заспавненные персонажи */
   private characters: ICharacter[];
 
-  /** Номер дня */
-  private day: number = 1;
+  /** Дата в мире игры */
+  private date: number = 1;
 
   constructor(deps: WorldDeps) {
     this.characterFactory = deps.characterFactory;
@@ -30,14 +30,16 @@ export class World {
     this.engine = deps.engine;
 
     this.characters = this.spawnCharacters();
-    this.trackDays();
     this.tickCharacters();
+    this.trackDate();
   }
 
   getState(): WorldSlice {
     return {
-      day: this.day,
-      time: this.engine.getTime(),
+      dateTime: {
+        date: this.date,
+        time: this.engine.getTime(),
+      },
     };
   }
 
@@ -62,20 +64,20 @@ export class World {
     });
   }
 
-  /** Трекает номер дня в мире */
-  private trackDays() {
+  /** Трекает дату в мире */
+  private trackDate() {
     let lastHour = this.engine.getTime().hours;
-    const increaseDay = (amount: number) => (this.day += amount);
+    const increaseDate = (amount: number) => (this.date += amount);
     const getTime = () => this.engine.getTime();
 
     this.engine.createThread(function* () {
       while (true) {
-        yield constants.DAY_TRACKING_INTERVAL;
+        yield constants.DATE_TRACKING_INTERVAL;
         const currentTime = getTime();
 
         if (lastHour >= 20 && currentTime.hours <= 5) {
           // Переход через полночь (с позднего вечера на раннее утро)
-          increaseDay(1);
+          increaseDate(1);
         }
 
         lastHour = currentTime.hours;

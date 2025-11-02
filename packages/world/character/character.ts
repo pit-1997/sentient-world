@@ -1,4 +1,4 @@
-import type { Position, IActor, IEngine } from '@sentient-world/engine';
+import type { Position, IActor, IEngine, IGeometry } from '@sentient-world/engine';
 import type { IAgent, IAgentFactory } from '@sentient-world/htn';
 
 import type { CharacterSlice, State } from '../state';
@@ -15,6 +15,7 @@ export type CharacterData = {
 export type CharacterDeps = {
   agentFactory: IAgentFactory<State>;
   engine: IEngine;
+  geometry: IGeometry;
 };
 
 export interface ICharacter {
@@ -31,11 +32,13 @@ export class Character implements ICharacter {
 
   constructor(data: CharacterData, deps: CharacterDeps) {
     this.data = data;
-    this.agent = deps.agentFactory.create(new LiveDayTask());
     this.actor = deps.engine.createActor({
       modelId: this.data.modelId,
       position: this.data.spawn,
     });
+
+    const task = new LiveDayTask({ actor: this.actor, geometry: deps.geometry });
+    this.agent = deps.agentFactory.create(task);
   }
 
   getActor(): IActor {
@@ -49,7 +52,7 @@ export class Character implements ICharacter {
   getState(): CharacterSlice {
     return {
       data: this.data,
-      location: this.actor.getPosition(),
+      position: this.actor.getPosition(),
     };
   }
 

@@ -6,7 +6,7 @@ import { Character } from './character';
 import type { CharacterData, CharacterDeps, ICharacter } from './character';
 import type { ICharacterFactory } from './factory';
 
-export function getMockedCharacterDeps(deps?: Partial<CharacterDeps>): CharacterDeps {
+export function getMockedCharacterDeps(deps: Partial<CharacterDeps> = {}): CharacterDeps {
   return getExternalMocks(deps);
 }
 

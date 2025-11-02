@@ -1,6 +1,16 @@
 import type { Point, Position } from '../geometry';
 import type { ActorConstructorOptions, IActor } from '../types';
 
+export const defaultActorConstructorOptions: ActorConstructorOptions = {
+  modelId: 76,
+  position: {
+    x: 2313.28,
+    y: 56.35,
+    z: 26.48,
+    angle: 359.29,
+  },
+};
+
 export class MockedActor implements IActor {
   private angle: number;
   private point: Point;
